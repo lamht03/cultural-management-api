@@ -13,9 +13,9 @@ namespace QUANLYVANHOA.Models
     public class RpMauPhieuController : ControllerBase
     {
         private readonly IRpMauPhieuRepository _mauPhieuRepository;
-        private readonly ICtgLoaiMauPhieuRepository _loaiMauPhieuRepository;
+        private readonly IDanhMucLoaiMauPhieuRepository _loaiMauPhieuRepository;
 
-        public RpMauPhieuController(IRpMauPhieuRepository mauPhieuRepository, ICtgLoaiMauPhieuRepository loaiMauPhieuRepository)
+        public RpMauPhieuController(IRpMauPhieuRepository mauPhieuRepository, IDanhMucLoaiMauPhieuRepository loaiMauPhieuRepository)
         {
             _mauPhieuRepository = mauPhieuRepository;
             _loaiMauPhieuRepository = loaiMauPhieuRepository;

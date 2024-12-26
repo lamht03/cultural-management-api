@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace QUANLYVANHOA.Interfaces
 {
-    public interface ICtgKyBaoCaoRepository
+    public interface IDanhMucKyBaoCaoRepository
     {
-        Task<(IEnumerable<CtgKyBaoCao>, int)> GetAll(string? name, int pageNumber, int pageSize);
-        Task<CtgKyBaoCao> GetByID(int id);
-        Task<int> Insert(CtgKyBaoCaoModelInsert obj);
-        Task<int> Update(CtgKyBaoCaoModelUpdate obj);
+        Task<(IEnumerable<DanhMucKyBaoCao>, int)> GetAll(string? name, int pageNumber, int pageSize);
+        Task<DanhMucKyBaoCao> GetByID(int id);
+        Task<int> Insert(DanhMucKyBaoCaoModelInsert obj);
+        Task<int> Update(DanhMucKyBaoCaoModelUpdate obj);
         Task<int> Delete(int id);
     }
 }

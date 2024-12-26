@@ -7,18 +7,18 @@ using System.Collections.Generic;
 
 namespace QUANLYVANHOA.Repositories
 {
-    public class CtgKyBaoCaoRepository : ICtgKyBaoCaoRepository
+    public class DanhMucKyBaoCaoRepository : IDanhMucKyBaoCaoRepository
     {
         private readonly string _connectionString;
 
-        public CtgKyBaoCaoRepository(IConfiguration configuration)
+        public DanhMucKyBaoCaoRepository(IConfiguration configuration)
         {
             _connectionString = new Connection().GetConnectionString();
         }
 
-        public async Task<(IEnumerable<CtgKyBaoCao>, int)> GetAll(string? name, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<DanhMucKyBaoCao>, int)> GetAll(string? name, int pageNumber, int pageSize)
         {
-            var kyBaoCaoList = new List<CtgKyBaoCao>();
+            var kyBaoCaoList = new List<DanhMucKyBaoCao>();
             int totalRecords = 0;
 
             using (var connection = new SqlConnection(_connectionString))
@@ -36,7 +36,7 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            kyBaoCaoList.Add(new CtgKyBaoCao
+                            kyBaoCaoList.Add(new DanhMucKyBaoCao
                             {
                                 KyBaoCaoID = reader.GetInt32("KyBaoCaoID"),
                                 KyBaoCaoChaID = reader.GetInt32("KyBaoCaoChaID"),
@@ -60,9 +60,9 @@ namespace QUANLYVANHOA.Repositories
             return (kyBaoCaoList, totalRecords);
         }
 
-        public async Task<CtgKyBaoCao> GetByID(int id)
+        public async Task<DanhMucKyBaoCao> GetByID(int id)
         {
-            CtgKyBaoCao kyBaoCao = null;
+            DanhMucKyBaoCao kyBaoCao = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -77,7 +77,7 @@ namespace QUANLYVANHOA.Repositories
                     {
                         if (await reader.ReadAsync())
                         {
-                            kyBaoCao = new CtgKyBaoCao
+                            kyBaoCao = new DanhMucKyBaoCao
                             {
                                 KyBaoCaoID = reader.GetInt32("KyBaoCaoID"),
                                 KyBaoCaoChaID = reader.GetInt32("KyBaoCaoChaID"),
@@ -94,7 +94,7 @@ namespace QUANLYVANHOA.Repositories
             return kyBaoCao;
         }
 
-        public async Task<int> Insert(CtgKyBaoCaoModelInsert kyBaoCao)
+        public async Task<int> Insert(DanhMucKyBaoCaoModelInsert kyBaoCao)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -111,7 +111,7 @@ namespace QUANLYVANHOA.Repositories
             }
         }
 
-        public async Task<int> Update(CtgKyBaoCaoModelUpdate kyBaoCao)
+        public async Task<int> Update(DanhMucKyBaoCaoModelUpdate kyBaoCao)
         {
             using (var connection = new SqlConnection(_connectionString))
             {

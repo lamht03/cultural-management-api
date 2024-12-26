@@ -2,7 +2,7 @@
 
 namespace QUANLYVANHOA.Models
 {
-    public class CtgTieuChi
+    public class DanhMucTieuChi
     {
         [JsonPropertyName("TieuChiID")]
         public int TieuChiID { get; set; }
@@ -31,11 +31,11 @@ namespace QUANLYVANHOA.Models
         [JsonPropertyName("CapDo")]
         public int? CapDo { get; set; }
 
-        public List<CtgTieuChi>? Children { get; set; } = new List<CtgTieuChi>();
+        public List<DanhMucTieuChi>? Children { get; set; } = new List<DanhMucTieuChi>();
 
     }
 
-    public class CtgTieuChiModelInsert
+    public class DanhMucTieuChiModelInsert
     {
         [JsonPropertyName("MaTieuChi")]
         public string? MaTieuChi { get; set; }
@@ -54,7 +54,7 @@ namespace QUANLYVANHOA.Models
 
     }
 
-    public class CtgTieuChiModelUpdate
+    public class DanhMucTieuChiModelUpdate
     {
         public int TieuChiID { get; set; }
 

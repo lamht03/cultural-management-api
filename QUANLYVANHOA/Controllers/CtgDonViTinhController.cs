@@ -10,11 +10,11 @@ namespace QUANLYVANHOA.Models
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CtgDonViTinhController : ControllerBase
+    public class DanhMucDonViTinhController : ControllerBase
     {
-        private readonly ICtgDonViTinhRepository _donViTinhRepository;
+        private readonly IDanhMucDonViTinhRepository _donViTinhRepository;
 
-        public CtgDonViTinhController(ICtgDonViTinhRepository donViTinhRepository)
+        public DanhMucDonViTinhController(IDanhMucDonViTinhRepository donViTinhRepository)
         {
             _donViTinhRepository = donViTinhRepository;
         }
@@ -87,7 +87,7 @@ namespace QUANLYVANHOA.Models
 
         [CustomAuthorize(2, "ManageUnitofMeasure")]
         [HttpPost("Insert")]
-        public async Task<IActionResult> Insert([FromBody] CtgDonViTinhModelInsert model)
+        public async Task<IActionResult> Insert([FromBody] DanhMucDonViTinhModelInsert model)
         {
             var existingTenDonViTinh = await _donViTinhRepository.GetAll(model.TenDonViTinh,1,20);
             if (existingTenDonViTinh.Item1.Any())
@@ -115,8 +115,8 @@ namespace QUANLYVANHOA.Models
                 return BadRequest(new { Status = 0, Message = "Invalid GhiChu. Must not exceed 50 characters." });
             }
 
-            // Create a new CtgDonViTinh object
-            var newDonViTinh = new CtgDonViTinhModelInsert
+            // Create a new DanhMucDonViTinh object
+            var newDonViTinh = new DanhMucDonViTinhModelInsert
             {
                 TenDonViTinh = model.TenDonViTinh.Trim(),
                 MaDonViTinh = model.MaDonViTinh.Trim(),
@@ -135,7 +135,7 @@ namespace QUANLYVANHOA.Models
 
         [CustomAuthorize(4, "ManageUnitofMeasure")]
         [HttpPost("Update")]
-        public async Task<IActionResult> Update([FromBody] CtgDonViTinhModelUpdate model)
+        public async Task<IActionResult> Update([FromBody] DanhMucDonViTinhModelUpdate model)
         {
             var existingTenDonViTinh = await _donViTinhRepository.GetAll(model.TenDonViTinh, 1, 20);
             if (existingTenDonViTinh.Item1.Any())

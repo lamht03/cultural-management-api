@@ -7,18 +7,18 @@ using System.Collections.Generic;
 
 namespace QUANLYVANHOA.Repositories
 {
-    public class CtgLoaiMauPhieuRepository : ICtgLoaiMauPhieuRepository
+    public class DanhMucLoaiMauPhieuRepository : IDanhMucLoaiMauPhieuRepository
     {
         private readonly string _connectionString;
 
-        public CtgLoaiMauPhieuRepository(IConfiguration configuration)
+        public DanhMucLoaiMauPhieuRepository(IConfiguration configuration)
         {
             _connectionString = new Connection().GetConnectionString();
         }
 
-        public async Task<(IEnumerable<CtgLoaiMauPhieu>, int)> GetAll(string name, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<DanhMucLoaiMauPhieu>, int)> GetAll(string name, int pageNumber, int pageSize)
         {
-            var loaiMauPhieuList = new List<CtgLoaiMauPhieu>();
+            var loaiMauPhieuList = new List<DanhMucLoaiMauPhieu>();
             int totalRecords = 0;
 
             using (var connection = new SqlConnection(_connectionString))
@@ -36,7 +36,7 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            loaiMauPhieuList.Add(new CtgLoaiMauPhieu
+                            loaiMauPhieuList.Add(new DanhMucLoaiMauPhieu
                             {
                                 LoaiMauPhieuID = reader.GetInt32(reader.GetOrdinal("LoaiMauPhieuID")),
                                 TenLoaiMauPhieu = reader.GetString(reader.GetOrdinal("TenLoaiMauPhieu")),
@@ -59,9 +59,9 @@ namespace QUANLYVANHOA.Repositories
             return (loaiMauPhieuList, totalRecords);
         }
 
-        public async Task<CtgLoaiMauPhieu> GetByID(int id)
+        public async Task<DanhMucLoaiMauPhieu> GetByID(int id)
         {
-            CtgLoaiMauPhieu loaiMauPhieu = null;
+            DanhMucLoaiMauPhieu loaiMauPhieu = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -75,7 +75,7 @@ namespace QUANLYVANHOA.Repositories
                     {
                         if (await reader.ReadAsync())
                         {
-                            loaiMauPhieu = new CtgLoaiMauPhieu
+                            loaiMauPhieu = new DanhMucLoaiMauPhieu
                             {
                                 LoaiMauPhieuID = reader.GetInt32(reader.GetOrdinal("LoaiMauPhieuID")),
                                 TenLoaiMauPhieu = reader.GetString(reader.GetOrdinal("TenLoaiMauPhieu")),
@@ -92,7 +92,7 @@ namespace QUANLYVANHOA.Repositories
             return loaiMauPhieu;
         }
 
-        public async Task<int> Insert(CtgLoaiMauPhieuModelInsert loaiMauPhieu)
+        public async Task<int> Insert(DanhMucLoaiMauPhieuModelInsert loaiMauPhieu)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -108,7 +108,7 @@ namespace QUANLYVANHOA.Repositories
             }
         }
 
-        public async Task<int> Update(CtgLoaiMauPhieuModelUpdate loaiMauPhieu)
+        public async Task<int> Update(DanhMucLoaiMauPhieuModelUpdate loaiMauPhieu)
         {
             using (var connection = new SqlConnection(_connectionString))
             {

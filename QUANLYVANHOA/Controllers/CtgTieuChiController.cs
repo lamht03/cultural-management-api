@@ -9,11 +9,11 @@ namespace QUANLYVANHOA.Models
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CtgTieuChiController : ControllerBase
+    public class DanhMucTieuChiController : ControllerBase
     {
-        private readonly ICtgTieuChiRepository _tieuchirepository;
+        private readonly IDanhMucTieuChiRepository _tieuchirepository;
 
-        public CtgTieuChiController(ICtgTieuChiRepository tieuchirepository)
+        public DanhMucTieuChiController(IDanhMucTieuChiRepository tieuchirepository)
         {
             _tieuchirepository = tieuchirepository;
         }
@@ -80,7 +80,7 @@ namespace QUANLYVANHOA.Models
 
         [HttpPost("Insert")]
         [CustomAuthorize(2, "ManageCriteria")]
-        public async Task<IActionResult> Insert([FromBody] CtgTieuChiModelInsert tieuchi)
+        public async Task<IActionResult> Insert([FromBody] DanhMucTieuChiModelInsert tieuchi)
         {
             var existingTieuChi = await _tieuchirepository.GetAll(tieuchi.TenTieuChi);
             if (existingTieuChi.Item1.Any())
@@ -123,7 +123,7 @@ namespace QUANLYVANHOA.Models
 
         [HttpPost("Update")]
         [CustomAuthorize(4, "ManageCriteria")]
-        public async Task<IActionResult> Update([FromBody] CtgTieuChiModelUpdate tieuchi)
+        public async Task<IActionResult> Update([FromBody] DanhMucTieuChiModelUpdate tieuchi)
         {
 
             var existingTieuChi = await _tieuchirepository.GetAll(tieuchi.TenTieuChi);

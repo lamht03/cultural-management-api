@@ -11,11 +11,11 @@ namespace QUANLYVANHOA.Models
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CtgDiTichXepHangController : ControllerBase
+    public class DanhMucDiTichXepHangController : ControllerBase
     {
-        private readonly ICtgDiTichXepHangRepository _ditichxephangrepository;
+        private readonly IDanhMucDiTichXepHangRepository _ditichxephangrepository;
 
-        public CtgDiTichXepHangController(ICtgDiTichXepHangRepository ditichxephangrepository)
+        public DanhMucDiTichXepHangController(IDanhMucDiTichXepHangRepository ditichxephangrepository)
         {
             _ditichxephangrepository = ditichxephangrepository;
         }
@@ -89,7 +89,7 @@ namespace QUANLYVANHOA.Models
 
         [CustomAuthorize(2, "ManageMonumentRanking")]
         [HttpPost("Insert")]
-        public async Task<IActionResult> Insert([FromBody] CtgDiTichXepHangModelInsert model)
+        public async Task<IActionResult> Insert([FromBody] DanhMucDiTichXepHangModelInsert model)
         {
             var existingTenDiTich = await _ditichxephangrepository.GetAll(model.TenDiTich, 1, 20);
             if (existingTenDiTich.Item1.Any())
@@ -110,7 +110,7 @@ namespace QUANLYVANHOA.Models
             }
 
             // Tạo mới đối tượng DiTichXepHang
-            var newDiTich = new CtgDiTichXepHangModelInsert
+            var newDiTich = new DanhMucDiTichXepHangModelInsert
             {
                 TenDiTich = model.TenDiTich.Trim(),
                 GhiChu = ghiChuAsInt.ToString()
@@ -127,7 +127,7 @@ namespace QUANLYVANHOA.Models
 
         [CustomAuthorize(4, "ManageMonumentRanking")]
         [HttpPost("Update")]
-        public async Task<IActionResult> Update([FromBody] CtgDiTichXepHangModelUpdate diTichXepHang)
+        public async Task<IActionResult> Update([FromBody] DanhMucDiTichXepHangModelUpdate diTichXepHang)
         {
             var existingTenDiTich = await _ditichxephangrepository.GetAll(diTichXepHang.TenDiTich, 1, 20);
             if (existingTenDiTich.Item1.Any())

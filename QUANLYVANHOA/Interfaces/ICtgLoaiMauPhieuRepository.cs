@@ -2,12 +2,12 @@
 
 namespace QUANLYVANHOA.Interfaces
 {
-    public interface ICtgLoaiMauPhieuRepository
+    public interface IDanhMucLoaiMauPhieuRepository
     {
-        Task<(IEnumerable<CtgLoaiMauPhieu>, int)> GetAll(string? name, int pageNumber, int pageSize);
-        Task<CtgLoaiMauPhieu> GetByID(int id);
-        Task<int> Insert(CtgLoaiMauPhieuModelInsert obj);
-        Task<int> Update(CtgLoaiMauPhieuModelUpdate obj);
+        Task<(IEnumerable<DanhMucLoaiMauPhieu>, int)> GetAll(string? name, int pageNumber, int pageSize);
+        Task<DanhMucLoaiMauPhieu> GetByID(int id);
+        Task<int> Insert(DanhMucLoaiMauPhieuModelInsert obj);
+        Task<int> Update(DanhMucLoaiMauPhieuModelUpdate obj);
         Task<int> Delete(int id);
     }
 }

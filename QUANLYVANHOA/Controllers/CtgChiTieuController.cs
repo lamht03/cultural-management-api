@@ -11,12 +11,12 @@ namespace QUANLYVANHOA.Models
     [Route("api/[controller]")]
     [CustomAuthorize(1, "ManageTarget")]
     [ApiController]
-    public class CtgChiTieuController : ControllerBase
+    public class DanhMucChiTieuController : ControllerBase
     {
-        private readonly ICtgChiTieuRepository _chiTieuRepository;
-        private readonly ICtgLoaiMauPhieuRepository _loaiMauPhieuRepository;
+        private readonly IDanhMucChiTieuRepository _chiTieuRepository;
+        private readonly IDanhMucLoaiMauPhieuRepository _loaiMauPhieuRepository;
 
-        public CtgChiTieuController(ICtgChiTieuRepository chiTieuRepository, ICtgLoaiMauPhieuRepository loaiMauPhieuRepository)
+        public DanhMucChiTieuController(IDanhMucChiTieuRepository chiTieuRepository, IDanhMucLoaiMauPhieuRepository loaiMauPhieuRepository)
         {
             _chiTieuRepository = chiTieuRepository;
             _loaiMauPhieuRepository = loaiMauPhieuRepository;
@@ -110,7 +110,7 @@ namespace QUANLYVANHOA.Models
 
         [CustomAuthorize(2, "ManageTarget")]
         [HttpPost("Insert")]
-        public async Task<IActionResult> Insert([FromBody] CtgChiTieuInsertModel chiTieu)
+        public async Task<IActionResult> Insert([FromBody] DanhMucChiTieuInsertModel chiTieu)
         {
             var existingChiTieu = await _chiTieuRepository.GetAll(chiTieu.TenChiTieu);
             if (existingChiTieu.Item1.Any())
@@ -162,7 +162,7 @@ namespace QUANLYVANHOA.Models
 
         [HttpPost("InsertChildren")]
         [CustomAuthorize(2, "ManageTarget")]
-        public async Task<IActionResult> InsertChiTieuCon([FromBody] CtgChiTieuInsertChidrenModel chiTieuModelInsertChidren)
+        public async Task<IActionResult> InsertChiTieuCon([FromBody] DanhMucChiTieuInsertChidrenModel chiTieuModelInsertChidren)
         {
             var existingChiTieu = await _chiTieuRepository.GetAll(chiTieuModelInsertChidren.TenChiTieu);
             if (existingChiTieu.Item1.Any())
@@ -212,7 +212,7 @@ namespace QUANLYVANHOA.Models
 
         [CustomAuthorize(4, "ManageTarget")]
         [HttpPost("Update")]
-        public async Task<IActionResult> Update(CtgChiTieuUpdateModel chiTieu)
+        public async Task<IActionResult> Update(DanhMucChiTieuUpdateModel chiTieu)
         {
             if (!string.IsNullOrWhiteSpace(chiTieu.TenChiTieu))
             {

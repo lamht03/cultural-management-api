@@ -4,14 +4,14 @@ using QUANLYVANHOA.Models;
 
 namespace QUANLYVANHOA.Interfaces
 {
-    public interface ICtgChiTieuRepository
+    public interface IDanhMucChiTieuRepository
     {
-        Task<(IEnumerable<CtgChiTieu>, int)> GetAll(string? name/*, int pageNumber, int pageSize*/);
-        Task<CtgChiTieu> GetByID(int id);
-        Task<IEnumerable<CtgChiTieu>> GetByLoaiMauPhieuID(int loaiMauPhieuID);
-        Task<int> Insert(CtgChiTieuInsertModel chiTieu);
-        Task<int> InsertChildren(CtgChiTieuInsertChidrenModel chiTieuModelInsertChidren);
-        Task<int> Update(CtgChiTieuUpdateModel chiTieu);
+        Task<(IEnumerable<DanhMucChiTieu>, int)> GetAll(string? name/*, int pageNumber, int pageSize*/);
+        Task<DanhMucChiTieu> GetByID(int id);
+        Task<IEnumerable<DanhMucChiTieu>> GetByLoaiMauPhieuID(int loaiMauPhieuID);
+        Task<int> Insert(DanhMucChiTieuInsertModel chiTieu);
+        Task<int> InsertChildren(DanhMucChiTieuInsertChidrenModel chiTieuModelInsertChidren);
+        Task<int> Update(DanhMucChiTieuUpdateModel chiTieu);
         Task<int> Delete(int id);
     }
 }

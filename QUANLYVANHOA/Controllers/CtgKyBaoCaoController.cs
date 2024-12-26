@@ -8,11 +8,11 @@ namespace QUANLYVANHOA.Models
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CtgKyBaoCaoController : ControllerBase
+    public class DanhMucKyBaoCaoController : ControllerBase
     {
-        private readonly ICtgKyBaoCaoRepository _kyBaoCaoRepository;
+        private readonly IDanhMucKyBaoCaoRepository _kyBaoCaoRepository;
 
-        public CtgKyBaoCaoController(ICtgKyBaoCaoRepository kyBaoCaoRepository)
+        public DanhMucKyBaoCaoController(IDanhMucKyBaoCaoRepository kyBaoCaoRepository)
         {
             _kyBaoCaoRepository = kyBaoCaoRepository;
         }
@@ -78,7 +78,7 @@ namespace QUANLYVANHOA.Models
 
         [HttpPost("Insert")]
         [CustomAuthorize(2, "ManageReportingPeriod")]
-        public async Task<IActionResult> Insert([FromBody] CtgKyBaoCaoModelInsert model)
+        public async Task<IActionResult> Insert([FromBody] DanhMucKyBaoCaoModelInsert model)
         {
             var existingKyBaoCaoName = await _kyBaoCaoRepository.GetAll(model.TenKyBaoCao, 1, 20);
             if (existingKyBaoCaoName.Item1.Any())
@@ -97,7 +97,7 @@ namespace QUANLYVANHOA.Models
 
             // Thêm đối tượng vào database
 
-            var newKyBaoCao = new CtgKyBaoCaoModelInsert
+            var newKyBaoCao = new DanhMucKyBaoCaoModelInsert
             {
                 TenKyBaoCao = model.TenKyBaoCao,
                 TrangThai = model.TrangThai,
@@ -112,7 +112,7 @@ namespace QUANLYVANHOA.Models
 
         [HttpPost("Update")]
         [CustomAuthorize(4, "ManageReportingPeriod")]
-        public async Task<IActionResult> Update(CtgKyBaoCaoModelUpdate kyBaoCao)
+        public async Task<IActionResult> Update(DanhMucKyBaoCaoModelUpdate kyBaoCao)
         {
             var existingKyBaoCaoName = await _kyBaoCaoRepository.GetAll(kyBaoCao.TenKyBaoCao, 1, 20);
             if (existingKyBaoCaoName.Item1.Any())

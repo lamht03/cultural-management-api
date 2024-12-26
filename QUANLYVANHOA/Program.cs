@@ -26,17 +26,17 @@ builder.Services.AddRepositoriesAndServices(typeof(SysUserRepository).Assembly);
 ////Register repository and service
 //builder.Services.AddScoped<ISysUserRepository, SysUserRepository>();
 //builder.Services.AddScoped<IUserService, UserService>();
-//builder.Services.AddScoped<ICtgDiTichXepHangRepository, CtgDiTichXepHangRepository>();
-//builder.Services.AddScoped<ICtgTieuChiRepository, CtgTieuChiRepository>();
-//builder.Services.AddScoped<ICtgChiTieuRepository, CtgChiTieuRepository>();
-//builder.Services.AddScoped<ICtgKyBaoCaoRepository, CtgKyBaoCaoRepository>();
+//builder.Services.AddScoped<IDanhMucDiTichXepHangRepository, DanhMucDiTichXepHangRepository>();
+//builder.Services.AddScoped<IDanhMucTieuChiRepository, DanhMucTieuChiRepository>();
+//builder.Services.AddScoped<IDanhMucChiTieuRepository, DanhMucChiTieuRepository>();
+//builder.Services.AddScoped<IDanhMucKyBaoCaoRepository, DanhMucKyBaoCaoRepository>();
 //builder.Services.AddScoped<ISysGroupRepository, SysGroupRepository>();
 //builder.Services.AddScoped<ISysFunctionRepository, SysFunctionRepository>();
 //builder.Services.AddScoped<ISysFunctionInGroupRepository, SysFunctionInGroupRepository>();
 //builder.Services.AddScoped<ISysUserInGroupRepository, SysUserInGroupRepository>();
-//builder.Services.AddScoped<ICtgLoaiMauPhieuRepository, CtgLoaiMauPhieuRepository>();
-//builder.Services.AddScoped<ICtgLoaiDiTichRepository, CtgLoaiDiTichRepository>();
-//builder.Services.AddScoped<ICtgDonViTinhRepository, CtgDonViTinhRepository>();
+//builder.Services.AddScoped<IDanhMucLoaiMauPhieuRepository, DanhMucLoaiMauPhieuRepository>();
+//builder.Services.AddScoped<IDanhMucLoaiDiTichRepository, DanhMucLoaiDiTichRepository>();
+//builder.Services.AddScoped<IDanhMucDonViTinhRepository, DanhMucDonViTinhRepository>();
 
 
 builder.Services.AddSwaggerGen(c =>

@@ -8,18 +8,18 @@ using QUANLYVANHOA.Models;
 
 namespace QUANLYVANHOA.Repositories
 {
-    public class CtgLoaiDiTichRepository : ICtgLoaiDiTichRepository
+    public class DanhMucLoaiDiTichRepository : IDanhMucLoaiDiTichRepository
     {
         private readonly string _connectionString;
 
-        public CtgLoaiDiTichRepository(IConfiguration configuration)
+        public DanhMucLoaiDiTichRepository(IConfiguration configuration)
         {
             _connectionString = new Connection().GetConnectionString();
         }
 
-        public async Task<(IEnumerable<CtgLoaiDiTich>, int)> GetAll(string name, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<DanhMucLoaiDiTich>, int)> GetAll(string name, int pageNumber, int pageSize)
         {
-            var loaiDiTichList = new List<CtgLoaiDiTich>();
+            var loaiDiTichList = new List<DanhMucLoaiDiTich>();
             int totalRecords = 0;
 
             using (var connection = new SqlConnection(_connectionString))
@@ -37,7 +37,7 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            loaiDiTichList.Add(new CtgLoaiDiTich
+                            loaiDiTichList.Add(new DanhMucLoaiDiTich
                             {
                                 LoaiDiTichID = reader.GetInt32(reader.GetOrdinal("LoaiDiTichID")),
                                 LoaiDiTichChaID = reader.GetInt32(reader.GetOrdinal("LoaiDiTichChaID")),
@@ -61,9 +61,9 @@ namespace QUANLYVANHOA.Repositories
             return (loaiDiTichList, totalRecords);
         }
 
-        public async Task<CtgLoaiDiTich> GetByID(int id)
+        public async Task<DanhMucLoaiDiTich> GetByID(int id)
         {
-            CtgLoaiDiTich loaiDiTich = null;
+            DanhMucLoaiDiTich loaiDiTich = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -77,7 +77,7 @@ namespace QUANLYVANHOA.Repositories
                     {
                         if (await reader.ReadAsync())
                         {
-                            loaiDiTich = new CtgLoaiDiTich
+                            loaiDiTich = new DanhMucLoaiDiTich
                             {
                                 LoaiDiTichID = reader.GetInt32(reader.GetOrdinal("LoaiDiTichID")),
                                 LoaiDiTichChaID = reader.GetInt32(reader.GetOrdinal("LoaiDiTichChaID")),
@@ -95,7 +95,7 @@ namespace QUANLYVANHOA.Repositories
             return loaiDiTich;
         }
 
-        public async Task<int> Insert(CtgLoaiDiTichModelInsert loaiDiTich)
+        public async Task<int> Insert(DanhMucLoaiDiTichModelInsert loaiDiTich)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -110,7 +110,7 @@ namespace QUANLYVANHOA.Repositories
             }
         }
 
-        public async Task<int> Update(CtgLoaiDiTichModelUpdate loaiDiTich)
+        public async Task<int> Update(DanhMucLoaiDiTichModelUpdate loaiDiTich)
         {
             using (var connection = new SqlConnection(_connectionString))
             {

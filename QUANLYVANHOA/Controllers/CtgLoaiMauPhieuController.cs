@@ -10,11 +10,11 @@ namespace QUANLYVANHOA.Models
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CtgLoaiMauPhieuController : ControllerBase
+    public class DanhMucLoaiMauPhieuController : ControllerBase
     {
-        private readonly ICtgLoaiMauPhieuRepository _loaiMauPhieuRepository;
+        private readonly IDanhMucLoaiMauPhieuRepository _loaiMauPhieuRepository;
 
-        public CtgLoaiMauPhieuController(ICtgLoaiMauPhieuRepository loaiMauPhieuRepository)
+        public DanhMucLoaiMauPhieuController(IDanhMucLoaiMauPhieuRepository loaiMauPhieuRepository)
         {
             _loaiMauPhieuRepository = loaiMauPhieuRepository;
         }
@@ -92,7 +92,7 @@ namespace QUANLYVANHOA.Models
 
         [HttpPost("Insert")]
         [CustomAuthorize(2, "ManageFormType")]
-        public async Task<IActionResult> Insert([FromBody] CtgLoaiMauPhieuModelInsert model)
+        public async Task<IActionResult> Insert([FromBody] DanhMucLoaiMauPhieuModelInsert model)
         {
 
             var existingLoaiMauPhieu = await _loaiMauPhieuRepository.GetAll(model.TenLoaiMauPhieu, 1,20);
@@ -123,8 +123,8 @@ namespace QUANLYVANHOA.Models
             }
 
 
-            // Create a new CtgLoaiMauPhieu object
-            var newLoaiMauPhieu = new CtgLoaiMauPhieuModelInsert
+            // Create a new DanhMucLoaiMauPhieu object
+            var newLoaiMauPhieu = new DanhMucLoaiMauPhieuModelInsert
             {
                 TenLoaiMauPhieu = model.TenLoaiMauPhieu.Trim(),
                 MaLoaiMauPhieu = model.MaLoaiMauPhieu.Trim(),
@@ -142,7 +142,7 @@ namespace QUANLYVANHOA.Models
 
         [HttpPost("Update")]
         [CustomAuthorize(4, "ManageFormType")]
-        public async Task<IActionResult> Update([FromBody] CtgLoaiMauPhieuModelUpdate model)
+        public async Task<IActionResult> Update([FromBody] DanhMucLoaiMauPhieuModelUpdate model)
         {
             var existingLoaiMauPhieuName = await _loaiMauPhieuRepository.GetAll(model.TenLoaiMauPhieu, 1, 20);
             if (existingLoaiMauPhieuName.Item1.Any())

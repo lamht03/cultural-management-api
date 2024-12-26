@@ -8,18 +8,18 @@ using Microsoft.Extensions.Configuration;
 
 namespace QUANLYVANHOA.Repositories
 {
-    public class CtgTieuChiRepository : ICtgTieuChiRepository
+    public class DanhMucTieuChiRepository : IDanhMucTieuChiRepository
     {
         private readonly string _connectionString;
 
-        public CtgTieuChiRepository(IConfiguration configuration)
+        public DanhMucTieuChiRepository(IConfiguration configuration)
         {
             _connectionString = new Connection().GetConnectionString();
         }
 
-        public async Task<(IEnumerable<CtgTieuChi>, int)> GetAll(string? name/*, int pageNumber, int pageSize*/)
+        public async Task<(IEnumerable<DanhMucTieuChi>, int)> GetAll(string? name/*, int pageNumber, int pageSize*/)
         {
-            var tieuChiList = new List<CtgTieuChi>();
+            var tieuChiList = new List<DanhMucTieuChi>();
             int totalRecords = 0;
 
 
@@ -39,7 +39,7 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            tieuChiList.Add(new CtgTieuChi
+                            tieuChiList.Add(new DanhMucTieuChi
                             {
                                 TieuChiID = reader.GetInt32("TieuChiID"),
                                 MaTieuChi = reader["MaTieuChi"].ToString(),
@@ -68,9 +68,9 @@ namespace QUANLYVANHOA.Repositories
             return (tieuChiHierarchy, totalRecords);
         }
 
-        public async Task<CtgTieuChi> GetByID(int id)
+        public async Task<DanhMucTieuChi> GetByID(int id)
         {
-            CtgTieuChi tieuChi = null;
+            DanhMucTieuChi tieuChi = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -84,7 +84,7 @@ namespace QUANLYVANHOA.Repositories
                     {
                         if (await reader.ReadAsync())
                         {
-                            tieuChi = new CtgTieuChi
+                            tieuChi = new DanhMucTieuChi
                             {
                                 TieuChiID = reader.GetInt32("TieuChiID"),
                                 MaTieuChi = reader["MaTieuChi"].ToString(),
@@ -104,7 +104,7 @@ namespace QUANLYVANHOA.Repositories
             return tieuChi;
         }
 
-        public async Task<int> Insert(CtgTieuChiModelInsert tieuChi)
+        public async Task<int> Insert(DanhMucTieuChiModelInsert tieuChi)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -123,7 +123,7 @@ namespace QUANLYVANHOA.Repositories
             }
         }
 
-        public async Task<int> Update(CtgTieuChiModelUpdate tieuChi)
+        public async Task<int> Update(DanhMucTieuChiModelUpdate tieuChi)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -159,7 +159,7 @@ namespace QUANLYVANHOA.Repositories
             }
         }
 
-        private List<CtgTieuChi> BuildHierarchy(List<CtgTieuChi> tieuChiList)
+        private List<DanhMucTieuChi> BuildHierarchy(List<DanhMucTieuChi> tieuChiList)
         {
             var lookup = tieuChiList.ToLookup(c => c.TieuChiChaID);
             var rootItems = lookup[null].ToList();

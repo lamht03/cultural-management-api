@@ -2,7 +2,7 @@
 
 namespace QUANLYVANHOA.Models
 {
-    public class CtgKyBaoCao
+    public class DanhMucKyBaoCao
     {
         [JsonPropertyName("KyBaoCaoID")]
         public int KyBaoCaoID { get; set; }
@@ -28,7 +28,7 @@ namespace QUANLYVANHOA.Models
         public int LoaiKyBaoCao { get; set; }
     }
 
-    public class CtgKyBaoCaoModelInsert
+    public class DanhMucKyBaoCaoModelInsert
     {
         [JsonPropertyName("TenKyBaoCao")]
         public string TenKyBaoCao { get; set; }
@@ -40,7 +40,7 @@ namespace QUANLYVANHOA.Models
         public string GhiChu { get; set; }
     }
 
-    public class CtgKyBaoCaoModelUpdate
+    public class DanhMucKyBaoCaoModelUpdate
     {
         [JsonPropertyName("KyBaoCaoID")]
         public int KyBaoCaoID { get; set; }

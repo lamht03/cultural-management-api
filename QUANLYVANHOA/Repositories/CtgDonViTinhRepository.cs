@@ -7,18 +7,18 @@ using System.Collections.Generic;
 
 namespace QUANLYVANHOA.Repositories
 {
-    public class CtgDonViTinhRepository : ICtgDonViTinhRepository
+    public class DanhMucDonViTinhRepository : IDanhMucDonViTinhRepository
     {
         private readonly string _connectionString;
 
-        public CtgDonViTinhRepository(IConfiguration configuration)
+        public DanhMucDonViTinhRepository(IConfiguration configuration)
         {
             _connectionString = new Connection().GetConnectionString();
         }
 
-        public async Task<(IEnumerable<CtgDonViTinh>, int)> GetAll(string name, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<DanhMucDonViTinh>, int)> GetAll(string name, int pageNumber, int pageSize)
         {
-            var donViTinhList = new List<CtgDonViTinh>();
+            var donViTinhList = new List<DanhMucDonViTinh>();
             int totalRecords = 0;
 
             using (var connection = new SqlConnection(_connectionString))
@@ -36,7 +36,7 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            donViTinhList.Add(new CtgDonViTinh
+                            donViTinhList.Add(new DanhMucDonViTinh
                             {
                                 DonViTinhID = reader.GetInt32(reader.GetOrdinal("DonViTinhID")),
                                 TenDonViTinh = reader.GetString(reader.GetOrdinal("TenDonViTinh")),
@@ -58,9 +58,9 @@ namespace QUANLYVANHOA.Repositories
             return (donViTinhList, totalRecords);
         }
 
-        public async Task<CtgDonViTinh> GetByID(int id)
+        public async Task<DanhMucDonViTinh> GetByID(int id)
         {
-            CtgDonViTinh donViTinh = null;
+            DanhMucDonViTinh donViTinh = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -74,7 +74,7 @@ namespace QUANLYVANHOA.Repositories
                     {
                         if (await reader.ReadAsync())
                         {
-                            donViTinh = new CtgDonViTinh
+                            donViTinh = new DanhMucDonViTinh
                             {
                                 DonViTinhID = reader.GetInt32(reader.GetOrdinal("DonViTinhID")),
                                 TenDonViTinh = reader.GetString(reader.GetOrdinal("TenDonViTinh")),
@@ -90,7 +90,7 @@ namespace QUANLYVANHOA.Repositories
             return donViTinh;
         }
 
-        public async Task<int> Insert(CtgDonViTinhModelInsert donViTinh)
+        public async Task<int> Insert(DanhMucDonViTinhModelInsert donViTinh)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -107,7 +107,7 @@ namespace QUANLYVANHOA.Repositories
             }
         }
 
-        public async Task<int> Update(CtgDonViTinhModelUpdate donViTinh)
+        public async Task<int> Update(DanhMucDonViTinhModelUpdate donViTinh)
         {
             using (var connection = new SqlConnection(_connectionString))
             {

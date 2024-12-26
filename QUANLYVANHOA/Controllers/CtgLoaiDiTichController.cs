@@ -10,11 +10,11 @@ namespace QUANLYVANHOA.Models
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CtgLoaiDiTichController : ControllerBase
+    public class DanhMucLoaiDiTichController : ControllerBase
     {
-        private readonly ICtgLoaiDiTichRepository _loaiDiTichRepository;
+        private readonly IDanhMucLoaiDiTichRepository _loaiDiTichRepository;
 
-        public CtgLoaiDiTichController(ICtgLoaiDiTichRepository loaiDiTichRepository)
+        public DanhMucLoaiDiTichController(IDanhMucLoaiDiTichRepository loaiDiTichRepository)
         {
             _loaiDiTichRepository = loaiDiTichRepository;
         }
@@ -87,7 +87,7 @@ namespace QUANLYVANHOA.Models
 
         [HttpPost("Insert")]
         [CustomAuthorize(2, "ManageTypeofMonument")]
-        public async Task<IActionResult> Insert([FromBody] CtgLoaiDiTichModelInsert model)
+        public async Task<IActionResult> Insert([FromBody] DanhMucLoaiDiTichModelInsert model)
         {
             var existingLoaiDiTichName = await _loaiDiTichRepository.GetAll(model.TenLoaiDiTich,1,20);
             if (existingLoaiDiTichName.Item1.Any())
@@ -112,8 +112,8 @@ namespace QUANLYVANHOA.Models
                 return BadRequest(new { Status = 0, Message = "Invalid GhiChu. Must be a valid integer greater than or equal to 0." });
             }
 
-            // Create a new CtgLoaiDiTich object
-            var newLoaiDiTich = new CtgLoaiDiTichModelInsert
+            // Create a new DanhMucLoaiDiTich object
+            var newLoaiDiTich = new DanhMucLoaiDiTichModelInsert
             {
                 TenLoaiDiTich = model.TenLoaiDiTich.Trim(),
                 GhiChu = ghiChuAsInt.ToString()
@@ -130,7 +130,7 @@ namespace QUANLYVANHOA.Models
 
         [HttpPost("Update")]
         [CustomAuthorize(4, "ManageTypeofMonument")]
-        public async Task<IActionResult> Update([FromBody] CtgLoaiDiTichModelUpdate model)
+        public async Task<IActionResult> Update([FromBody] DanhMucLoaiDiTichModelUpdate model)
         {
             var existingLoaiDiTichName = await _loaiDiTichRepository.GetAll(model.TenLoaiDiTich, 1, 20);
             if (existingLoaiDiTichName.Item1.Any())

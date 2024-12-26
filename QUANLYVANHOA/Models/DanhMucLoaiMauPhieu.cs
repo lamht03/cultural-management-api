@@ -2,7 +2,7 @@
 
 namespace QUANLYVANHOA.Models
 {
-    public class CtgLoaiMauPhieu
+    public class DanhMucLoaiMauPhieu
     {
         [JsonPropertyName("LoaiMauPhieuID")]
         public int LoaiMauPhieuID { get; set; }
@@ -26,7 +26,7 @@ namespace QUANLYVANHOA.Models
         public int Loai { get; set; }
     }
 
-    public class CtgLoaiMauPhieuModelInsert
+    public class DanhMucLoaiMauPhieuModelInsert
     {
         [JsonPropertyName("TenLoaiMauPhieu")]
         public string TenLoaiMauPhieu { get; set; }
@@ -38,7 +38,7 @@ namespace QUANLYVANHOA.Models
         public string GhiChu { get; set; }
     }
 
-    public class CtgLoaiMauPhieuModelUpdate
+    public class DanhMucLoaiMauPhieuModelUpdate
     {
         [JsonPropertyName("LoaiMauPhieuID")]
         public int LoaiMauPhieuID { get; set; }
