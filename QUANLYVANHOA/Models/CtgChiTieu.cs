@@ -81,5 +81,4 @@ namespace QUANLYVANHOA.Models
         [JsonPropertyName("GhiChu")]
         public string? GhiChu { get; set; }
     }
-
 }
