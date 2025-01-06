@@ -1,10 +1,10 @@
 ﻿using QUANLYVANHOA.Interfaces;
-using QUANLYVANHOA.Models;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using QUANLYVANHOA.Models.DanhMuc;
 
 namespace QUANLYVANHOA.Repositories
 {

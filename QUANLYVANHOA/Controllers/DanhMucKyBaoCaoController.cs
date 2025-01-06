@@ -1,8 +1,8 @@
 ﻿using QUANLYVANHOA.Interfaces;
-using QUANLYVANHOA.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using QUANLYVANHOA.Models.DanhMuc;
 
 namespace QUANLYVANHOA.Models
 {

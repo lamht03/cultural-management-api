@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System;
+using QUANLYVANHOA.Models.DanhMuc;
 
 namespace QUANLYVANHOA.Models
 {

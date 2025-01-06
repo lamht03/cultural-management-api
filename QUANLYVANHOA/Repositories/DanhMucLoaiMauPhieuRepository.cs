@@ -3,33 +3,32 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
-using QUANLYVANHOA.Models;
+using QUANLYVANHOA.Models.DanhMuc;
 
 namespace QUANLYVANHOA.Repositories
 {
-    public class DanhMucLoaiDiTichRepository : IDanhMucLoaiDiTichRepository
+    public class DanhMucLoaiMauPhieuRepository : IDanhMucLoaiMauPhieuRepository
     {
         private readonly string _connectionString;
 
-        public DanhMucLoaiDiTichRepository(IConfiguration configuration)
+        public DanhMucLoaiMauPhieuRepository(IConfiguration configuration)
         {
             _connectionString = new Connection().GetConnectionString();
         }
 
-        public async Task<(IEnumerable<DanhMucLoaiDiTich>, int)> GetAll(string name, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<DanhMucLoaiMauPhieu>, int)> GetAll(string name, int pageNumber, int pageSize)
         {
-            var loaiDiTichList = new List<DanhMucLoaiDiTich>();
+            var loaiMauPhieuList = new List<DanhMucLoaiMauPhieu>();
             int totalRecords = 0;
 
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
-                using (var command = new SqlCommand("LDT_GetAll", connection))
+                using (var command = new SqlCommand("LMP_GetAll", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@TenLoaiDiTich", name ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@TenLoaiMauPhieu", name ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@PageNumber", pageNumber);
                     command.Parameters.AddWithValue("@PageSize", pageSize);
 
@@ -37,12 +36,11 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            loaiDiTichList.Add(new DanhMucLoaiDiTich
+                            loaiMauPhieuList.Add(new DanhMucLoaiMauPhieu
                             {
-                                LoaiDiTichID = reader.GetInt32(reader.GetOrdinal("LoaiDiTichID")),
-                                LoaiDiTichChaID = reader.GetInt32(reader.GetOrdinal("LoaiDiTichChaID")),
-                                TenLoaiDiTich = reader.GetString(reader.GetOrdinal("TenLoaiDiTich")),
-                                MaLoaiDiTich = reader.GetString(reader.GetOrdinal("MaLoaiDiTich")),
+                                LoaiMauPhieuID = reader.GetInt32(reader.GetOrdinal("LoaiMauPhieuID")),
+                                TenLoaiMauPhieu = reader.GetString(reader.GetOrdinal("TenLoaiMauPhieu")),
+                                MaLoaiMauPhieu = reader.GetString(reader.GetOrdinal("MaLoaiMauPhieu")),
                                 TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
                                 GhiChu = reader.GetString(reader.GetOrdinal("GhiChu")),
                                 Loai = reader.GetInt32(reader.GetOrdinal("Loai"))
@@ -58,31 +56,30 @@ namespace QUANLYVANHOA.Repositories
                 }
             }
 
-            return (loaiDiTichList, totalRecords);
+            return (loaiMauPhieuList, totalRecords);
         }
 
-        public async Task<DanhMucLoaiDiTich> GetByID(int id)
+        public async Task<DanhMucLoaiMauPhieu> GetByID(int id)
         {
-            DanhMucLoaiDiTich loaiDiTich = null;
+            DanhMucLoaiMauPhieu loaiMauPhieu = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var cmd = new SqlCommand("LDT_GetByID", connection))
+                using (var cmd = new SqlCommand("LMP_GetByID", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@LoaiDiTichID", id);
+                    cmd.Parameters.AddWithValue("@LoaiMauPhieuID", id);
                     await connection.OpenAsync();
 
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         if (await reader.ReadAsync())
                         {
-                            loaiDiTich = new DanhMucLoaiDiTich
+                            loaiMauPhieu = new DanhMucLoaiMauPhieu
                             {
-                                LoaiDiTichID = reader.GetInt32(reader.GetOrdinal("LoaiDiTichID")),
-                                LoaiDiTichChaID = reader.GetInt32(reader.GetOrdinal("LoaiDiTichChaID")),
-                                TenLoaiDiTich = reader.GetString(reader.GetOrdinal("TenLoaiDiTich")),
-                                MaLoaiDiTich = reader.GetString(reader.GetOrdinal("MaLoaiDiTich")),
+                                LoaiMauPhieuID = reader.GetInt32(reader.GetOrdinal("LoaiMauPhieuID")),
+                                TenLoaiMauPhieu = reader.GetString(reader.GetOrdinal("TenLoaiMauPhieu")),
+                                MaLoaiMauPhieu = reader.GetString(reader.GetOrdinal("MaLoaiMauPhieu")),
                                 TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
                                 GhiChu = reader.GetString(reader.GetOrdinal("GhiChu")),
                                 Loai = reader.GetInt32(reader.GetOrdinal("Loai"))
@@ -92,34 +89,36 @@ namespace QUANLYVANHOA.Repositories
                 }
             }
 
-            return loaiDiTich;
+            return loaiMauPhieu;
         }
 
-        public async Task<int> Insert(DanhMucLoaiDiTichModelInsert loaiDiTich)
+        public async Task<int> Insert(DanhMucLoaiMauPhieuModelInsert loaiMauPhieu)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var cmd = new SqlCommand("LDT_Insert", connection))
+                using (var cmd = new SqlCommand("LMP_Insert", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@TenLoaiDiTich", loaiDiTich.TenLoaiDiTich);
-                    cmd.Parameters.AddWithValue("@GhiChu", loaiDiTich.GhiChu);
+                    cmd.Parameters.AddWithValue("@TenLoaiMauPhieu", loaiMauPhieu.TenLoaiMauPhieu);
+                    cmd.Parameters.AddWithValue("@MaLoaiMauPhieu", loaiMauPhieu.MaLoaiMauPhieu);
+                    cmd.Parameters.AddWithValue("@GhiChu", loaiMauPhieu.GhiChu);
                     await connection.OpenAsync();
                     return await cmd.ExecuteNonQueryAsync();
                 }
             }
         }
 
-        public async Task<int> Update(DanhMucLoaiDiTichModelUpdate loaiDiTich)
+        public async Task<int> Update(DanhMucLoaiMauPhieuModelUpdate loaiMauPhieu)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var cmd = new SqlCommand("LDT_Update", connection))
+                using (var cmd = new SqlCommand("LMP_Update", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@LoaiDiTichID", loaiDiTich.LoaiDiTichID);
-                    cmd.Parameters.AddWithValue("@TenLoaiDiTich", loaiDiTich.TenLoaiDiTich);
-                    cmd.Parameters.AddWithValue("@GhiChu", loaiDiTich.GhiChu);
+                    cmd.Parameters.AddWithValue("@LoaiMauPhieuID", loaiMauPhieu.LoaiMauPhieuID);
+                    cmd.Parameters.AddWithValue("@TenLoaiMauPhieu", loaiMauPhieu.TenLoaiMauPhieu);
+                    cmd.Parameters.AddWithValue("@MaLoaiMauPhieu", loaiMauPhieu.MaLoaiMauPhieu);
+                    cmd.Parameters.AddWithValue("@GhiChu", loaiMauPhieu.GhiChu);
                     await connection.OpenAsync();
                     return await cmd.ExecuteNonQueryAsync();
                 }
@@ -130,10 +129,10 @@ namespace QUANLYVANHOA.Repositories
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var cmd = new SqlCommand("LDT_Delete", connection))
+                using (var cmd = new SqlCommand("LMP_Delete", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@LoaiDiTichID", id);
+                    cmd.Parameters.AddWithValue("@LoaiMauPhieuID", id);
 
                     await connection.OpenAsync();
                     return await cmd.ExecuteNonQueryAsync();

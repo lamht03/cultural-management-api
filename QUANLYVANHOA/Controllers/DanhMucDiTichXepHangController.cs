@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System;
 using Microsoft.CodeAnalysis.Elfie.Extensions;
+using QUANLYVANHOA.Models.DanhMuc;
 
 namespace QUANLYVANHOA.Models
 {

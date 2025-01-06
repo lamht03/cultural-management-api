@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace QUANLYVANHOA.Models
+namespace QUANLYVANHOA.Models.DanhMuc
 {
     public class DanhMucKyBaoCao
     {
@@ -9,7 +9,7 @@ namespace QUANLYVANHOA.Models
 
 
         [JsonPropertyName("KyBaoCaoChaID")]
-        public  int KyBaoCaoChaID { get; set; }
+        public int KyBaoCaoChaID { get; set; }
 
 
         [JsonPropertyName("TenKyBaoCao")]
@@ -17,7 +17,7 @@ namespace QUANLYVANHOA.Models
 
 
         [JsonPropertyName("TrangThai")]
-        public bool TrangThai { get;     set; }
+        public bool TrangThai { get; set; }
 
 
         [JsonPropertyName("GhiChu")]

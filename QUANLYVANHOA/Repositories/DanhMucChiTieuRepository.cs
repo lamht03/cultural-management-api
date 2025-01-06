@@ -1,5 +1,5 @@
 ﻿using QUANLYVANHOA.Interfaces;
-using QUANLYVANHOA.Models;
+using QUANLYVANHOA.Models.DanhMuc;
 using System.Data;
 using System.Data.SqlClient;
 

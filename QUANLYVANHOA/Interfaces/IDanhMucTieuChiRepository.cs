@@ -1,5 +1,4 @@
-﻿using QUANLYVANHOA.Models;
-using QUANLYVANHOA.Models;
+﻿using QUANLYVANHOA.Models.DanhMuc;
 
 namespace QUANLYVANHOA.Interfaces
 {

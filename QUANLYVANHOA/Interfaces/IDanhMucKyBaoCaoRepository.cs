@@ -1,4 +1,4 @@
-﻿using QUANLYVANHOA.Models;
+﻿using QUANLYVANHOA.Models.DanhMuc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

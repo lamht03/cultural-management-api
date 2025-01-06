@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using QUANLYVANHOA.Models;
+using QUANLYVANHOA.Models.DanhMuc;
 
 namespace QUANLYVANHOA.Interfaces
 {

@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace QUANLYVANHOA.Models
+namespace QUANLYVANHOA.Models.DanhMuc
 {
     public class DanhMucLoaiMauPhieu
     {

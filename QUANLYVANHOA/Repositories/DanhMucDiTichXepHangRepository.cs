@@ -1,9 +1,9 @@
 ﻿using QUANLYVANHOA.Interfaces;
-using QUANLYVANHOA.Models;
 using System.Data.SqlClient;
 using System.Data;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using QUANLYVANHOA.Models.DanhMuc;
 
 namespace QUANLYVANHOA.Repositories
 {
