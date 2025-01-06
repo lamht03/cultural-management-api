@@ -120,7 +120,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowLocalhost3001",
         policy =>
         {
-            policy.WithOrigins("http://localhost:3001") // Thay thế bằng địa chỉ frontend
+            policy.WithOrigins("http://localhost:3000") // Thay thế bằng địa chỉ frontend
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         }

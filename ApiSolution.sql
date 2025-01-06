@@ -1,4 +1,4 @@
-﻿--region Handles Database
+﻿--Handles Database
     ALTER DATABASE DB_QuanLyVanHoa
     SET SINGLE_USER
     WITH ROLLBACK IMMEDIATE;
@@ -9,16 +9,14 @@
     CREATE DATABASE DB_QuanLyVanHoa
     USE DB_QuanLyVanHoa
     GO
---endregion 
 
---region Rename Database
+--Rename Database
     ALTER DATABASE [QuanLyVanHoa] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
     ALTER DATABASE [QuanLyVanHoa] MODIFY NAME = DB_QuanLyVanHoa;
 
     ALTER DATABASE QuanLyVanHoa
     ALTER DATABASE DB_QuanLyVanHoa SET MULTI_USER;
     GO
---endregion
 
 --region Địa Giới Hành Chính Database
     CREATE TABLE DM_Tinh
@@ -129,30 +127,35 @@
         LoaiDiaDanh INT
     )
     -- Insert records into DM_Xa
-        INSERT INTO DM_Xa VALUES (N'Dĩnh Kế',1,N'xã Dĩnh Kế',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Đa Mai',1,N'xã Đa Mai',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Hoàng Văn Thụ',1,N'phường Hoàng Văn Thụ',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Lê Lợi',1,N'phường Lê Lợi',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Ngô Quyền',1,N'phường Ngô Quyền',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Song Mai',1,N'xã Song Mai',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Thọ Xương',1,N'phường Thọ Xương',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Trần Nguyên Hãn',1,N'phường Trần Nguyên Hãn',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Trần Phú',1,N'phường Trần Phú',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Xương Giang',1,N'phường Xương Giang',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Xương Giang',1,N'xã Xương Giang',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Bắc Lý',2,N'xã Bắc Lý',NULL,NULL);
+    SELECT * from DM_Xa
+        INSERT INTO DM_Xa VALUES (N'Dĩnh Kế',1,N'Phường Dĩnh Kế',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Đa Mai',1,N'Phường Đa Mai',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Hoàng Văn Thụ',1,N'Phường Hoàng Văn Thụ',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Lê Lợi',1,N'Phường Lê Lợi',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Mỹ Độ',1,N'Phường Mỹ Độ',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Ngô Quyền',1,N'Phường Ngô Quyền',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Thọ Xương',1,N'Phường Thọ Xương',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Trần Nguyên Hãn',1,N'Phường Trần Nguyên Hãn',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Trần Phú',1,N'Phường Trần Phú',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Xương Giang',1,N'Phường Xương Giang',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Dĩnh Trì',1,N'Xã Dĩnh Trì',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Đồng Sơn',1,N'Xã Đồng Sơn',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Song Khê',1,N'Xã Song Khê',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Song Mai',1,N'Xã Song Mai',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Tân Mỹ',1,N'Xã Tân Mỹ',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Xương Giang',1,N'Xã Tân Tiến',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Bắc Lý',2,N'thị trấn Bắc Lý',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Châu Minh',2,N'xã Châu Minh',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Danh Thắng',2,N'xã Danh Thắng',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đại Thành',2,N'xã Đại Thành',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đoan Bái',2,N'xã Đoan Bái',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đông Lỗ',2,N'xã Đông Lỗ',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đồng Tân',2,N'xã Đồng Tân',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Đức Thắng',2,N'xã Đức Thắng',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Hòa Sơn',2,N'xã Hòa Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hoàng An',2,N'xã Hoàng An',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hoàng Lương',2,N'xã Hoàng Lương',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hoàng Thanh',2,N'xã Hoàng Thanh',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hoàng Vân',2,N'xã Hoàng Vân',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Hòa Sơn',2,N'xã Hòa Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hợp Thịnh',2,N'xã Hợp Thịnh',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hùng Sơn',2,N'xã Hùng Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hương Lâm',2,N'xã Hương Lâm',NULL,NULL);
@@ -161,16 +164,15 @@
         INSERT INTO DM_Xa VALUES (N'Mai Trung',2,N'xã Mai Trung',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Ngọc Sơn',2,N'xã Ngọc Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Quang Minh',2,N'xã Quang Minh',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Thanh Vân',2,N'xã Thanh Vân',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Thái Sơn',2,N'xã Thái Sơn',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Thanh Vân',2,N'xã Thanh Vân',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Thắng',2,N'thị trấn Thắng',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Thường Thắng',2,N'xã Thường Thắng',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Xuân Cẩm',2,N'xã Xuân Cẩm',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'An Hà',3,N'xã An Hà',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Dĩnh Trì',3,N'xã Dĩnh Trì',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Dương Đức',3,N'xã Dương Đức',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Đào Mỹ',3,N'xã Đào Mỹ',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đại Lâm',3,N'xã Đại Lâm',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Đào Mỹ',3,N'xã Đào Mỹ',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hương Lạc',3,N'xã Hương Lạc',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hương Sơn',3,N'xã Hương Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Kép',3,N'thị trấn Kép',NULL,NULL);
@@ -178,22 +180,20 @@
         INSERT INTO DM_Xa VALUES (N'Mỹ Thái',3,N'xã Mỹ Thái',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Nghĩa Hòa',3,N'xã Nghĩa Hòa',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Nghĩa Hưng',3,N'xã Nghĩa Hưng',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'NT Bố Hạ',3,N'thị trấn NT Bố Hạ',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Phi Mô',3,N'xã Phi Mô',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Quang Thịnh',3,N'xã Quang Thịnh',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tân Dĩnh',3,N'xã Tân Dĩnh',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tân Hưng',3,N'xã Tân Hưng',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tân Thanh',3,N'xã Tân Thanh',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Tân Thịnh',3,N'xã Tân Thịnh',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Thái Đào',3,N'xã Thái Đào',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tiên Lục',3,N'xã Tiên Lục',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Thái Đào',3,N'xã Thái Đào',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Vôi',3,N'thị trấn Vôi',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Xuân Hương',3,N'xã Xuân Hương',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Xương Lâm',3,N'xã Xương Lâm',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Yên Mỹ',3,N'xã Yên Mỹ',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Đồi Ngô',4,N'thị trấn Đồi Ngô',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Bắc Lũng',4,N'xã Bắc Lũng',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Bảo Đài',4,N'xã Bảo Đài',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Bảo Sơn',4,N'xã Bảo Sơn',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Bắc Lũng',4,N'xã Bắc Lũng',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Bình Sơn',4,N'xã Bình Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Cẩm Lý',4,N'xã Cẩm Lý',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Chu Điện',4,N'xã Chu Điện',NULL,NULL);
@@ -201,44 +201,41 @@
         INSERT INTO DM_Xa VALUES (N'Đan Hội',4,N'xã Đan Hội',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đông Hưng',4,N'xã Đông Hưng',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đông Phú',4,N'xã Đông Phú',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Đồi Ngô',4,N'thị trấn Đồi Ngô',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Huyền Sơn',4,N'xã Huyền Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Khám Lạng',4,N'xã Khám Lạng',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Lan Mẫu',4,N'xã Lan Mẫu',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Lục Nam',4,N'thị trấn Lục Nam',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Lục Sơn',4,N'xã Lục Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Nghĩa Phương',4,N'xã Nghĩa Phương',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Phương Sơn',4,N'xã Phương Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tam Dị',4,N'xã Tam Dị',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Thanh Lâm',4,N'xã Thanh Lâm',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Tiên Hưng',4,N'xã Tiên Hưng',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tiên Nha',4,N'xã Tiên Nha',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Trường Giang',4,N'xã Trường Giang',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Trường Sơn',4,N'xã Trường Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Vô Tranh',4,N'xã Vô Tranh',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Vũ Xá',4,N'xã Vũ Xá',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Yên Sơn',4,N'xã Yên Sơn',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Biên Sơn',5,N'xã Biên Sơn',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Biển Động',5,N'xã Biển Động',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Cấm Sơn',5,N'xã Cấm Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Chũ',5,N'thị trấn Chũ',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Biển Động',5,N'xã Biển Động',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Biên Sơn',5,N'xã Biên Sơn',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Cấm Sơn',5,N'xã Cấm Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đèo Gia',5,N'xã Đèo Gia',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đồng Cốc',5,N'xã Đồng Cốc',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Giáp Sơn',5,N'xã Giáp Sơn',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Hồng Giang',5,N'xã Hồng Giang',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hộ Đáp',5,N'xã Hộ Đáp',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Hồng Giang',5,N'xã Hồng Giang',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Kiên Lao',5,N'xã Kiên Lao',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Kiên Thành',5,N'xã Kiên Thành',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Kim Sơn',5,N'xã Kim Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Mỹ An',5,N'xã Mỹ An',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Nam Dương',5,N'xã Nam Dương',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Nghĩa Hồ',5,N'xã Nghĩa Hồ',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Phì Điền',5,N'xã Phì Điền',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Phong Minh',5,N'xã Phong Minh',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Phong Vân',5,N'xã Phong Vân',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Phú Nhuận',5,N'xã Phú Nhuận',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Phượng Sơn',5,N'xã Phượng Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Quý Sơn',5,N'xã Quý Sơn',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Sa Lý',5,N'xã Sa Lý',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Sơn Hải',5,N'xã Sơn Hải',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tân Hoa',5,N'xã Tân Hoa',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tân Lập',5,N'xã Tân Lập',NULL,NULL);
@@ -247,15 +244,14 @@
         INSERT INTO DM_Xa VALUES (N'Tân Sơn',5,N'xã Tân Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Thanh Hải',5,N'xã Thanh Hải',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Trù Hựu',5,N'xã Trù Hựu',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Xa Lý',5,N'xã Xa Lý',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'An Bá',6,N'xã An Bá',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'An Châu',6,N'thị trấn An Châu',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'An Châu',6,N'xã An Châu',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'An Lạc',6,N'xã An Lạc',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'An Lập',6,N'xã An Lập',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Bồng Am',6,N'xã Bồng Am',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Cẩm Đàn',6,N'xã Cẩm Đàn',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Chiên Sơn',6,N'xã Chiên Sơn',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Cấm Sơn',6,N'xã Cấm Sơn',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Chiêm Sơn',6,N'xã Chiêm Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Dương Hưu',6,N'xã Dương Hưu',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Giáo Liêm',6,N'xã Giáo Liêm',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hữu Sản',6,N'xã Hữu Sản',NULL,NULL);
@@ -263,10 +259,12 @@
         INSERT INTO DM_Xa VALUES (N'Long Sơn',6,N'xã Long Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Phúc Thắng',6,N'xã Phúc Thắng',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Quế Sơn',6,N'xã Quế Sơn',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Thanh Luận',6,N'xã Thanh Luận',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Thanh Sơn',6,N'xã Thanh Sơn',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Thạch Sơn',6,N'xã Thạch Sơn',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'TT An Châu',6,N'thị trấn An Châu',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'TT Thanh Sơn',6,N'thị trấn Thanh Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tuấn Đạo',6,N'xã Tuấn Đạo',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Tuấn Mậu',6,N'xã Tuấn Mậu',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Thạch Sơn',6,N'xã Thạch Sơn',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Thanh Luân',6,N'xã Thanh Luân',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Vân Sơn',6,N'xã Vân Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Vĩnh Khương',6,N'xã Vĩnh Khương',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Yên Định',6,N'xã Yên Định',NULL,NULL);
@@ -315,26 +313,22 @@
         INSERT INTO DM_Xa VALUES (N'Việt Tiến',8,N'xã Việt Tiến',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Cảnh Thụy',9,N'xã Cảnh Thụy',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đồng Phúc',9,N'xã Đồng Phúc',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Đồng Sơn',9,N'xã Đồng Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đồng Việt',9,N'xã Đồng Việt',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đức Giang',9,N'xã Đức Giang',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hương Gián',9,N'xã Hương Gián',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Lãng Sơn',9,N'xã Lãng Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Lão Hộ',9,N'xã Lão Hộ',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Neo',9,N'thị trấn Neo',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Nham Sơn',9,N'xã Nham Sơn',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Nội Hoàng',9,N'xã Nội Hoàng',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Nội Hoàng',9,N'n',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Nhân Sơn',9,N'xã Nhân Sơn',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Quỳnh Sơn',9,N'xã Quỳnh Sơn',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Song Khê',9,N'xã Song Khê',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tân An',9,N'xã Tân An',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tân Liễu',9,N'xã Tân Liễu',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Tân Mỹ',9,N'xã Tân Mỹ',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Tân Tiến',9,N'xã Tân Tiến',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Thắng Cương',9,N'xã Thắng Cương',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Tiền Phong',9,N'xã Tiền Phong',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tiến Dũng',9,N'xã Tiến Dũng',NULL,NULL);
-        INSERT INTO DM_Xa VALUES (N'Trí Yên',9,N'xã Trí Yên',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Tiên Phong',9,N'xã Tiên Phong',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Neo',9,N'thị trấn Neo',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Tân Dân',9,N'thị trấn Tân Dân',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tư Mại',9,N'xã Tư Mại',NULL,NULL);
+        INSERT INTO DM_Xa VALUES (N'Tri Yên',9,N'xã Tri Yên',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Xuân Phú',9,N'xã Xuân Phú',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Yên Lư',9,N'xã Yên Lư',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'An Thượng',10,N'xã An Thượng',NULL,NULL);
@@ -358,7 +352,6 @@
         INSERT INTO DM_Xa VALUES (N'Tân Sỏi',10,N'xã Tân Sỏi',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Tiến Thắng',10,N'xã Tiến Thắng',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Xuân Lương',10,N'xã Xuân Lương',NULL,NULL);
-
 
     CREATE TABLE DM_Cap
     (    
@@ -384,422 +377,433 @@
         GhiChu NVARCHAR(255),
         TrangThai BIT
     )
-
+        Update DM_ThamQuyen
+        set TenThamQuyen = 
+            case 
+                when ThamQuyenID = 1 then N'Cơ Quan Hành Chính Các Cấp'
+                when ThamQuyenID = 2 then N'Cơ Quan Tư Pháp Các Cấp'
+                when ThamQuyenID = 3 then N'Cơ Quan Đảng'
+            end
+        where ThamQuyenID in (1,2,3)
+        SELECT * from DM_ThamQuyen 
     --Insert records into DM_ThamQuyen
         INSERT DM_ThamQuyen
         VALUES  ('Cơ quan hành chính các cấp', null,null,null),
                 ('Cơ quan tư pháp các cấp', null,null,null),
                 ('Cơ quan Đảng', null,null,null)
-    SELECT * FROM DM_Xa
-    SELECT * From DM_Huyen
-    SELECT * From DM_Tinh
 
---endregion
+
+    CREATE TABLE DM_CoQuan
+    (
+        CoQuanID INT PRIMARY KEY IDENTITY(1,1),
+        TenCoQuan NVARCHAR(50),
+        MaCoQuan VARCHAR(25),
+        CoQuanChaID int,
+        CONSTRAINT FK_DMCoQuan_DMCoQuan FOREIGN KEY (CoQuanChaID) REFERENCES DM_CoQuan(CoQuanID),
+        CapID INT,
+        CONSTRAINT FK_DMCoQuan_DMCap FOREIGN KEY (CapID) REFERENCES DM_Cap(CapID),
+        ThamQuyenID INT,
+        CONSTRAINT FK_DMCoQuan_DMThamQuyen FOREIGN KEY (ThamQuyenID) REFERENCES DM_ThamQuyen (ThamQuyenID),
+        TinhID INT,
+        CONSTRAINT FK_DMCoQuan_DMTinh FOREIGN KEY (TinhID) REFERENCES DM_Tinh(TinhID),
+        HuyenID INT,
+        CONSTRAINT FK_DMCoQuan_DMHuyen FOREIGN KEY (HuyenID) REFERENCES DM_Huyen(HuyenID),
+        XaID INT ,
+        CONSTRAINT FK_DMCoQuan_DM_Xa FOREIGN KEY (XaID) REFERENCES DM_Xa(XaID),
+        CQCoHieuLuc BIT,
+        CQCapUBND BIT,
+        CQCapThanhTra BIT,
+        CQThuocHeThongPM BIT,
+        QTCanBoTiepDan BIT,
+        QTVanThuTiepNhanDon bit,
+        QTTiepCongDanvaXuLyDonPhucTap BIT,
+        QTGiaiQuyetPhucTap BIT
+    )
+
+    --DM_CoQuan's Processing
+
 
 --region Authorization Mangement System
---region Stored procedures of Users
-    CREATE TABLE Sys_User (	
-        UserID INT PRIMARY KEY IDENTITY(1,1),
-        UserName NVARCHAR(50),
-        FullName NVARCHAR (100) null,
-        Email NVARCHAR(50),
-        Password NVARCHAR(100),
-        Status BIT ,
-        Note NVARCHAR(100),
-    );
-    GO
-
-    -- Get All Users
-        ALTER PROCEDURE UMS_GetListPaging
-            @UserName NVARCHAR(50) = NULL, -- Updated to match the column size
-            @PageNumber INT = 1,
-            @PageSize INT = 20
-        AS
-        BEGIN
-            -- Calculate the total number of records matching the search criteria
-            DECLARE @TotalRecords INT;
-            SELECT @TotalRecords = COUNT(*)
-            FROM Sys_User
-            WHERE @UserName IS NULL OR UserName LIKE '%' + @UserName + '%';
-
-            -- Return data for the current page
-            SELECT 
-                UserID,
-                UserName,
-                FullName,
-                Email,       -- Added Email field
-                Password,
-                Status,      -- Added Status field
-                Note		 -- Added Note field
-            FROM Sys_User
-            WHERE @UserName IS NULL OR UserName LIKE '%' + @UserName + '%'
-            ORDER BY UserID  -- Can be adjusted based on sorting requirements
-            OFFSET (@PageNumber - 1) * @PageSize ROWS
-            FETCH NEXT @PageSize ROWS ONLY;
-
-            -- Return the total number of records
-            SELECT @TotalRecords AS TotalRecords;
-        END
+    --region Stored procedures of Users
+        CREATE TABLE Sys_User (	
+            UserID INT PRIMARY KEY IDENTITY(1,1),
+            UserName NVARCHAR(50),
+            FullName NVARCHAR (100) null,
+            Email NVARCHAR(50),
+            Password NVARCHAR(100),
+            Status BIT ,
+            Note NVARCHAR(100),
+        );
         GO
 
-    -- Get User by UserID
-        CREATE PROCEDURE UMS_GetByID
-            @UserID int
-        AS
-        BEGIN
-            SELECT * FROM Sys_User WHERE UserID = @UserID;
-        END
+        --Get All Users
+            ALTER PROCEDURE UMS_GetListPaging
+                @UserName NVARCHAR(50) = NULL, -- Updated to match the column size
+                @PageNumber INT = 1,
+                @PageSize INT = 20
+            AS
+            BEGIN
+                -- Calculate the total number of records matching the search criteria
+                DECLARE @TotalRecords INT;
+                SELECT @TotalRecords = COUNT(*)
+                FROM Sys_User
+                WHERE @UserName IS NULL OR UserName LIKE '%' + @UserName + '%';
+
+                -- Return data for the current page
+                SELECT 
+                    UserID,
+                    UserName,
+                    FullName,
+                    Email,       -- Added Email field
+                    Password,
+                    Status,      -- Added Status field
+                    Note		 -- Added Note field
+                FROM Sys_User
+                WHERE @UserName IS NULL OR UserName LIKE '%' + @UserName + '%'
+                ORDER BY UserID  -- Can be adjusted based on sorting requirements
+                OFFSET (@PageNumber - 1) * @PageSize ROWS
+                FETCH NEXT @PageSize ROWS ONLY;
+
+                -- Return the total number of records
+                SELECT @TotalRecords AS TotalRecords;
+            END
+            GO
+        --Get User by UserID
+            CREATE PROCEDURE UMS_GetByID
+                @UserID int
+            AS
+            BEGIN
+                SELECT * FROM Sys_User WHERE UserID = @UserID;
+            END
+            GO
+        --Get by UserName
+            CREATE PROC UMS_GetByUserName
+                @UserName NVARCHAR(50)
+            AS
+            BEGIN
+                SELECT * FROM Sys_User su WHERE su.UserName = @UserName
+            END	
+            GO
+        --Get User By Refresh Token
+            CREATE PROC UMS_GetByRefreshToken
+                @RefreshToken NVARCHAR(500)
+            AS
+            BEGIN
+                SELECT * FROM Sys_User  WHERE @RefreshToken = RefreshToken
+            END
+            GO
+        --Get by Email
+            CREATE PROCEDURE UMS_GetByEmail
+                @Email NVARCHAR(255)
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+                
+                SELECT * FROM Sys_User
+                WHERE Email = @Email;
+            END;
+            GO
+        --Create User
+            ALTER PROCEDURE UMS_Create
+                @UserName NVARCHAR(50),
+                @FullName NVARCHAR (100),
+                @Email NVARCHAR(50),
+                @Password NVARCHAR(100),
+                @Status BIT,
+                @Note NVARCHAR(100) = 'Regular user'
+            AS
+            BEGIN
+                -- Insert new user record
+                INSERT INTO Sys_User (UserName, Email, Password, Status, Note)
+                VALUES (@UserName, @Email, @Password, @Status, @Note);
+            END
+            GO
+        --Update User
+            ALTER PROCEDURE UMS_Update
+                @UserID INT,
+                @UserName NVARCHAR(50),
+                @FullName NVARCHAR(100),
+                @Email NVARCHAR(50),
+                @Password NVARCHAR(100),
+                @Status BIT,
+                @Note NVARCHAR(100)
+            AS
+            BEGIN
+                -- Update existing user record
+                UPDATE Sys_User
+                SET 
+                    UserName = @UserName,
+                    Email = @Email,
+                    Password = @Password,
+                    Status = @Status,
+                    Note = @Note,
+                    FullName = @FullName
+                WHERE UserID = @UserID;
+            END
+            GO
+        --Delete User
+            ALTER PROCEDURE [dbo].[UMS_Delete]
+                @UserID INT
+            AS
+            BEGIN
+                DELETE FROM Sys_UserInGroup
+                WHERE UserID = @UserID;
+                DELETE FROM Session
+                WHERE UserID = @UserID
+                DELETE FROM Sys_User
+                WHERE UserID = @UserID;
+            END
+
+            GO
+        --Veryfy Login
+            create PROCEDURE VerifyLogin
+                @UserName NVARCHAR(50),
+                @Password NVARCHAR(100)
+            AS
+            BEGIN
+                SELECT *
+                FROM Sys_User
+                WHERE UserName = @UserName AND Password = @Password;
+            END
+            GO
+    --region Stored procedures of UserGroups
+        CREATE TABLE Sys_Group (
+            GroupID INT PRIMARY KEY IDENTITY(1,1),
+            GroupName NVARCHAR(50),
+            Description NVARCHAR(100)
+        );
+        GO
+        --Get All Group
+            create PROCEDURE GMS_GetListPaging
+                @GroupName NVARCHAR(50) = NULL, -- Updated to match the column size
+                @PageNumber INT = 1,
+                @PageSize INT = 20
+            AS
+            BEGIN
+                -- Calculate the total number of records matching the search criteria
+                DECLARE @TotalRecords INT;
+                SELECT @TotalRecords = COUNT(*)
+                FROM Sys_Group sug
+                WHERE @GroupName IS NULL OR GroupName LIKE '%' + @GroupName + '%';
+
+                -- Return data for the current page
+                SELECT 
+                    sug.GroupID,
+                    sug.GroupName,
+                    sug.Description  
+                FROM Sys_Group sug
+                WHERE @GroupName IS NULL OR GroupName LIKE '%' + @GroupName + '%'
+                ORDER BY sug.GroupID  -- Can be adjusted based on sorting requirements
+                OFFSET (@PageNumber - 1) * @PageSize ROWS
+                FETCH NEXT @PageSize ROWS ONLY;
+
+                -- Return the total number of records
+                SELECT @TotalRecords AS TotalRecords;
+            END
+            GO
+        --Get Group By ID
+                CREATE PROC GMS_GetByID
+                    @GroupID INT 
+                AS 
+                BEGIN
+                    SELECT * FROM Sys_Group sg WHERE  sg.GroupID = @GroupID
+                END
+                GO
+        --Create Group 
+            CREATE PROCEDURE GMS_Create
+                @GroupName NVARCHAR(50),
+                @Description NVARCHAR(100)
+            AS
+            BEGIN
+                -- Insert a new record into Sys_Group
+                INSERT INTO Sys_Group (GroupName, Description)
+                VALUES (@GroupName, @Description);
+            END
+            GO
+        --Update Group
+            CREATE PROCEDURE GMS_Update
+                @GroupID INT,
+                @GroupName NVARCHAR(50),
+                @Description NVARCHAR(100)
+            AS
+            BEGIN
+                -- Update the existing record in Sys_Group
+                UPDATE Sys_Group
+                SET GroupName = @GroupName,
+                    Description = @Description
+                WHERE GroupID = @GroupID;
+            END
+            GO
+        --Delete Group
+            CREATE PROCEDURE GMS_Delete
+                @GroupID INT
+            AS
+            BEGIN
+                -- Delete the record from Sys_Group
+                DELETE FROM Sys_Group
+                WHERE GroupID = @GroupID;
+            END
+            GO
+    --region Stored procedures of Function
+        CREATE TABLE Sys_Function (
+            FunctionID INT PRIMARY KEY IDENTITY(1,1),
+            FunctionName NVARCHAR(50),
+            Description NVARCHAR(100),
+        );
+        GO
+        -- GetListPaging of Function
+            CREATE PROCEDURE FMS_GetListPaging
+                @FunctionName NVARCHAR(50) = NULL, -- Updated to match the column size
+                @PageNumber INT = 1,
+                @PageSize INT = 20
+            AS
+            BEGIN
+                -- Calculate the total number of records matching the search criteria
+                DECLARE @TotalRecords INT;
+                SELECT @TotalRecords = COUNT(*)
+                FROM Sys_Function sf
+                WHERE @FunctionName IS NULL OR FunctionName LIKE '%' + @FunctionName + '%';
+
+                -- Return data for the current page
+                SELECT 
+                    FunctionID,
+                    FunctionName,
+                    Description      
+                
+                FROM Sys_Function sf
+                WHERE @FunctionName IS NULL OR FunctionName LIKE '%' + @FunctionName + '%'
+                ORDER BY FunctionID  -- Can be adjusted based on sorting requirements
+                OFFSET (@PageNumber - 1) * @PageSize ROWS
+                FETCH NEXT @PageSize ROWS ONLY;
+
+                -- Return the total number of records
+                SELECT @TotalRecords AS TotalRecords;
+            END
+            GO
+        -- Get Function by ID
+            create PROC FMS_GetByID
+                @FunctionID int
+            AS
+            BEGIN
+                SELECT * FROM Sys_Function sf WHERE sf.FunctionID = @FunctionID
+            END
+            GO
+        -- Create Function
+            CREATE PROCEDURE FMS_Create
+                @FunctionName NVARCHAR(50),
+                @Description NVARCHAR(100)
+            AS
+            BEGIN
+                -- Insert a new record into Sys_Function
+                INSERT INTO Sys_Function (FunctionName, Description)
+                VALUES (@FunctionName, @Description);
+            END
+            GO
+        -- Update Function
+            CREATE PROCEDURE FMS_Update
+                @FunctionID INT,
+                @FunctionName NVARCHAR(50),
+                @Description NVARCHAR(100)
+            AS
+            BEGIN
+                -- Update the existing record in Sys_Function
+                UPDATE Sys_Function
+                SET FunctionName = @FunctionName,
+                    Description = @Description
+                WHERE FunctionID = @FunctionID;
+            END
+            GO
+        -- Delete Function
+            ALTER PROCEDURE [dbo].[FMS_Delete]
+                @FunctionID INT
+            AS
+            BEGIN
+                -- Delete the record from Sys_Function
+                DELETE FROM Sys_FunctionInGroup
+                WHERE FunctionID = @FunctionID;
+                DELETE FROM Sys_Function
+                WHERE FunctionID = @FunctionID;
+            END
+    --region Stored procedures of UserInGroup
+        CREATE TABLE Sys_UserInGroup (
+            UserInGroupID INT PRIMARY KEY IDENTITY(1,1) ,
+            UserID INT NOT NULL,
+            GroupID INT NOT NULL,
+            FOREIGN KEY (UserID) REFERENCES Sys_User(UserID),
+            FOREIGN KEY (GroupID) REFERENCES Sys_Group(GroupID)
+        );
         GO
 
-    -- Get by UserName
-        CREATE PROC UMS_GetByUserName
-            @UserName NVARCHAR(50)
+        CREATE PROCEDURE UIG_GetAll
         AS
         BEGIN
-            SELECT * FROM Sys_User su WHERE su.UserName = @UserName
-        END	
-        GO
-    -- Get User By Refresh Token
-        CREATE PROC UMS_GetByRefreshToken
-            @RefreshToken NVARCHAR(500)
-        AS
-        BEGIN
-            SELECT * FROM Sys_User  WHERE @RefreshToken = RefreshToken
-        END
-        GO
-
-    --Get by Email
-        CREATE PROCEDURE UMS_GetByEmail
-            @Email NVARCHAR(255)
-        AS
-        BEGIN
-            SET NOCOUNT ON;
-            
-            SELECT * FROM Sys_User
-            WHERE Email = @Email;
+            SELECT UserInGroupID, UserID, GroupID
+            FROM Sys_UserInGroup;
         END;
         GO
 
-    -- Create User
-        ALTER PROCEDURE UMS_Create
-            @UserName NVARCHAR(50),
-            @FullName NVARCHAR (100),
-            @Email NVARCHAR(50),
-            @Password NVARCHAR(100),
-            @Status BIT,
-            @Note NVARCHAR(100) = 'Regular user'
+        CREATE PROCEDURE UIG_GetByGroupID
+            @GroupID INT
         AS
         BEGIN
-            -- Insert new user record
-            INSERT INTO Sys_User (UserName, Email, Password, Status, Note)
-            VALUES (@UserName, @Email, @Password, @Status, @Note);
-        END
-        GO
+            SELECT UserInGroupID, UserID, GroupID
+            FROM Sys_UserInGroup
+            WHERE GroupID = @GroupID;
+        END;
+        GO	
 
-    -- Update User
-        ALTER PROCEDURE UMS_Update
-            @UserID INT,
-            @UserName NVARCHAR(50),
-            @FullName NVARCHAR(100),
-            @Email NVARCHAR(50),
-            @Password NVARCHAR(100),
-            @Status BIT,
-            @Note NVARCHAR(100)
-        AS
-        BEGIN
-            -- Update existing user record
-            UPDATE Sys_User
-            SET 
-                UserName = @UserName,
-                Email = @Email,
-                Password = @Password,
-                Status = @Status,
-                Note = @Note,
-                FullName = @FullName
-            WHERE UserID = @UserID;
-        END
-        GO
-
-    -- Delete User
-        ALTER PROCEDURE [dbo].[UMS_Delete]
+        CREATE PROCEDURE UIG_GetByUserID
             @UserID INT
         AS
         BEGIN
-            DELETE FROM Sys_UserInGroup
+            SELECT UserInGroupID, UserID, GroupID
+            FROM Sys_UserInGroup
             WHERE UserID = @UserID;
-            DELETE FROM Session
-            WHERE UserID = @UserID
-            DELETE FROM Sys_User
-            WHERE UserID = @UserID;
-        END
+        END;
+        GO	
 
-        GO
-
-    -- Veryfy Login
-        create PROCEDURE VerifyLogin
-            @UserName NVARCHAR(50),
-            @Password NVARCHAR(100)
+        CREATE PROCEDURE UIG_GetByID
+            @UserInGroupID INT
         AS
         BEGIN
-            SELECT *
-            FROM Sys_User
-            WHERE UserName = @UserName AND Password = @Password;
-        END
+            SELECT UserInGroupID, UserID, GroupID
+            FROM Sys_UserInGroup
+            WHERE UserInGroupID = @UserInGroupID;
+        END;
         GO
---endregion
 
---region Stored procedures of UserGroups
-    CREATE TABLE Sys_Group (
-        GroupID INT PRIMARY KEY IDENTITY(1,1),
-        GroupName NVARCHAR(50),
-        Description NVARCHAR(100)
-    );
-    GO
--- Get All Group
-    create PROCEDURE GMS_GetListPaging
-        @GroupName NVARCHAR(50) = NULL, -- Updated to match the column size
-        @PageNumber INT = 1,
-        @PageSize INT = 20
-    AS
-    BEGIN
-        -- Calculate the total number of records matching the search criteria
-        DECLARE @TotalRecords INT;
-        SELECT @TotalRecords = COUNT(*)
-        FROM Sys_Group sug
-        WHERE @GroupName IS NULL OR GroupName LIKE '%' + @GroupName + '%';
+        -- Add User to Group
+            CREATE PROC UIG_Create  
+                @UserID INT ,
+                @GroupID INT
+            AS
+            BEGIN
+                INSERT INTO Sys_UserInGroup (UserID, GroupID)
+                VALUES (@UserID,@GroupID);
+            END
+            GO
 
-        -- Return data for the current page
-        SELECT 
-            sug.GroupID,
-            sug.GroupName,
-            sug.Description  
-        FROM Sys_Group sug
-        WHERE @GroupName IS NULL OR GroupName LIKE '%' + @GroupName + '%'
-        ORDER BY sug.GroupID  -- Can be adjusted based on sorting requirements
-        OFFSET (@PageNumber - 1) * @PageSize ROWS
-        FETCH NEXT @PageSize ROWS ONLY;
-
-        -- Return the total number of records
-        SELECT @TotalRecords AS TotalRecords;
-    END
-    GO
--- Get Group By ID
-        CREATE PROC GMS_GetByID
-            @GroupID INT 
-        AS 
+        CREATE PROCEDURE UIG_Update
+            @UserInGroupID INT,
+            @UserID INT,
+            @GroupID INT
+        AS
         BEGIN
-            SELECT * FROM Sys_Group sg WHERE  sg.GroupID = @GroupID
-        END
+            UPDATE Sys_UserInGroup
+            SET UserID = @UserID, GroupID = @GroupID
+            WHERE UserInGroupID = @UserInGroupID;
+        END;
         GO
 
--- Create Group 
-    CREATE PROCEDURE GMS_Create
-        @GroupName NVARCHAR(50),
-        @Description NVARCHAR(100)
-    AS
-    BEGIN
-        -- Insert a new record into Sys_Group
-        INSERT INTO Sys_Group (GroupName, Description)
-        VALUES (@GroupName, @Description);
-    END
-    GO
-
--- Update Group
-    CREATE PROCEDURE GMS_Update
-        @GroupID INT,
-        @GroupName NVARCHAR(50),
-        @Description NVARCHAR(100)
-    AS
-    BEGIN
-        -- Update the existing record in Sys_Group
-        UPDATE Sys_Group
-        SET GroupName = @GroupName,
-            Description = @Description
-        WHERE GroupID = @GroupID;
-    END
-    GO
-
--- Delete Group
-    CREATE PROCEDURE GMS_Delete
-        @GroupID INT
-    AS
-    BEGIN
-        -- Delete the record from Sys_Group
-        DELETE FROM Sys_Group
-        WHERE GroupID = @GroupID;
-    END
-    GO
---endregion
-
---region Stored procedures of Function
-    CREATE TABLE Sys_Function (
-        FunctionID INT PRIMARY KEY IDENTITY(1,1),
-        FunctionName NVARCHAR(50),
-        Description NVARCHAR(100),
-    );
-    GO
--- GetListPaging of Function
-    CREATE PROCEDURE FMS_GetListPaging
-        @FunctionName NVARCHAR(50) = NULL, -- Updated to match the column size
-        @PageNumber INT = 1,
-        @PageSize INT = 20
-    AS
-    BEGIN
-        -- Calculate the total number of records matching the search criteria
-        DECLARE @TotalRecords INT;
-        SELECT @TotalRecords = COUNT(*)
-        FROM Sys_Function sf
-        WHERE @FunctionName IS NULL OR FunctionName LIKE '%' + @FunctionName + '%';
-
-        -- Return data for the current page
-        SELECT 
-            FunctionID,
-            FunctionName,
-            Description      
-        
-        FROM Sys_Function sf
-        WHERE @FunctionName IS NULL OR FunctionName LIKE '%' + @FunctionName + '%'
-        ORDER BY FunctionID  -- Can be adjusted based on sorting requirements
-        OFFSET (@PageNumber - 1) * @PageSize ROWS
-        FETCH NEXT @PageSize ROWS ONLY;
-
-        -- Return the total number of records
-        SELECT @TotalRecords AS TotalRecords;
-    END
-    GO
-
--- Get Function by ID
-    create PROC FMS_GetByID
-        @FunctionID int
-    AS
-    BEGIN
-        SELECT * FROM Sys_Function sf WHERE sf.FunctionID = @FunctionID
-    END
-    GO
-
--- Create Function
-    CREATE PROCEDURE FMS_Create
-        @FunctionName NVARCHAR(50),
-        @Description NVARCHAR(100)
-    AS
-    BEGIN
-        -- Insert a new record into Sys_Function
-        INSERT INTO Sys_Function (FunctionName, Description)
-        VALUES (@FunctionName, @Description);
-    END
-    GO
-
--- Update Function
-    CREATE PROCEDURE FMS_Update
-        @FunctionID INT,
-        @FunctionName NVARCHAR(50),
-        @Description NVARCHAR(100)
-    AS
-    BEGIN
-        -- Update the existing record in Sys_Function
-        UPDATE Sys_Function
-        SET FunctionName = @FunctionName,
-            Description = @Description
-        WHERE FunctionID = @FunctionID;
-    END
-    GO
-
--- Delete Function
-    ALTER PROCEDURE [dbo].[FMS_Delete]
-        @FunctionID INT
-    AS
-    BEGIN
-        -- Delete the record from Sys_Function
-        DELETE FROM Sys_FunctionInGroup
-        WHERE FunctionID = @FunctionID;
-        DELETE FROM Sys_Function
-        WHERE FunctionID = @FunctionID;
-    END
-
---endregion
-
---region Stored procedures of UserInGroup
-    CREATE TABLE Sys_UserInGroup (
-        UserInGroupID INT PRIMARY KEY IDENTITY(1,1) ,
-        UserID INT NOT NULL,
-        GroupID INT NOT NULL,
-        FOREIGN KEY (UserID) REFERENCES Sys_User(UserID),
-        FOREIGN KEY (GroupID) REFERENCES Sys_Group(GroupID)
-    );
-    GO
-
-    CREATE PROCEDURE UIG_GetAll
-    AS
-    BEGIN
-        SELECT UserInGroupID, UserID, GroupID
-        FROM Sys_UserInGroup;
-    END;
-    GO
-
-    CREATE PROCEDURE UIG_GetByGroupID
-        @GroupID INT
-    AS
-    BEGIN
-        SELECT UserInGroupID, UserID, GroupID
-        FROM Sys_UserInGroup
-        WHERE GroupID = @GroupID;
-    END;
-    GO	
-
-    CREATE PROCEDURE UIG_GetByUserID
-        @UserID INT
-    AS
-    BEGIN
-        SELECT UserInGroupID, UserID, GroupID
-        FROM Sys_UserInGroup
-        WHERE UserID = @UserID;
-    END;
-    GO	
-
-    CREATE PROCEDURE UIG_GetByID
-        @UserInGroupID INT
-    AS
-    BEGIN
-        SELECT UserInGroupID, UserID, GroupID
-        FROM Sys_UserInGroup
-        WHERE UserInGroupID = @UserInGroupID;
-    END;
-    GO
-
--- Add User to Group
-    CREATE PROC UIG_Create  
-        @UserID INT ,
-        @GroupID INT
-    AS
-    BEGIN
-        INSERT INTO Sys_UserInGroup (UserID, GroupID)
-        VALUES (@UserID,@GroupID);
-    END
-    GO
-
-    CREATE PROCEDURE UIG_Update
-        @UserInGroupID INT,
-        @UserID INT,
-        @GroupID INT
-    AS
-    BEGIN
-        UPDATE Sys_UserInGroup
-        SET UserID = @UserID, GroupID = @GroupID
-        WHERE UserInGroupID = @UserInGroupID;
-    END;
-    GO
-
-    create PROCEDURE UIG_Delete
-        @UserInGroupID INT
-    AS
-    BEGIN
-        DELETE FROM Sys_UserInGroup
-        WHERE UserInGroupID = @UserInGroupID;
-    END;
-    GO	
---endregion
-
---region Stored procedures of FunctionInGroup
+        create PROCEDURE UIG_Delete
+            @UserInGroupID INT
+        AS
+        BEGIN
+            DELETE FROM Sys_UserInGroup
+            WHERE UserInGroupID = @UserInGroupID;
+        END;
+        GO	
+    --region Stored procedures of FunctionInGroup
     CREATE TABLE Sys_FunctionInGroup (
         FunctionInGroupID INT PRIMARY KEY IDENTITY(1,1),
         FunctionID INT,
@@ -906,10 +910,7 @@
         WHERE u.UserName = @UserName
     END
     GO	
-
---endregion
-
---region Stored procedures of RefreshToken
+    --region Stored procedures of RefreshToken
     CREATE TABLE Sys_Session
     (
         SessionID INT IDENTITY PRIMARY KEY,
@@ -985,9 +986,6 @@
         WHERE UserID = @UserID;
     END
     GO
-
---endregion
---endregion
 
 --region Category Mangement System
 --region Stored procedures of DonViTinh
@@ -1427,7 +1425,6 @@
         DELETE FROM BC_MauPhieu  WHERE MauPhieuID = @MauPhieuID
     END
     GO	
-
 --endregion	
 
 --region Stored procedures of DM_LoaiMauPieu
@@ -1519,610 +1516,625 @@
     END
     GO
 --endregion
-
---region Store Procedure of Report Criteria 
-CREATE TABLE BC_TieuChi(
-	TieuChiBaoCaoID INT PRIMARY KEY IDENTITY (1,1),
-	TieuChiID INT FOREIGN KEY (TieuChiID) REFERENCES DM_TieuChi (TieuChiID),
-	MauPhieuID INT FOREIGN KEY(MauPhieuID) REFERENCES BC_MauPhieu (MauPhieuID),
-	HienThi BIT DEFAULT 1,
-	GhiChu NVARCHAR(300) NULL
-);
-GO
-
--- Lấy tất cả BC_TieuChi
-CREATE PROCEDURE BCTC_GetAll
-AS
-BEGIN
-    SELECT * FROM BC_TieuChi;
-END;
-GO
-
-CREATE PROC BCTC_GetByID
-	@TieuChiBaoCao INT 
-AS 
-BEGIN
-	SELECT *FROM BC_TieuChi btc WHERE btc.TieuChiBaoCaoID = @TieuChiBaoCao
-END
-GO	
-
--- Thêm mới BC_TieuChi
-CREATE PROCEDURE BCTC_Insert 
-	@MauPhieuID INT,
-    @TieuChiID INT,
-	@HienThi BIT
-AS
-BEGIN
-    INSERT INTO BC_TieuChi (TieuChiID, MauPhieuID, HienThi)
-    VALUES (@TieuChiID, @MauPhieuID, @HienThi);
-END;
-GO
-
--- Cập nhật BC_TieuChi
-CREATE PROCEDURE BCTC_Update 
-    @TieuChiBaoCaoID INT,
-    @TieuChiID INT,
-    @MauPhieuID INT,
-	@HienThi BIT 
-AS
-BEGIN
-    UPDATE BC_TieuChi
-    SET HienThi = @HienThi
-    WHERE TieuChiBaoCaoID = @TieuChiBaoCaoID;
-END;
-GO
-
--- Xóa BC_TieuChi
-CREATE PROCEDURE BCTC_Delete 
-    @TieuChiBaoCaoID INT
-AS
-BEGIN
-    DELETE FROM BC_TieuChi WHERE TieuChiBaoCaoID = @TieuChiBaoCaoID;
-END;
-GO
-
---endregion
-
---region Stored Procedure of Report Target
-CREATE TABLE BC_ChiTieu(
-	ChiTieuBaoCaoID INT PRIMARY KEY IDENTITY (1,1),
-	MauPhieuID INT FOREIGN KEY REFERENCES BC_MauPhieu(MauPhieuID),
-    ChiTieuID INT FOREIGN KEY REFERENCES DM_ChiTieu(ChiTieuID),
-	HienThi BIT DEFAULT 1
-);
-GO
-
-
--- Lấy tất cả BC_ChiTieu
-CREATE PROCEDURE BCCT_GetAll
-AS
-BEGIN
-    SELECT * FROM BC_ChiTieu;
-END;
-GO
-
-CREATE PROC BCCT_GetByID 
-	@ChiTieuBaoCaoID INT
-AS
-BEGIN
-	SELECT * FROM BC_ChiTieu WHERE	ChiTieuBaoCaoID = @ChiTieuBaoCaoID
-END	
-GO
-
--- Thêm mới BC_ChiTieu
-CREATE PROCEDURE BCCT_Insert 
-    @ChiTieuID INT,
-    @MauPhieuID INT,
-	@HienThi BIT
-AS
-BEGIN
-    INSERT INTO BC_ChiTieu (ChiTieuID, MauPhieuID, HienThi)
-    VALUES (@ChiTieuID, @MauPhieuID, @HienThi);
-END;
-GO
-
--- Cập nhật BC_ChiTieu
-CREATE PROCEDURE BCCT_Update
-    @ChiTieuBaoCaoID INT,
-    @ChiTieuID INT,
-    @MauPhieuID INT,
-	@HienThi INT
-AS
-BEGIN
-    UPDATE BC_ChiTieu
-    SET HienThi = @HienThi
-    WHERE ChiTieuBaoCaoID = @ChiTieuBaoCaoID;
-END;
-GO
-
--- Xóa BC_ChiTieu
-CREATE PROCEDURE BCCT_Delete
-    @ChiTieuBaoCaoID INT
-AS
-BEGIN
-    DELETE FROM BC_ChiTieu WHERE ChiTieuBaoCaoID = @ChiTieuBaoCaoID;
-END;
-GO
-
-
-
---endregion
-
---region Stored Procedure of BC_ChiTietMauPhieu
-CREATE TABLE BC_ChiTietMauPhieu(
-	ChiTietMauPhieuID int PRIMARY KEY IDENTITY(1,1),
-	MauPhieuID INT FOREIGN KEY (MauPhieuID) REFERENCES BC_MauPhieu(MauPhieuID),
-	TieuChiIDs NVARCHAR(MAX),
-	ChitieuID INT FOREIGN KEY (ChitieuID) REFERENCES DM_ChiTieu (ChiTieuID),
-	NoiDung NVARCHAR (300),
-	GopCot BIT NULL,
-    GopTuCot INT NULL,
-    GopDenCot INT NULL,
-    SoCotGop INT NULL,
-	GhiChu NVARCHAR (300) DEFAULT NULL	
-);
-GO
-
--- Lấy tất cả BC_ChiTietMauPhieu
-CREATE PROCEDURE BCCTMP_GetAll
-AS
-BEGIN
-    SELECT * FROM BC_ChiTietMauPhieu;
-END;
-GO
-
-CREATE PROC BCCTMP_GetByID
-	@ChiTietMauPhieuID INT
-AS
-BEGIN
-	SELECT *FROM BC_ChiTietMauPhieu bctmp WHERE bctmp.ChiTietMauPhieuID = @ChiTietMauPhieuID
-END
-GO
-
--- Thêm mới BC_ChiTietMauPhieu
-CREATE PROCEDURE BCCTMP_Insert (
-    @MauPhieuID INT,
-    @TieuChiID INT,
-    @ChiTieuID INT,
-    @NoiDung NVARCHAR(MAX),
-    @GhiChu NVARCHAR(MAX) = NULL
-)
-AS
-BEGIN
-    INSERT INTO BC_ChiTietMauPhieu (MauPhieuID, TieuChiID, ChiTieuID, NoiDung, GhiChu)
-    VALUES (@MauPhieuID, @TieuChiID, @ChiTieuID, @NoiDung, @GhiChu);
-END;
-GO
-
--- Cập nhật BC_ChiTietMauPhieu
-CREATE PROCEDURE BCCTMP_Update (
-    @ChiTietMauPhieuID INT,
-    @MauPhieuID INT,
-    @TieuChiID INT,
-    @ChiTieuID INT,
-    @NoiDung NVARCHAR(MAX),
-    @GhiChu NVARCHAR(MAX) = NULL
-)
-AS
-BEGIN
-    UPDATE BC_ChiTietMauPhieu
-    SET MauPhieuID = @MauPhieuID, TieuChiID = @TieuChiID, ChiTieuID = @ChiTieuID, NoiDung = @NoiDung, GhiChu = @GhiChu
-    WHERE ChiTietMauPhieuID = @ChiTietMauPhieuID;
-END;
-GO
-
--- Xóa BC_ChiTietMauPhieu
-CREATE PROCEDURE BCCTMP_Delete (
-    @ChiTietMauPhieuID INT
-)
-AS
-BEGIN
-    DELETE FROM BC_ChiTietMauPhieu WHERE ChiTietMauPhieuID = @ChiTietMauPhieuID;
-END;
-GO
-
-
-
 --endregion
 
 --region Stored procedures of ChiTieu
-CREATE TABLE DM_ChiTieu (
-    ChiTieuID INT PRIMARY KEY IDENTITY(1,1),
-    MaChiTieu NVARCHAR(100) NOT NULL,        
-    TenChiTieu NVARCHAR(100) NOT NULL,      
-    ChiTieuChaID INT NULL,                  
-    GhiChu NVARCHAR(300) DEFAULT '',               
-    TrangThai BIT DEFAULT 0,                 
-    LoaiMauPhieuID INT NOT NULL,                 
-    FOREIGN KEY (ChiTieuChaID) REFERENCES DM_ChiTieu(ChiTieuID)
-);  
-GO 
-
-CREATE PROCEDURE CT_GetAll
-    @TenChiTieu NVARCHAR(100) = NULL
-    --,@PageNumber INT = 1,
-    --@PageSize INT = 100
-AS
-BEGIN
-    -- Kiểm tra biến đầu vào
-    --IF @PageNumber < 1 SET @PageNumber = 1;
-    --IF @PageSize < 1 SET @PageSize = 100;
-
-    -- CTE để xử lý phân cấp và tìm kiếm
-    WITH RecursiveCTE AS (
-        -- Anchor member: Bắt đầu với các node gốc (nơi ChiTieuChaID là NULL)
-        SELECT 
-            ChiTieuID,
-			ChiTieuChaID,
-            MaChiTieu,
-            TenChiTieu,
-            GhiChu,
-            TrangThai,
-            LoaiMauPhieuID,
-            0 AS Level,
-            CAST('/' + CONVERT(NVARCHAR(50), ChiTieuID) AS NVARCHAR(50)) AS Hierarchy
-        FROM 
-            DM_ChiTieu
-        WHERE 
-            ChiTieuChaID IS NULL
-
-        UNION ALL
-
-        -- Recursive member: Join the table with itself to find children
-        SELECT 
-            c.ChiTieuID,
-			c.ChiTieuChaID,
-            c.MaChiTieu,
-            c.TenChiTieu,
-            c.GhiChu,
-            c.TrangThai,
-            c.LoaiMauPhieuID,
-            cte.Level + 1 AS Level,
-            CAST(cte.Hierarchy + '/' + CONVERT(NVARCHAR(50), c.ChiTieuID) AS NVARCHAR(50)) AS Hierarchy
-        FROM 
-            DM_ChiTieu c
-        INNER JOIN 
-            RecursiveCTE cte ON c.ChiTieuChaID = cte.ChiTieuID
-    ),
-    -- CTE phụ để lọc các phần tử khớp với từ khóa tìm kiếm
-    FilteredCTE AS (
-        SELECT 
-            ChiTieuID,
-			ChiTieuChaID,
-            MaChiTieu,
-            TenChiTieu,
-            GhiChu,
-            TrangThai,
-            LoaiMauPhieuID,
-            Level,
-            Hierarchy
-        FROM 
-            RecursiveCTE
-        WHERE 
-            @TenChiTieu IS NULL
-            OR LOWER(TenChiTieu) LIKE '%' + LOWER(@TenChiTieu) + '%'
-    ),
-    -- CTE phụ để xác định các phần tử cha và phần tử con của các phần tử cần thiết
-    AllParentsCTE AS (
-        SELECT 
-            c.*
-        FROM 
-            FilteredCTE fc
-        INNER JOIN 
-            RecursiveCTE c ON c.ChiTieuID = fc.ChiTieuChaID
-        UNION ALL
-        SELECT 
-            c.*
-        FROM 
-            AllParentsCTE p
-        INNER JOIN 
-            RecursiveCTE c ON c.ChiTieuID = p.ChiTieuChaID
-    ),
-    AllChildrenCTE AS (
-        SELECT 
-            c.*
-        FROM 
-            FilteredCTE fc
-        INNER JOIN 
-            RecursiveCTE c ON c.ChiTieuChaID = fc.ChiTieuID
-        UNION ALL
-        SELECT 
-            c.*
-        FROM 
-            AllChildrenCTE p
-        INNER JOIN 
-            RecursiveCTE c ON c.ChiTieuChaID = p.ChiTieuID
-    ),
-    -- Kết hợp tất cả các phần tử cần thiết và loại bỏ các bản ghi trùng lặp
-    CombinedCTE AS (
-        SELECT DISTINCT * FROM FilteredCTE
-        UNION
-        SELECT DISTINCT * FROM AllParentsCTE
-        UNION
-        SELECT DISTINCT * FROM AllChildrenCTE
-    )
-    -- Truy vấn phân cấp với phân trang và tính toán tổng số bản ghi
-    SELECT 
-        ChiTieuID,
-		ChiTieuChaID,
-        MaChiTieu,
-        TenChiTieu,
-        GhiChu,
-        TrangThai,
-        LoaiMauPhieuID,
-        Level,
-        Hierarchy
-        --,TotalRecords = (SELECT COUNT(*) FROM CombinedCTE)
-    FROM 
-        CombinedCTE
-    ORDER BY 
-       ChiTieuID, Hierarchy
-    --OFFSET (@PageNumber - 1) * @PageSize ROWS 
-    --FETCH NEXT @PageSize ROWS ONLY
-    OPTION (MAXRECURSION 0);
-END;
-GO
-
-CREATE PROCEDURE CT_GetAll 
-    @TenChiTieu NVARCHAR(100) = NULL
-AS
-BEGIN
-    -- CTE để xử lý phân cấp và tìm kiếm
-    WITH RecursiveCTE AS (
-        -- Anchor member: Bắt đầu với các node gốc (nơi ChiTieuChaID là NULL)
-        SELECT 
-            ChiTieuID,
-			ChiTieuChaID,
-            MaChiTieu,
-            TenChiTieu,
-            GhiChu,
-            TrangThai,
-            LoaiMauPhieuID,
-            0 AS Level,
-            CAST('/' + CONVERT(NVARCHAR(50), ChiTieuID) AS NVARCHAR(50)) AS Hierarchy
-        FROM 
-            DM_ChiTieu
-        WHERE 
-            ChiTieuChaID IS NULL
-
-        UNION ALL
-
-        -- Recursive member: Join the table with itself to find children
-        SELECT 
-            c.ChiTieuID,
-			c.ChiTieuChaID,
-            c.MaChiTieu,
-            c.TenChiTieu,
-            c.GhiChu,
-            c.TrangThai,
-            c.LoaiMauPhieuID,
-            cte.Level + 1 AS Level,
-            CAST(cte.Hierarchy + '/' + CONVERT(NVARCHAR(50), c.ChiTieuID) AS NVARCHAR(50)) AS Hierarchy
-        FROM 
-            DM_ChiTieu c
-        INNER JOIN 
-            RecursiveCTE cte ON c.ChiTieuChaID = cte.ChiTieuID
-    ),
-    -- CTE phụ để lọc các phần tử khớp với từ khóa tìm kiếm
-    FilteredCTE AS (
-        SELECT 
-            ChiTieuID,
-			ChiTieuChaID,
-            MaChiTieu,
-            TenChiTieu,
-            GhiChu,
-            TrangThai,
-            LoaiMauPhieuID,
-            Level,
-            Hierarchy
-        FROM 
-            RecursiveCTE
-        WHERE 
-            @TenChiTieu IS NULL
-            OR LOWER(TenChiTieu) LIKE '%' + LOWER(@TenChiTieu) + '%'
-    ),
-    -- CTE phụ để xác định các phần tử cha và phần tử con của các phần tử cần thiết
-    AllParentsCTE AS (
-        SELECT 
-            c.*
-        FROM 
-            FilteredCTE fc
-        INNER JOIN 
-            RecursiveCTE c ON c.ChiTieuID = fc.ChiTieuChaID
-        UNION ALL
-        SELECT 
-            c.*
-        FROM 
-            AllParentsCTE p
-        INNER JOIN 
-            RecursiveCTE c ON c.ChiTieuID = p.ChiTieuChaID
-    ),
-    AllChildrenCTE AS (
-        SELECT 
-            c.*
-        FROM 
-            FilteredCTE fc
-        INNER JOIN 
-            RecursiveCTE c ON c.ChiTieuChaID = fc.ChiTieuID
-        UNION ALL
-        SELECT 
-            c.*
-        FROM 
-            AllChildrenCTE p
-        INNER JOIN 
-            RecursiveCTE c ON c.ChiTieuChaID = p.ChiTieuID
-    ),
-    -- Kết hợp tất cả các phần tử cần thiết và loại bỏ các bản ghi trùng lặp
-    CombinedCTE AS (
-        SELECT DISTINCT * FROM FilteredCTE
-        UNION
-        SELECT DISTINCT * FROM AllParentsCTE
-        UNION
-        SELECT DISTINCT * FROM AllChildrenCTE
-    )
-    -- Truy vấn phân cấp với tổng số bản ghi
-    SELECT 
-        ChiTieuID,
-		ChiTieuChaID,
-        MaChiTieu,
-        TenChiTieu,
-        GhiChu,
-        TrangThai,
-        LoaiMauPhieuID,
-        Level,
-        Hierarchy
-    FROM 
-        CombinedCTE
-    ORDER BY 
-       ChiTieuID, Hierarchy
-    OPTION (MAXRECURSION 0);
-END;
-GO
-
-CREATE PROCEDURE CT_GetByID
-    @ChiTieuID INT
-AS
-BEGIN
-    SELECT * FROM DM_ChiTieu WHERE ChiTieuID = @ChiTieuID;
-END; 
-GO
-
-CREATE PROCEDURE CT_Insert
-    @MaChiTieu NVARCHAR(100),
-    @TenChiTieu NVARCHAR(100),
-    @ChiTieuChaID INT null,
-    @GhiChu NVARCHAR(100),
-    @LoaiMauPhieuID INT
-AS
-BEGIN
-    INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, GhiChu, LoaiMauPhieuID)
-    VALUES (@MaChiTieu, @TenChiTieu, @ChiTieuChaID, @GhiChu, @LoaiMauPhieuID);
+    CREATE TABLE DM_ChiTieu (
+        ChiTieuID INT PRIMARY KEY IDENTITY(1,1),
+        MaChiTieu NVARCHAR(100) NOT NULL,        
+        TenChiTieu NVARCHAR(100) NOT NULL,      
+        ChiTieuChaID INT NULL,                  
+        GhiChu NVARCHAR(300) DEFAULT '',               
+        TrangThai BIT DEFAULT 0,                 
+        LoaiMauPhieuID INT NOT NULL,                 
+        FOREIGN KEY (ChiTieuChaID) REFERENCES DM_ChiTieu(ChiTieuID)
+    );  
+    GO 
     
-    SELECT SCOPE_IDENTITY() AS NewChiTieuID;  -- Return the newly created ID
-END;
-GO
+    --Insert Records into DM_ChiTieu table
+        SET IDENTITY_INSERT DM_ChiTieu ON
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (38,'CT001',N'DI TÍCH',NULL,NULL,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (39,'CT1_1',N'Tổng số Di tích xếp hạng cấp tỉnh:',NULL,38,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (45,'CT1_1_001',N'Di tích lịch sử:',NULL,39,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (46,'CT1_1_002',N'Di tích kiến trúc nghệ thuật:',NULL,39,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (47,'CT1_1_003',N'Di tích khảo cổ:',NULL,39,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (48,'CT1_1_004',N'Danh lam thắng cảnh:',NULL,39,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (49,'CT1_1_005',N'Số Di tích cấp tỉnh được xếp hạng trong năm:',NULL,39,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (50,'CT1_2',N'Tổng số Di tích xếp hạng quốc gia:',NULL,38,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (51,'CT1_2_001',N'-Di tích lịch sử: ',NULL,50,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (52,'CT1_2_002',N'Di tích kiến trúc nghệ thuật:',NULL,50,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (53,'CT1_2_003',N'Di tích khảo cổ:',NULL,50,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (54,'CT1_2_004',N'Danh lam thắng cảnh:',NULL,50,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (55,'CT1_2_005',N'Số Di tích quốc gia được xếp hạng trong năm:',NULL,50,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (56,'CT1_3',N'Tổng số Di tích quốc gia đặc biệt được xếp hạng:',NULL,38,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (57,'CT1_3_001',N'Số Di tích quốc gia đặc biệt được xếp hạng trong',NULL,56,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (59,'SLTV',N'Số lượng thư viện',NULL,NULL,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (60,'TSTVCCHC',N'Tổng số thư viện công cộng hiện có',NULL,59,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (61,'STVCC',N'Số thư viện công cộng thành lập trong năm',NULL,59,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (62,'STVCH',N'Số thư viện công cộng cấp huyện trực thuộc UBND',NULL,59,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (63,'STVTNCPVCC',N'Số thư viện tư nhân có phục vụ cộng đồng',NULL,59,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (64,'STVCD',N'Số thư viện cộng đồng',NULL,59,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (66,'NLTV',N'Nhân lực thư viện',NULL,NULL,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (67,'SLNL',N'Số lượng người làm công tác thư viện hiện có Số thư viện công cộng thành lập trong năm',NULL,66,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (68,'CLNL',N'Chất lượng nguồn nhân lực:',NULL,66,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (69,'TDHV',N'Về trình độ học vấn:',NULL,68,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (70,'DHTL',N'Số người có trình độ Đại học trở lên',NULL,69,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (71,'CDTH',N'Số người có trình độ Cao đẳng/ trung học chuyên nghiệp',NULL,69,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (72,'THPT',N'Số người có trình độ trung học phổ thông',NULL,69,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (73,'CMNTV',N'Về chuyên môn ngành thư viện',NULL,68,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (74,'SNDTCNTV',N'Số người đào tạo chuyên ngành thư viện',NULL,73,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (75,'SNDTCNK',N'Số người đào tạo chuyên ngành khác',NULL,73,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (76,'SLCBDDTTHTN',N'Số lượt cán bộ được đào tạo, tập huấn trong năm',NULL,68,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (77,'DTLS',N'Di tích lịch sử: 1',NULL,45,0,1);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (79,'BT',N'Bảo tàng',NULL,NULL,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (80,'BTTT',N'Tổng số bảo tàng trực thuộc:',NULL,79,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (81,'HVBT',N'Tổng số hiện vật có trong từng bảo tàng:',NULL,79,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (82,'STTN',N'Số hiện vật bảo tàng mới được sưu tầm trong năm (của từng bảo tàng):',NULL,81,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (83,'STHVTBT',N'Tổng số sưu tập hiện vật trong từng bảo tàng',NULL,79,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (84,'HBHTTN',N'Số sưu tập hiện vật được hình thành trong năm của từng bảo tàng:',NULL,83,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (85,'SKTQTN',N'Tổng số khách tham quan trong năm của từng bảo tàng:',NULL,79,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (86,'PTQTN',N'Tổng thu từ phí tham quan trong năm của từng bảo tàng (nếu có):',NULL,79,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (87,'TBCD',N'Tổng số trưng bày chuyên đề của từng bảo tàng:',NULL,79,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (92,'BVQG',N'Bảo vật quốc gia',NULL,NULL,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (102,'007-SLXCPTL',N'Số lượng xin cấp xin phép triển lãm',NULL,NULL,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (103,'TLMT',N'Triển lãm mỹ thuật',NULL,102,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (104,'Trongnuoc',N'Trong nước',NULL,103,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (105,'Ranuocngoai',N'Ra nước ngoài ',NULL,103,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (106,'TLNA',N'Triển lãm nhiếp ảnh',NULL,102,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (107,'TN2',N'Trong nước ',NULL,106,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (108,'RaNuocngoai2',N'Ra nước ngoài ',NULL,106,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (109,'Các TLKVMDTM',N'Các Triển lãm không vì mục đích thương mại',NULL,102,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (110,'TN3',N'Trong nước ',NULL,109,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (111,'RNN3',N'Ra nước ngoài',NULL,109,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (112,'SLGP',N'Số lượng giấy phép/ văn bản phê duyệt nội dung tác phẩm mỹ thuật, nhiếp ảnh xuất, nhập khẩu',NULL,102,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (113,'SLHS,NĐK',N'Số lượng họa sĩ, nhà điêu khắc, nghệ sĩ nhiếp ảnh',NULL,NULL,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (114,'MT1',N'Mỹ thuật',NULL,113,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (115,'HSMTĐP',N'Họa sĩ Hội Mỹ thuật địa phương',NULL,114,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (116,'NĐK',N'Nhà điêu khắc Hội Mỹ thuật địa phương',NULL,114,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (117,'NA',N'Nhiếp ảnh',NULL,113,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (118,'HVHNA',N'Hội viên hội nhiếp ảnh địa phương',NULL,117,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (119,'SL CTTĐ',N'Số lượng công trình tượng đài được xây dựng, trại sáng tác được tổ chức',NULL,NULL,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (120,'TĐ 2',N'Tượng đài',NULL,119,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (121,'THT',N'Tranh hoàng tráng',NULL,119,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (122,'TSTMT',N'Trại sáng tác mỹ thuật',NULL,119,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (123,'TSTNA',N'Trại sáng tác nhiếp ảnh',NULL,119,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (124,'SLNTL',N'Số lượng nhà triển lãm',NULL,NULL,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (125,'SCTTHĐMT',N'Số cuộc thanh tra hoạt động mỹ thuật, nhiếp ảnh và triển lãm',NULL,NULL,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (131,'GD',N'Gia Đình',NULL,NULL,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (132,'TSHGD',N'Tổng số hộ gia đình',NULL,131,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (133,'SHGDCCCHMSCVC',N'Số hộ gia đình chỉ có cha hoặc mẹ sống chung với con',NULL,132,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (134,'SHGDC1TH',N'Số hộ gia đình 1 thế hệ (vợ, chồng)',NULL,132,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (135,'SHGD2TH',N'Số hộ gia đình 2 thế hệ',NULL,132,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (136,'SHGD3THTL',N'Số hộ gia đình 3 thế hệ trở lên',NULL,132,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (137,'SHGDK',N'Số hộ gia đình khác',NULL,132,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (138,'BLGD',N'Bạo lực gia đình',NULL,NULL,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (140,'TSHCBLGD',N'Tổng số hộ có bạo lực gia đình',NULL,138,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (142,'TSVBLGD',N'Tổng số vụ bạo lực gia đình',NULL,138,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (143,'HTBL',N'Hình thức bạo lực',NULL,138,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (145,'TT',N'Tinh thần',NULL,143,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (147,'THANT',N'Thân thể',NULL,143,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (149,'TD',N'Tình dục',NULL,143,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (150,'KT',N'Kinh tế',NULL,143,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (152,'NGBLGDVBPXL',N'Người gây bạo lực gia đình và biện pháp xử lý',NULL,138,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (153,'GT',N'Giới tính',NULL,152,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (155,'N',N'Nam',NULL,153,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (157,'NU',N'Nữ',NULL,153,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (159,'DOTUOI',N'Độ tuổi',NULL,152,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (160,'D16T',N'Dưới 16 tuổi',NULL,159,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (161,'TD60TTL',N'Từ đủ 60 tuổi trở lên',NULL,159,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (163,'BPXL',N'Biện pháp xử lý',NULL,138,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (165,'GYPBTCDDC',N'Góp ý, phê bình trong cộng đồng dân cư',NULL,163,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (167,'ADBPCTX',N'Áp dụng biện pháp cấm tiếp xúc',NULL,163,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (168,'ADCBPGDTXPTT',N'Áp dụng các biện pháp giáo dục tại xã/phường/thị trấn',NULL,163,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (169,'XPVPHC',N'Xử phạt vi phạm hành chính',NULL,163,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (171,'XLHS',N'Xử lý hình sự (phạt tù)',NULL,163,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (173,'NNBBLGDVBPHT',N'Nạn nhân bị bạo lực gia đình và biện pháp hỗ trợ',NULL,138,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (175,'GTNN',N'Giới tính',NULL,173,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (177,'NAMNN',N'Nam',NULL,175,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (178,'NUNN',N'Nữ',NULL,175,0,7);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (181,'DT2',N'Độ tuổi',NULL,173,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (182,'D16T2',N'Dưới 16 tuổi',NULL,181,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (183,'TD60TTL2',N'Từ đủ 60 tuổi trở lên',NULL,181,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (184,'BPHT',N'Biện pháp hỗ trợ',NULL,173,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (185,'DTV',N'Được tư vấn (tâm lý, tinh thần, pháp luật)',NULL,184,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (186,'CSHTSKBL',N'Chăm sóc hỗ trợ sau khi bị bạo lực',NULL,184,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (187,'HTCNRDTRLTTDCGN',N'Hỗ trợ (cai nghiện rượu, điều trị rối loạn tâm thần do chất gây nghiện)',NULL,184,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (188,'DTNGTVL',N'Đào tạo nghề, giới thiệu việc làm',NULL,184,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (189,'CBPPCBLGD',N'Các biện pháp phòng, chống bạo lực gia ',NULL,NULL,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (190,'MHPCBLGD',N'Mô hình phòng, chống bạo lực gia đình (theo chuẩn của Bộ Văn hóa, Thể thao và Du lịch)',NULL,189,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (191,'MHHDDL',N'Mô hình hoạt động độc lập',NULL,189,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (192,'SCLBGDPTBV',N'Số Câu lạc bộ gia đình phát triển bền vững',NULL,191,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (193,'SNPCBLGD',N'Số Nhóm phòng, chống bạo lực gia đình',NULL,191,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (194,'SDCTCOCD',N'Số địa chỉ tin cậy ở cộng đồng',NULL,191,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (195,'SDDN',N'Số đường dây nóng',NULL,191,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (196,'TLNLTTDTX',N'Tỷ lệ người luyện tập thể dục thể thao thường xuyên',NULL,NULL,0,9);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (197,'TLGDLTTDTT',N'Tỷ lệ gia đình luyện tập thể dục thể thao',NULL,NULL,0,9);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (198,'STHDBCTGDTC',N'Số trường học đảm bảo chương trình giáo dục thể chất',NULL,NULL,0,9);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (201,'SVDVCC',N'Số vận động viên cấp cao',NULL,NULL,0,9);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (202,'CKT',N'Cấp kiện tướng',NULL,201,0,9);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (204,'C1',N'Cấp 1',NULL,201,0,9);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (206,'SVDVDTTDT',N'Số vận động viên được tập trung đào tạo (Vận động viên quốc gia)',NULL,NULL,0,9);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (207,'VDVT',N'Vận động viên trẻ',NULL,206,0,9);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (209,'TSHCDD',N'Tổng số huy chương đạt được',NULL,NULL,0,9);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (211,'CGTTQT',N'Các giải thể thao quốc tế',NULL,209,0,9);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (213,'SCLBTT',N'Số câu lạc bộ thể thao',NULL,NULL,0,9);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (214,'SCTVTT',N'Số cộng tác viên thể thao',NULL,NULL,0,9);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (216,'TSTCCNDTTKT',N'Tổng số tổ chức, cá nhân được thanh tra, kiểm tra',NULL,NULL,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (218,'TTB',N'Thanh tra Bộ',NULL,216,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (220,'TTS',N'Thanh tra Sở',NULL,216,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (222,'TSTCCNBXPVPHC',N'Tổng số tổ chức, cá nhân bị xử phạt vi phạm hành chính',NULL,NULL,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (225,'TTB1',N'Thanh tra Bộ',NULL,222,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (226,'TTS1',N'Thanh tra Sở',NULL,222,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (227,'TSTXPVPHC',N'Tổng số tiền xử phạt vi phạm hành chính (triệu đồng)',NULL,NULL,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (228,'TTB2',N'Thanh tra Bộ',NULL,227,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (230,'TTS2',N'Thanh tra Sở',NULL,227,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (232,'KNXLTT',N'Kiến nghị xử lý sau thanh tra',NULL,NULL,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (233,'TTB3',N'Thanh tra Bộ',NULL,232,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (235,'SLTCD',N'Số lượt tiếp công dân',NULL,NULL,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (237,'TTB4',N'Thanh tra Bộ',NULL,235,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (238,'TTS4',N'Thanh tra Sở',NULL,235,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (240,'SDXL',N'Số đơn xử lý',NULL,NULL,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (241,'TTB5',N'Thanh tra Bộ',NULL,240,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (242,'TTS5',N'Thanh tra Sở',NULL,240,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (243,'KNXLQGQKNTC',N'Kiến nghị xử lý qua giải quyết khiếu nại, tố cáo',NULL,NULL,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (244,'TTB6',N'Thanh tra Bộ',NULL,243,0,10);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (245,'KPBTVPTVHDTTS',N'Khôi phục, bảo tồn và phát triển bản sắc văn hóa truyền thống của các dân tộc thiểu số có dân số ít ',NULL,NULL,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (246,'HTDTBTVH',N'Hỗ trợ đầu tư bảo tồn làng, bản văn hóa truyền thống tiêu biểu của các dân tộc thiểu số',NULL,NULL,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (247,'BTPHLHTTDTTS',N'Bảo tồn, phát huy lễ hội truyền thống tiêu biểu các dân tộc thiểu số',NULL,NULL,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (248,'XDNDXBSDPDTTS',N'Xây dựng nội dung, xuất bản sách, đĩa phim tư liệu về văn hóa truyền thống đồng bào dân tộc thiểu số',NULL,NULL,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (249,'SDMHBTTTDTTS',N'Xây dựng Mô hình bảo tồn văn hóa truyền thống các dân tộc thiểu số',NULL,NULL,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (250,'XDCLSHTDC',N'Xây dựng Câu lạc bộ sinh hoạt văn hóa dân gian tại các thôn vùng đồng bào dân tộc thiểu số và miền n',NULL,NULL,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (251,'NCPHBTPHVHPVT',N'Nghiên cứu, phục hồi, bảo tồn, phát huy văn hóa phi vật thể các dân tộc thiểu số có nguy cơ mai một',NULL,NULL,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (252,'NHGLLH',N'Ngày hội, Giao lưu, Liên hoan về các loại hình văn hóa, nghệ thuật truyền thống của đồng bào dân tộc',NULL,NULL,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (253,'LTHBDCMNV',N'Lớp tập huấn, bồi dưỡng chuyên môn nghiệp vụ, nâng cao năng lực bảo tồn, phát huy các giá trị văn hó',NULL,NULL,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (254,'SLCDVNTTDP',N'Số lượng các đơn vị nghệ thuật tại địa phương',NULL,NULL,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (255,'HTTTQBRD',N'Hỗ trợ tuyên truyền, quảng bá rộng rãi giá trị văn hóa truyền thống tiêu biểu của các dân tộc thiểu ',NULL,NULL,0,3);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (256,'CDVNTCL',N'Các đơn vị nghệ thuật công lập (bao gồm cả Trung tâm văn hóa sau khi sáp nhập)',NULL,254,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (258,'CD',N'Các đơn vị nghệ thuật ngoài công lập',NULL,254,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (259,'TCCNDKKDHDBDNT',N'Tổ chức, cá nhân đăng ký kinh doanh hoạt động biểu diễn nghệ thuật theo quy định của pháp luật',NULL,254,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (260,'VCTCHCQD',N'Về công tác chấp hành các quy định pháp luật lĩnh vực nghệ thuật biểu diễn',NULL,NULL,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (261,'SLCCTBDNT',N'Số lượng các chương trình biểu diễn nghệ thuật được chấp thuận trên địa bàn tỉnh/thành',NULL,260,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (263,'SLCTLHNT',N'Số lượng cuộc thi, liên hoan nghệ thuật được chấp thuận trên địa bàn tỉnh/thành',NULL,260,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (264,'SLCTNDNM',N'Số lượng cuộc thi người đẹp người mẫu được chấp thuận trên địa bàn tỉnh/thành (nêu rõ Vòng Chung kết',NULL,260,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (266,'SLCCBDNT',N'Số lượng chương trình biểu diễn nghệ thuật tiếp nhận từ các đơn vị nghệ thuật, các tổ chức, cá nhân ',NULL,260,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (267,'SLCTLHCLHNT',N'Số lượng cuộc thi, liên hoan các loại hình nghệ thuật biểu diễn tiếp nhận từ các đơn vị nghệ thuật, ',NULL,260,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (269,'SLLCBGAGH',N'Số lượng lưu chiểu bản ghi âm, ghi hình có nội dung biểu diễn nghệ thuật nhằm mục đích thương mại ti',NULL,260,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (272,'SLCCBDNTBYCD',N'Số lượng các chương biểu diễn nghệ thuật bị yêu cầu dừng hoạt động trên địa bàn tỉnh/thành',NULL,260,0,8);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (278,'SLCCTLH',N'Số lượng các cuộc thi, liên hoan các loại hình nghệ thuật biểu diễn bị yêu cầu thu hồi danh hiệu, gi',NULL,260,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (286,'SLCCTLHCLHNTBDBYCHKQ',N'Số lượng các cuộc thi, liên hoan các loại hình nghệ thuật biểu diễn bị yêu cầu hủy kết quả',NULL,260,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (287,'SLCCTBDNT2',N'Số lượng các chương trình biểu diễn nghệ thuật (áp dụng đối với các đơn vị nghệ thuật công lập)',NULL,NULL,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (288,'SVDSK',N'Số vở diễn sân khấu; chương trình ca múa nhạc; tiết mục nghệ thuật mới dàn dựng',NULL,287,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (289,'SVDSKCTCM',N'Số vở diễn sân khấu; chương trình ca múa nhạc; tiết mục nghệ thuật sửa chữa và nâng cao',NULL,287,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (290,'VDH',N'Về Danh hiệu, giải thưởng trong lĩnh vực nghệ thuật biểu diễn (thông qua xét danh hiệu nghệ sỹ; thôn',NULL,NULL,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (291,'SLJCVHCBGNNB',N'Số lượng Huy chương vàng, Huy chương bạc, Giải nhất/nhì/ba',NULL,290,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (292,'SLNSDNNPTDH',N'Số lượng nghệ sỹ được Nhà nước phong tặng danh hiệu',NULL,290,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (293,'TSBBDTN',N'Tổng số buổi biểu diễn trong năm',NULL,NULL,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (294,'TCTHCCDVNTCL',N'Tổ chức thực hiện của các đơn vị nghệ thuật công lập',NULL,293,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (295,'TCTHCCTC',N'Tổ chức thực hiện của các tổ chức, cá nhân đăng ký kinh doanh hoạt động biểu diễn nghệ thuật theo qu',NULL,293,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (296,'USLNXBDNTCN',N'Ước số lượng người xem biểu diễn nghệ thuật chuyên nghiệp (người/năm)',NULL,NULL,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (297,'KPHNCTXVKYX',N'Kinh phí hàng năm cấp thường xuyên và không thường xuyên (đối với các đơn vị nghệ thuật công lập)',NULL,NULL,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (298,'DTDVCDVNTCL',N'Doanh thu (đối với các đơn vị nghệ thuật công lập)',NULL,NULL,0,6);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (322,'SLTV',N'Số lượng thư viện',NULL,NULL,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (323,'TSTVCCHC',N'Tổng số thư viện công cộng hiện có',NULL,322,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (325,'STVCCTLTN',N'Số thư viện công cộng thành lập trong năm',NULL,322,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (326,'STVCCCH',N'Số thư viện công cộng cấp huyện trực thuộc UBND',NULL,322,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (327,'TSHP',N'Tổng số hãng phim',NULL,NULL,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (328,'STVTNCPVCC',N'Số thư viện tư nhân có phục vụ cộng đồng',NULL,322,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (329,'STVCD',N'Số thư viện cộng đồng',NULL,322,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (330,'HPNC',N'Hãng phim nhà nước',NULL,327,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (331,'SPDCC',N'Số phòng đọc cơ sở và không gian đọc',NULL,322,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (332,'NLTV',N'Nhân lực thư viện',NULL,NULL,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (333,'SNLNCTTVHC',N'Số lượng người làm công tác thư viện hiện có',NULL,332,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (334,'CLNL',N'Chất lượng nguồn nhân lực',NULL,332,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (335,'VTDHV',N'Về trình độ học vấn',NULL,334,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (336,'HPNCHNGCP',N'Hãng phim nhà nước nắm giữ cổ phần',NULL,327,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (337,'SNCTDDH',N'Số người có trình độ Đại học trở lên',NULL,335,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (338,'TSGPCCDV',N'Tổng số Giấy phép cung cấp dịch vụ quay phim sử dụng bối cảnh tại Việt Nam được cấp',NULL,NULL,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (339,'TSPVN',N'Tổng số phim Việt Nam sản xuất sử dụng ngân sách Nhà nước được cấp Giấy phép phân loại phim',NULL,NULL,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (340,'SNCOTDCD',N'Số người có trình độ Cao đẳng/ trung học chuyên nghiệp',NULL,335,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (341,'PT',N'Phim truyện',NULL,339,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (342,'SNCTDTHPT',N'Số người có trình độ trung học phổ thông',NULL,335,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (343,'PTL',N'Phim tài liệu',NULL,339,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (344,'PKH',N'Phim khoa học',NULL,339,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (345,'VCMTV',N'Về chuyên môn ngành thư viện',NULL,334,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (346,'SNDTCNTV',N'Số người đào tạo chuyên ngành thư viện',NULL,345,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (347,'PHH',N'Phim hoạt hình',NULL,339,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (348,'SNDTCNK',N'Số người đào tạo chuyên ngành khác',NULL,345,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (349,'SLCBDDTTHTN',N'Số lượt cán bộ được đào tạo, tập huấn trong năm',NULL,332,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (350,'KP',N'Kinh phí',NULL,NULL,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (351,'PKHNLH',N'Phim kết hợp nhiều loại hình',NULL,339,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (352,'TKPDC',N'Tổng kinh phí được cấp',NULL,350,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (353,'SPDPLK',N'Số phim được phân loại K',NULL,339,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (354,'CCCN',N'Chi cho con người',NULL,352,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (355,'TSPVNDCGPPLP',N'Tổng số phim Việt Nam được cấp Giấy phép phân loại phim',NULL,NULL,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (356,'HDCMNV',N'Hoạt động chuyên môn nghiệp vụ',NULL,352,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (357,'PT1',N'Phim truyện',NULL,355,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (358,'BSCTL',N'Bổ sung vốn tài liệu',NULL,356,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (359,'PTL1',N'Phim tài liệu',NULL,355,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (360,'PKH1',N'Phim khoa học',NULL,355,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (361,'TKDVTV',N'Triển khai dịch vụ thư viện',NULL,356,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (362,'PHH1',N'Phim hoạt hình',NULL,355,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (363,'PKHNLH1',N'Phim kết hợp nhiều loại hình',NULL,355,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (364,'CHDDVK',N'Các hoạt động chuyên môn nghiệp vụ khác',NULL,356,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (365,'SPDPLK1',N'Số phim được phân loại K',NULL,355,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (366,'CNDCK',N'Các nội dung chi khác',NULL,352,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (367,'TSPNKDCGPPLP',N'Tổng số phim nhập khẩu được cấp Giấy phép phân loại phim',NULL,NULL,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (368,'PT2',N'Phim truyện',NULL,367,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (369,'PTL2',N'Phim tài liệu',NULL,367,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (370,'STVKDCKP',N'Số thư viện không được cấp kinh phí',NULL,350,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (371,'PKH2',N'Phim khoa học',NULL,367,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (372,'PHH2',N'Phim hoạt hình',NULL,367,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (373,'UDCNTT',N'Ứng dụng công nghệ thông tin',NULL,NULL,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (374,'PKHNLH2',N'Phim kết hợp nhiều loại hình',NULL,367,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (375,'SLMTHC',N'Số lượng máy tính hiện có',NULL,373,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (376,'SPDPLK2',N'Số phim được phân loại K',NULL,367,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (377,'SLTVDCUDCNTTTHD',N'Số lượng thư viện đã ứng dụng công nghệ thông tin trong hoạt động',NULL,373,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (378,'UTDTPBPTRCH',N'Ước tính doanh thu phổ biến phim tại rạp chiếu phim (tỷ đồng)',NULL,NULL,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (379,'SLTVDCTPMQL',N'Số lương thư viện đã có sử dụng phần mềm quản lý thư viện',NULL,373,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (380,'PBPPVNVCTOVC',N'Phổ biến phim phục vụ nhiệm vụ chính trị ở vùng cao, miền núi, biên giới, hải đảo, vùng đồng bào dân',NULL,NULL,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (381,'SLTVDCTWS',N'Số lượng thư viện đã có website',NULL,373,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (382,'TSNSNNDC',N'Tổng số ngân sách nhà nước được cấp',NULL,380,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (383,'TSDCBLD',N'Tổng số đội chiếu bóng lưu động',NULL,380,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (384,'SLTVDXDTVDT',N'Số lượng thư viện đã xây dựng thư viện điện tử',NULL,373,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (385,'TSBC',N'Tổng số biên chế',NULL,380,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (386,'VTL',N'Vốn tài liệu',NULL,NULL,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (387,'TSLMCKTSHD',N'Tổng số lượng máy chiếu phim kỹ thuật số HD',NULL,380,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (388,'S',N'Sách',NULL,386,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (389,'TSDS',N'Tổng số đầu sách',NULL,388,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (390,'TSSBSCTTV',N'Tổng số bản sách hiện có trong thư viện',NULL,388,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (391,'TSLMCP',N'Tổng số lượng máy chiếu phim video',NULL,380,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (392,'TSBSCTKLC',N'Tổng số bản sách trong kho luân chuyển',NULL,390,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (393,'TSLOTOCPLD',N'Tổng số lượng ô tô chiếu phim lưu động',NULL,380,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (394,'TSBSBS',N'Tổng số bản sách bổ sung trong năm',NULL,390,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (395,'TSBC1',N'Tổng số buổi chiếu',NULL,380,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (396,'TSLNX',N'Tổng số lượt người xem',NULL,380,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (397,'TSBSTL',N'Tổng số bản sách được thanh lọc theo quy định tại Thông tư 02/2020/TT-BVHTTDL',NULL,390,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (398,'TSRCP',N'Tổng số rạp chiếu phim',NULL,NULL,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (399,'TSDBTC',N'Tổng số đầu báo, tạp chí',NULL,386,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (400,'TSRCRNC',N'Tổng số rạp, cụm rạp Nhà nước',NULL,398,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (402,'TSRCRTN',N'Tổng số rạp, cụm rạp tư nhân',NULL,398,0,5);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (403,'TSSDTDT',N'Tổng số đầu tài liệu điện tử',NULL,386,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (404,'CT',N'Công tác ',NULL,NULL,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (405,'TBD',N'Thẻ bạn đọc',NULL,404,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (406,'TSTTVHC',N'Tổng số thẻ thư viện hiện có',NULL,405,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (407,'STDGHTN',N'Số thẻ được gia hạn trong năm',NULL,406,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (408,'STDCMTN',N'Số thẻ được cấp mới trong năm',NULL,406,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (409,'STNSDTVDTDCT',N'Đối tượng người sử dụng thư viện đặc thù được cấp thẻ',NULL,405,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (410,'STCCTN',N'Số thẻ cấp cho thiếu nhi',NULL,409,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (411,'STCCCT',N'Số thẻ cấp cho người cao tuổi',NULL,409,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (412,'STCCNKT',N'Số thẻ cấp cho người khuyết tật',NULL,409,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (413,'STCCNDTTS',N'Số thẻ cấp cho người dân tộc thiểu số',NULL,409,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (414,'TLBĐTVPV',N'Tổng lượt bạn đọc được thư viện phục vụ',NULL,404,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (415,'LBDDPVTTSTV',N'Lượt bạn đọc được phục vụ tại trụ sở thư viện',NULL,414,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (416,'LBDDPVLC',N'Lượt bạn đọc được phục vụ lưu động, luân chuyển',NULL,414,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (417,'LBDQM',N'Lượt bạn đọc được phục vụ thông qua mạng internet',NULL,414,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (418,'LTNTTPV',N'Lượt tài nguyên thông tin phục vụ',NULL,404,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (419,'TSLTNTTPVTTS',N'Tổng số lượt tài nguyên thông tin phục vụ tại trụ sở thư viện',NULL,418,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (420,'TSLTNTTPVLDLC',N'Tổng số lượt tài nguyên thông tin phục vụ lưu động, luân chuyển',NULL,418,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (421,'TSSLTNTTPVQM',N'Tổng số lượt tài nguyên thông tin phục vụ thông qua mạng internet',NULL,418,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (422,'PVLDLCVTCSKVHTT',N'Phục vụ lưu động, luân chuyển và tổ chức các sự kiện văn hóa phục vụ phát triển văn hóa đọc',NULL,404,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (423,'SLLCSB',N'Số lần luân chuyển sách, báo',NULL,422,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (424,'TSDTNSLC',N'Tổng số điểm tiếp nhận sách, báo luân chuyển',NULL,422,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (425,'SLPVLD',N'Số lần phục vụ lưu động',NULL,422,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (426,'TSDPVLD',N'Tổng số điểm phục vụ lưu động',NULL,422,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (427,'TSSKDTC',N'Tổng số sự kiện được tổ chức',NULL,422,0,4);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (428,'HTTCVHCS',N'Hệ thống thiết chế văn hoá cơ sở',NULL,NULL,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (429,'TTVHCT',N'Trung tâm Văn hóa cấp tỉnh (Trung tâm Văn hóa Nghệ thuật; Trung tâm Văn hóa - Điện ảnh; Trung tâm Vă',NULL,428,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (430,'STTVHTTCH',N'Số Trung tâm Văn hoá-Thông tin (Thể thao) cấp huyện (Nhà Văn hoá) và tương đương',NULL,428,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (431,'SNVHCX',N'Số Nhà Văn hoá cấp xã và tương đương',NULL,428,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (432,'SNVHCL',N'Số Nhà Văn hoá cấp làng (thôn, ấp, bản...) và tương đương',NULL,428,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (433,'SNVHCCBNDTK',N'Số Nhà Văn hoá (Cung Văn hoá) của các Bộ, ngành, đoàn thể khác',NULL,428,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (434,'TCCDCT',N'Thiết chế Công đoàn cấp tỉnh',NULL,433,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (435,'TCCDCH',N'Thiết chế Công đoàn cấp huyện',NULL,433,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (436,'TCDTNCT',N'Thiết chế Đoàn Thanh niên cấp tỉnh',NULL,433,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (437,'TCDTNCH',N'Thiết chế Đoàn Thanh niên cấp huyện',NULL,433,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (438,'SDVCTE',N'Số điểm vui chơi trẻ em',NULL,428,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (439,'CT1',N'Cấp tỉnh',NULL,438,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (440,'CH',N'Cấp huyện',NULL,438,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (441,'CX',N'Cấp xã',NULL,438,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (442,'CTT',N'Cấp thôn',NULL,438,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (443,'HDVHVNQCCTCH',N'Hoạt động văn hoá, văn nghệ quần chúng tại cấp tỉnh, cấp huyện',NULL,NULL,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (444,'SCLB',N'Số Câu lạc bộ',NULL,443,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (445,'SCLHHTHDDTC',N'Số cuộc liên hoan, hội thi, hội diễn đã tổ chức',NULL,443,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (446,'TSLX',N'Tổng số người xem',NULL,443,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (447,'HDTTLD',N'Hoạt động tuyên truyền lưu động',NULL,NULL,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (448,'SDTTLDCT',N'Số đội thông tin lưu động cấp tỉnh',NULL,447,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (449,'SDTTLDCH',N'Số đội thông tin lưu động cấp huyện',NULL,447,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (450,'TSBHD',N'Tổng số buổi hoạt động (cấp tỉnh, huyện)',NULL,447,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (451,'TSLNX1',N'Tổng số lượt người xem (cấp tỉnh, huyện)',NULL,447,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (452,'HDVT',N'Hoạt động karaoke, vũ trường trên địa bàn tỉnh',NULL,NULL,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (453,'TSCSKDVT',N'Tổng số cơ sở kinh doanh karaoke, vũ trường',NULL,452,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (454,'TSLVP',N'Tổng số lượt vi phạm',NULL,452,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (455,'HDCDTQVTCLKNCT',N'Hoạt động cổ động trực quan và Tổ chức lễ kỷ niệm cấp tỉnh',NULL,NULL,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (456,'SCCD',N'Số cụm cổ động (bao gồm cụm cổ động tại cửa khẩu biên giới)',NULL,455,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (457,'TCLKN',N'Tổ chức Lễ kỷ niệm',NULL,455,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (458,'XDNSVH',N'Xây dựng Nếp sống văn hóa',NULL,NULL,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (459,'SKDCVH',N'Số khu dân cư văn hóa (Làng, thôn, ấp, bản, tổ dân phố văn hóa và tương đương)',NULL,458,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (460,'SGDVH',N'Số gia đình văn hoá',NULL,458,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (461,'HDQC',N'Hoạt động quảng cáo',NULL,NULL,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (462,'SLDNQC',N'Số lượng doanh nghiệp quảng cáo',NULL,461,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (463,'HSTBSPQC',N'Hồ sơ thông báo sản phẩm quảng cáo',NULL,461,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (464,'SVVPDXL',N'Số vụ vi phạm đã xử lý',NULL,461,0,2);
+        INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (465,'STXPVPDT',N'Số tiền xử phạt vi phạm đã thu (Triệu đồng)',NULL,461,0,2);
+        SET IDENTITY_INSERT DM_ChiTieu OFF
 
--- Thêm chỉ tiêu con với LoaiMauPhieuID từ chỉ tiêu cha
-CREATE PROCEDURE CT_InsertChildren 
-	@MaChiTieu NVARCHAR(100),
-    @ChiTieuChaID INT,
-    @TenChiTieu NVARCHAR(100),
-	@GhiChu NVARCHAR(300)
 
-AS
-BEGIN
-    DECLARE @LoaiMauPhieuID INT;
 
-    -- Lấy LoaiMauPhieuID từ chỉ tiêu cha
-    SELECT @LoaiMauPhieuID = LoaiMauPhieuID 
-    FROM DM_ChiTieu 
-    WHERE ChiTieuID = @ChiTieuChaID;
 
-    -- Thêm chỉ tiêu con với LoaiMauPhieuID từ chỉ tiêu cha
-    INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID, TrangThai)
-    VALUES (@MaChiTieu, @TenChiTieu, @ChiTieuChaID, @LoaiMauPhieuID, 1);
-END;
-GO
--- Tạo procedure để lấy các chỉ tiêu phân cấp theo LoaiMauPhieuID
-CREATE PROCEDURE CT_GetByLoaiMauPhieuID 
-    @LoaiMauPhieuID INT
-AS
-BEGIN
-    -- CTE để lấy tất cả các chỉ tiêu phân cấp
-    WITH CTE_ChiTieu AS (
-        -- Lấy các chỉ tiêu gốc (không có chỉ tiêu cha)
-        SELECT 
-            ChiTieuID, 
-            TenChiTieu, 
-			MaChiTieu,
-            ChiTieuChaID, 
-            LoaiMauPhieuID, 
-            TrangThai,
-			GhiChu
-        FROM DM_ChiTieu
-        WHERE LoaiMauPhieuID = @LoaiMauPhieuID AND ChiTieuChaID IS NULL
+    --ChiTieu GetAll
+        CREATE PROCEDURE CT_GetAll
+            @TenChiTieu NVARCHAR(100) = NULL
+            --,@PageNumber INT = 1,
+            --@PageSize INT = 100
+        AS
+        BEGIN
+            -- Kiểm tra biến đầu vào
+            --IF @PageNumber < 1 SET @PageNumber = 1;
+            --IF @PageSize < 1 SET @PageSize = 100;
 
-        UNION ALL
+            -- CTE để xử lý phân cấp và tìm kiếm
+            WITH RecursiveCTE AS (
+                -- Anchor member: Bắt đầu với các node gốc (nơi ChiTieuChaID là NULL)
+                SELECT 
+                    ChiTieuID,
+                    ChiTieuChaID,
+                    MaChiTieu,
+                    TenChiTieu,
+                    GhiChu,
+                    TrangThai,
+                    LoaiMauPhieuID,
+                    0 AS Level,
+                    CAST('/' + CONVERT(NVARCHAR(50), ChiTieuID) AS NVARCHAR(50)) AS Hierarchy
+                FROM 
+                    DM_ChiTieu
+                WHERE 
+                    ChiTieuChaID IS NULL
 
-        -- Đệ quy để lấy các chỉ tiêu con, cháu,...
-        SELECT 
-            ct.ChiTieuID, 
-            ct.TenChiTieu,
-			ct.MaChiTieu,
-            ct.ChiTieuChaID, 
-            ct.LoaiMauPhieuID, 
-            ct.TrangThai,
-			ct.GhiChu
-        FROM DM_ChiTieu ct
-        INNER JOIN CTE_ChiTieu cte ON ct.ChiTieuChaID = cte.ChiTieuID
-    )
+                UNION ALL
 
-    -- Truy vấn kết quả từ CTE
-    SELECT *
-    FROM CTE_ChiTieu
-    ORDER BY ChiTieuChaID, ChiTieuID;
-END;
-GO
-
-CREATE PROCEDURE CT_Update
-    @ChiTieuID INT,
-	@ChiTieuChaID INT NULL,
-    @MaChiTieu NVARCHAR(100),
-    @TenChiTieu NVARCHAR(100),
-    @LoaiMauPhieuID INT,
-	@GhiChu NVARCHAR(100)
-AS
-BEGIN
-    UPDATE DM_ChiTieu
-    SET MaChiTieu = @MaChiTieu,
-        TenChiTieu = @TenChiTieu,
-        ChiTieuChaID = @ChiTieuChaID,
-        GhiChu = @GhiChu,
-        LoaiMauPhieuID = @LoaiMauPhieuID
-    WHERE ChiTieuID = @ChiTieuID;
-END;
-GO
-
-CREATE PROCEDURE CT_Delete
-    @ChiTieuID INT
-AS
-BEGIN
-    -- Check if the element has children
-    IF EXISTS (
-        SELECT 1
-        FROM DM_ChiTieu
-        WHERE ChiTieuChaID = @ChiTieuID
-    )
-    BEGIN
-        -- Delete children recursively
-        WITH RecursiveCTE AS (
+                -- Recursive member: Join the table with itself to find children
+                SELECT 
+                    c.ChiTieuID,
+                    c.ChiTieuChaID,
+                    c.MaChiTieu,
+                    c.TenChiTieu,
+                    c.GhiChu,
+                    c.TrangThai,
+                    c.LoaiMauPhieuID,
+                    cte.Level + 1 AS Level,
+                    CAST(cte.Hierarchy + '/' + CONVERT(NVARCHAR(50), c.ChiTieuID) AS NVARCHAR(50)) AS Hierarchy
+                FROM 
+                    DM_ChiTieu c
+                INNER JOIN 
+                    RecursiveCTE cte ON c.ChiTieuChaID = cte.ChiTieuID
+            ),
+            -- CTE phụ để lọc các phần tử khớp với từ khóa tìm kiếm
+            FilteredCTE AS (
+                SELECT 
+                    ChiTieuID,
+                    ChiTieuChaID,
+                    MaChiTieu,
+                    TenChiTieu,
+                    GhiChu,
+                    TrangThai,
+                    LoaiMauPhieuID,
+                    Level,
+                    Hierarchy
+                FROM 
+                    RecursiveCTE
+                WHERE 
+                    @TenChiTieu IS NULL
+                    OR LOWER(TenChiTieu) LIKE '%' + LOWER(@TenChiTieu) + '%'
+            ),
+            -- CTE phụ để xác định các phần tử cha và phần tử con của các phần tử cần thiết
+            AllParentsCTE AS (
+                SELECT 
+                    c.*
+                FROM 
+                    FilteredCTE fc
+                INNER JOIN 
+                    RecursiveCTE c ON c.ChiTieuID = fc.ChiTieuChaID
+                UNION ALL
+                SELECT 
+                    c.*
+                FROM 
+                    AllParentsCTE p
+                INNER JOIN 
+                    RecursiveCTE c ON c.ChiTieuID = p.ChiTieuChaID
+            ),
+            AllChildrenCTE AS (
+                SELECT 
+                    c.*
+                FROM 
+                    FilteredCTE fc
+                INNER JOIN 
+                    RecursiveCTE c ON c.ChiTieuChaID = fc.ChiTieuID
+                UNION ALL
+                SELECT 
+                    c.*
+                FROM 
+                    AllChildrenCTE p
+                INNER JOIN 
+                    RecursiveCTE c ON c.ChiTieuChaID = p.ChiTieuID
+            ),
+            -- Kết hợp tất cả các phần tử cần thiết và loại bỏ các bản ghi trùng lặp
+            CombinedCTE AS (
+                SELECT DISTINCT * FROM FilteredCTE
+                UNION
+                SELECT DISTINCT * FROM AllParentsCTE
+                UNION
+                SELECT DISTINCT * FROM AllChildrenCTE
+            )
+            -- Truy vấn phân cấp với phân trang và tính toán tổng số bản ghi
             SELECT 
                 ChiTieuID,
-                ChiTieuChaID
+                ChiTieuChaID,
+                MaChiTieu,
+                TenChiTieu,
+                GhiChu,
+                TrangThai,
+                LoaiMauPhieuID,
+                Level,
+                Hierarchy
+                --,TotalRecords = (SELECT COUNT(*) FROM CombinedCTE)
             FROM 
-                DM_ChiTieu
-            WHERE 
-                ChiTieuChaID = @ChiTieuID
+                CombinedCTE
+            ORDER BY 
+            ChiTieuID, Hierarchy
+            --OFFSET (@PageNumber - 1) * @PageSize ROWS 
+            --FETCH NEXT @PageSize ROWS ONLY
+            OPTION (MAXRECURSION 0);
+        END;
+        GO
 
-            UNION ALL
+    --ChiTieu GetByID
+        CREATE PROCEDURE CT_GetByID
+            @ChiTieuID INT
+        AS
+        BEGIN
+            SELECT * FROM DM_ChiTieu WHERE ChiTieuID = @ChiTieuID;
+        END; 
+        GO
 
-            SELECT 
-                c.ChiTieuID,
-                c.ChiTieuChaID
-            FROM 
-                DM_ChiTieu c
-            INNER JOIN 
-                RecursiveCTE p ON c.ChiTieuChaID = p.ChiTieuID
-        )
-        DELETE FROM DM_ChiTieu
-        WHERE ChiTieuID IN (SELECT ChiTieuID FROM RecursiveCTE);
-    END
+        CREATE PROCEDURE CT_Insert
+            @MaChiTieu NVARCHAR(100),
+            @TenChiTieu NVARCHAR(100),
+            @ChiTieuChaID INT null,
+            @GhiChu NVARCHAR(100),
+            @LoaiMauPhieuID INT
+        AS
+        BEGIN
+            INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, GhiChu, LoaiMauPhieuID)
+            VALUES (@MaChiTieu, @TenChiTieu, @ChiTieuChaID, @GhiChu, @LoaiMauPhieuID);
+            
+            SELECT SCOPE_IDENTITY() AS NewChiTieuID;  -- Return the newly created ID
+        END;
+        GO
 
-    -- Delete the parent element
-    DELETE FROM DM_ChiTieu
-    WHERE ChiTieuID = @ChiTieuID;
-END;
-GO
+    --Thêm chỉ tiêu con với LoaiMauPhieuID từ chỉ tiêu cha
+        CREATE PROCEDURE CT_InsertChildren 
+            @MaChiTieu NVARCHAR(100),
+            @ChiTieuChaID INT,
+            @TenChiTieu NVARCHAR(100),
+            @GhiChu NVARCHAR(300)
+
+        AS
+        BEGIN
+            DECLARE @LoaiMauPhieuID INT;
+
+            -- Lấy LoaiMauPhieuID từ chỉ tiêu cha
+            SELECT @LoaiMauPhieuID = LoaiMauPhieuID 
+            FROM DM_ChiTieu 
+            WHERE ChiTieuID = @ChiTieuChaID;
+
+            -- Thêm chỉ tiêu con với LoaiMauPhieuID từ chỉ tiêu cha
+            INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID, TrangThai)
+            VALUES (@MaChiTieu, @TenChiTieu, @ChiTieuChaID, @LoaiMauPhieuID, 1);
+        END;
+        GO
+
+    --Tạo procedure để lấy các chỉ tiêu phân cấp theo LoaiMauPhieuID
+        CREATE PROCEDURE CT_GetByLoaiMauPhieuID 
+            @LoaiMauPhieuID INT
+        AS
+        BEGIN
+            -- CTE để lấy tất cả các chỉ tiêu phân cấp
+            WITH CTE_ChiTieu AS (
+                -- Lấy các chỉ tiêu gốc (không có chỉ tiêu cha)
+                SELECT 
+                    ChiTieuID, 
+                    TenChiTieu, 
+                    MaChiTieu,
+                    ChiTieuChaID, 
+                    LoaiMauPhieuID, 
+                    TrangThai,
+                    GhiChu
+                FROM DM_ChiTieu
+                WHERE LoaiMauPhieuID = @LoaiMauPhieuID AND ChiTieuChaID IS NULL
+
+                UNION ALL
+
+                -- Đệ quy để lấy các chỉ tiêu con, cháu,...
+                SELECT 
+                    ct.ChiTieuID, 
+                    ct.TenChiTieu,
+                    ct.MaChiTieu,
+                    ct.ChiTieuChaID, 
+                    ct.LoaiMauPhieuID, 
+                    ct.TrangThai,
+                    ct.GhiChu
+                FROM DM_ChiTieu ct
+                INNER JOIN CTE_ChiTieu cte ON ct.ChiTieuChaID = cte.ChiTieuID
+            )
+
+            -- Truy vấn kết quả từ CTE
+            SELECT *
+            FROM CTE_ChiTieu
+            ORDER BY ChiTieuChaID, ChiTieuID;
+        END;
+        GO
+
+    --ChiTieu Update
+        CREATE PROCEDURE CT_Update
+            @ChiTieuID INT,
+            @ChiTieuChaID INT NULL,
+            @MaChiTieu NVARCHAR(100),
+            @TenChiTieu NVARCHAR(100),
+            @LoaiMauPhieuID INT,
+            @GhiChu NVARCHAR(100)
+        AS
+        BEGIN
+            UPDATE DM_ChiTieu
+            SET MaChiTieu = @MaChiTieu,
+                TenChiTieu = @TenChiTieu,
+                ChiTieuChaID = @ChiTieuChaID,
+                GhiChu = @GhiChu,
+                LoaiMauPhieuID = @LoaiMauPhieuID
+            WHERE ChiTieuID = @ChiTieuID;
+        END;
+        GO
+
+    --ChiTieu Delete
+        CREATE PROCEDURE CT_Delete
+            @ChiTieuID INT
+        AS
+        BEGIN
+            -- Check if the element has children
+            IF EXISTS (
+                SELECT 1
+                FROM DM_ChiTieu
+                WHERE ChiTieuChaID = @ChiTieuID
+            )
+            BEGIN
+                -- Delete children recursively
+                WITH RecursiveCTE AS (
+                    SELECT 
+                        ChiTieuID,
+                        ChiTieuChaID
+                    FROM 
+                        DM_ChiTieu
+                    WHERE 
+                        ChiTieuChaID = @ChiTieuID
+
+                    UNION ALL
+
+                    SELECT 
+                        c.ChiTieuID,
+                        c.ChiTieuChaID
+                    FROM 
+                        DM_ChiTieu c
+                    INNER JOIN 
+                        RecursiveCTE p ON c.ChiTieuChaID = p.ChiTieuID
+                )
+                DELETE FROM DM_ChiTieu
+                WHERE ChiTieuID IN (SELECT ChiTieuID FROM RecursiveCTE);
+            END
+
+            -- Delete the parent element
+            DELETE FROM DM_ChiTieu
+            WHERE ChiTieuID = @ChiTieuID;
+        END;
+        GO
 --endregion
 
 --region Stored procedures of DM_TieuChi
@@ -2141,56 +2153,114 @@ CREATE TABLE DM_TieuChi (
 GO 
 
 -- Procedure to retrieve all criteria with paging and hierarchical data
-CREATE PROCEDURE TC_GetAll
-    @TenTieuChi NVARCHAR(100) = NULL
-    --,@PageNumber INT = 1,
-    --@PageSize INT = 20
-AS
-BEGIN
-    -- Validate input parameters
-    --IF @PageNumber < 1 SET @PageNumber = 1;
-    --IF @PageSize < 1 SET @PageSize = 20;
+    CREATE PROCEDURE TC_GetAll
+        @TenTieuChi NVARCHAR(100) = NULL
+        --,@PageNumber INT = 1,
+        --@PageSize INT = 20
+    AS
+    BEGIN
+        -- Validate input parameters
+        --IF @PageNumber < 1 SET @PageNumber = 1;
+        --IF @PageSize < 1 SET @PageSize = 20;
 
-    -- Recursive Common Table Expression (CTE) to build the hierarchy
-    WITH RecursiveCTE AS (
-        -- Anchor member: Start with root nodes (where TieuChiChaID is NULL)
-        SELECT 
-            TieuChiID,
-            TieuChiChaID,
-            MaTieuChi,
-            TenTieuChi,
-            GhiChu,
-            KieuDuLieuCot,
-            TrangThai,
-            LoaiTieuChi,
-            1 AS CapDo,  -- Set level to 1 for root nodes
-            CAST('/' + CONVERT(NVARCHAR(50), TieuChiID) AS NVARCHAR(50)) AS Hierarchy  -- Build hierarchy path
-        FROM 
-            DM_TieuChi
-        WHERE 
-            TieuChiChaID IS NULL
+        -- Recursive Common Table Expression (CTE) to build the hierarchy
+        WITH RecursiveCTE AS (
+            -- Anchor member: Start with root nodes (where TieuChiChaID is NULL)
+            SELECT 
+                TieuChiID,
+                TieuChiChaID,
+                MaTieuChi,
+                TenTieuChi,
+                GhiChu,
+                KieuDuLieuCot,
+                TrangThai,
+                LoaiTieuChi,
+                1 AS CapDo,  -- Set level to 1 for root nodes
+                CAST('/' + CONVERT(NVARCHAR(50), TieuChiID) AS NVARCHAR(50)) AS Hierarchy  -- Build hierarchy path
+            FROM 
+                DM_TieuChi
+            WHERE 
+                TieuChiChaID IS NULL
 
-        UNION ALL
+            UNION ALL
 
-        -- Recursive member: Join to find child nodes
-        SELECT 
-            c.TieuChiID,
-            c.TieuChiChaID,
-            c.MaTieuChi,
-            c.TenTieuChi,
-            c.GhiChu,
-            c.KieuDuLieuCot,
-            c.TrangThai,
-            c.LoaiTieuChi,
-            p.CapDo + 1 AS CapDo,  -- Increase level for child nodes
-            CAST(p.Hierarchy + '/' + CONVERT(NVARCHAR(50), c.TieuChiID) AS NVARCHAR(50)) AS Hierarchy  -- Extend hierarchy path
-        FROM 
-            DM_TieuChi c
-        INNER JOIN 
-            RecursiveCTE p ON c.TieuChiChaID = p.TieuChiID
-    ),
-    -- Filter results based on search criteria
-    FilteredCTE AS (
+            -- Recursive member: Join to find child nodes
+            SELECT 
+                c.TieuChiID,
+                c.TieuChiChaID,
+                c.MaTieuChi,
+                c.TenTieuChi,
+                c.GhiChu,
+                c.KieuDuLieuCot,
+                c.TrangThai,
+                c.LoaiTieuChi,
+                p.CapDo + 1 AS CapDo,  -- Increase level for child nodes
+                CAST(p.Hierarchy + '/' + CONVERT(NVARCHAR(50), c.TieuChiID) AS NVARCHAR(50)) AS Hierarchy  -- Extend hierarchy path
+            FROM 
+                DM_TieuChi c
+            INNER JOIN 
+                RecursiveCTE p ON c.TieuChiChaID = p.TieuChiID
+        ),
+        -- Filter results based on search criteria
+        FilteredCTE AS (
+            SELECT 
+                TieuChiID,
+                TieuChiChaID,
+                MaTieuChi,
+                TenTieuChi,
+                GhiChu,
+                KieuDuLieuCot,
+                TrangThai,
+                LoaiTieuChi,
+                CapDo,
+                Hierarchy
+            FROM 
+                RecursiveCTE
+            WHERE 
+                @TenTieuChi IS NULL
+                OR LOWER(TenTieuChi) LIKE '%' + LOWER(@TenTieuChi) + '%'  -- Case-insensitive search
+        ),
+        -- CTE to identify parent elements of the filtered results
+        AllParentsCTE AS (
+            SELECT 
+                c.*
+            FROM 
+                FilteredCTE fc
+            INNER JOIN 
+                RecursiveCTE c ON c.TieuChiID = fc.TieuChiChaID
+            UNION ALL
+            SELECT 
+                c.*
+            FROM 
+                AllParentsCTE p
+            INNER JOIN 
+                RecursiveCTE c ON c.TieuChiChaID = p.TieuChiChaID
+        ),
+        -- CTE to identify child elements of the filtered results
+        AllChildrenCTE AS (
+            SELECT 
+                c.*
+            FROM 
+                FilteredCTE fc
+            INNER JOIN 
+                RecursiveCTE c ON c.TieuChiChaID = fc.TieuChiID
+            UNION ALL
+            SELECT 
+                c.*
+            FROM 
+                AllChildrenCTE p
+            INNER JOIN 
+                RecursiveCTE c ON c.TieuChiChaID = p.TieuChiID
+        ),
+        -- Combine all relevant elements (filtered, parents, and children) and remove duplicates
+        CombinedCTE AS (
+            SELECT DISTINCT * FROM FilteredCTE
+            UNION
+            SELECT DISTINCT * FROM AllParentsCTE
+            UNION
+            SELECT DISTINCT * FROM AllChildrenCTE
+        )
+        -- Final query with pagination and total records count
         SELECT 
             TieuChiID,
             TieuChiChaID,
@@ -2202,74 +2272,16 @@ BEGIN
             LoaiTieuChi,
             CapDo,
             Hierarchy
+            --,TotalRecords = (SELECT COUNT(*) FROM CombinedCTE)  -- Total record count
         FROM 
-            RecursiveCTE
-        WHERE 
-            @TenTieuChi IS NULL
-            OR LOWER(TenTieuChi) LIKE '%' + LOWER(@TenTieuChi) + '%'  -- Case-insensitive search
-    ),
-    -- CTE to identify parent elements of the filtered results
-    AllParentsCTE AS (
-        SELECT 
-            c.*
-        FROM 
-            FilteredCTE fc
-        INNER JOIN 
-            RecursiveCTE c ON c.TieuChiID = fc.TieuChiChaID
-        UNION ALL
-        SELECT 
-            c.*
-        FROM 
-            AllParentsCTE p
-        INNER JOIN 
-            RecursiveCTE c ON c.TieuChiChaID = p.TieuChiChaID
-    ),
-    -- CTE to identify child elements of the filtered results
-    AllChildrenCTE AS (
-        SELECT 
-            c.*
-        FROM 
-            FilteredCTE fc
-        INNER JOIN 
-            RecursiveCTE c ON c.TieuChiChaID = fc.TieuChiID
-        UNION ALL
-        SELECT 
-            c.*
-        FROM 
-            AllChildrenCTE p
-        INNER JOIN 
-            RecursiveCTE c ON c.TieuChiChaID = p.TieuChiID
-    ),
-    -- Combine all relevant elements (filtered, parents, and children) and remove duplicates
-    CombinedCTE AS (
-        SELECT DISTINCT * FROM FilteredCTE
-        UNION
-        SELECT DISTINCT * FROM AllParentsCTE
-        UNION
-        SELECT DISTINCT * FROM AllChildrenCTE
-    )
-    -- Final query with pagination and total records count
-    SELECT 
-        TieuChiID,
-        TieuChiChaID,
-        MaTieuChi,
-        TenTieuChi,
-        GhiChu,
-        KieuDuLieuCot,
-        TrangThai,
-        LoaiTieuChi,
-        CapDo,
-        Hierarchy
-        --,TotalRecords = (SELECT COUNT(*) FROM CombinedCTE)  -- Total record count
-    FROM 
-        CombinedCTE
-    ORDER BY 
-        Hierarchy  -- Order by hierarchy path
-    --OFFSET (@PageNumber - 1) * @PageSize ROWS 
-    --FETCH NEXT @PageSize ROWS ONLY  -- Pagination
-    OPTION (MAXRECURSION 0);  -- Prevent recursion depth limit
-END;
-GO
+            CombinedCTE
+        ORDER BY 
+            Hierarchy  -- Order by hierarchy path
+        --OFFSET (@PageNumber - 1) * @PageSize ROWS 
+        --FETCH NEXT @PageSize ROWS ONLY  -- Pagination
+        OPTION (MAXRECURSION 0);  -- Prevent recursion depth limit
+    END;
+    GO
 
 CREATE PROC TC_GetByID
 	@TieuChiID INT
