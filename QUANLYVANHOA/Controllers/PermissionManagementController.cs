@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using QUANLYVANHOA.Models;
 using QUANLYVANHOA.Interfaces;
+using QUANLYVANHOA.Models.HeThong;
 
 namespace QUANLYVANHOA.Controllers
 {

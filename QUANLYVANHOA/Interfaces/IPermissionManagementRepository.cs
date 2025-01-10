@@ -1,4 +1,4 @@
-﻿using QUANLYVANHOA.Models;
+﻿using QUANLYVANHOA.Models.HeThong;
 
 namespace QUANLYVANHOA.Interfaces
 {

@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using QUANLYVANHOA.Services;
 using Newtonsoft.Json;
+using QUANLYVANHOA.Interfaces.HeThong;
 
 public class UserService : IUserService
 {

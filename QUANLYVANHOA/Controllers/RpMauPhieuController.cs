@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
+using QUANLYVANHOA.Interfaces.DanhMuc;
 
 namespace QUANLYVANHOA.Models
 {

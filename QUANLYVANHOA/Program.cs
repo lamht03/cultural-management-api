@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using QUANLYVANHOA.Interfaces;
-using QUANLYVANHOA.Repositories;
+using QUANLYVANHOA.Repositories.HeThong;
 using QUANLYVANHOA.Utilities;
 using System.Text;
 using System.Text.Json;
