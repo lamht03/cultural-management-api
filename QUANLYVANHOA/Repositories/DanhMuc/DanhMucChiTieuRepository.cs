@@ -1,7 +1,7 @@
 ﻿using QUANLYVANHOA.Interfaces.DanhMuc;
 using QUANLYVANHOA.Models.DanhMuc;
 using System.Data;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace QUANLYVANHOA.Repositories.DanhMuc
 {

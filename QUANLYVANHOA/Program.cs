@@ -39,8 +39,49 @@ builder.Services.AddRepositoriesAndServices(typeof(SysUserRepository).Assembly);
 //builder.Services.AddScoped<IDanhMucDonViTinhRepository, DanhMucDonViTinhRepository>();
 
 
+//builder.Services.AddSwaggerGen(c =>
+//{
+//    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+//    {
+//        In = ParameterLocation.Header,
+//        Description = "Please enter a valid token",
+//        Name = "Authorization",
+//        Type = SecuritySchemeType.Http,
+//        Scheme = "Bearer"
+//    });
+
+//    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+//    {
+//        {
+//            new OpenApiSecurityScheme
+//            {
+//                Reference = new OpenApiReference
+//                {
+//                    Type = ReferenceType.SecurityScheme,
+//                    Id = "Bearer"
+//                }
+//            },
+//            new List<string>()
+//        }
+//    });
+//});
+
 builder.Services.AddSwaggerGen(c =>
 {
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "Professional API - created by LamHT",
+        Version = "1.0",
+        Description = "An ASP.NET 9 Web API for QLVH Production",
+        TermsOfService = new Uri("https://www.facebook.com/hatung.lam.589"),
+        Contact = new OpenApiContact
+        {
+            Name = "Lam HT",
+            Email = "hatunglambg2003@gmail.com",
+            Url = new Uri("https://github.com/Lam-Ht-IT"),            
+        }
+    });
+
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         In = ParameterLocation.Header,
@@ -65,7 +106,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
 // Register PermissionService
 
 // Authentication and Authorization
@@ -108,16 +148,16 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 // Add Authorization Policies
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("admin@example.com"));
-    options.AddPolicy("UserPolicy", policy => policy.RequireRole("user1@example.com"));
-});
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("admin@example.com"));
+//    options.AddPolicy("UserPolicy", policy => policy.RequireRole("user1@example.com"));
+//});
 
 // Thêm dịch vụ CORS vào DI container
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowLocalhost3001",
+    options.AddPolicy("AllowLocalhost3000",
         policy =>
         {
             policy.WithOrigins("http://localhost:3000") // Thay thế bằng địa chỉ frontend
@@ -129,16 +169,28 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
-
+app.UseStaticFiles();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "QUANLYVANHOA v1");
+        c.InjectStylesheet("/css/swagger-custom.css"); // Inject custom CSS
+        c.InjectJavascript("/js/swagger-custom.js"); // Inject custom JavaScript
+    });
+
 }
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "QUANLYVANHOA v1");
+    c.InjectStylesheet("/css/swagger-custom.css"); // Inject custom CSS
+    c.InjectJavascript("/js/swagger-custom.js"); // Inject custom JavaScript
+});
+
 app.UseHttpsRedirection();
-app.UseCors("AllowLocalhost3001");
+app.UseCors("AllowLocalhost3000");
 app.UseAuthentication();
 app.UseAuthorization();
 

@@ -416,11 +416,58 @@
         CQThuocHeThongPM BIT,
         QTCanBoTiepDan BIT,
         QTVanThuTiepNhanDon bit,
-        QTTiepCongDanvaXuLyDonPhucTap BIT,
+        QTTiepCongDanVaXuLyDonPhucTap BIT,
         QTGiaiQuyetPhucTap BIT
     )
 
+    --Insert records into DM_CoQuan
+
     --DM_CoQuan's Processing
+        GO
+        CREATE PROC CoQuan_GetAll
+            @TenCoQuan NVARCHAR(50) =NULL
+        AS
+        BEGIN
+            -- Use a CTE for recursive hierarchy
+            WITH RecursiveHierarchy AS (
+                -- Anchor member: Start from the specified record(s) or root nodes
+                SELECT 
+                    CoQuanID, 
+                    TenCoQuan, 
+                    MaCoQuan, 
+                    CoQuanChaID,
+                    0 AS Level -- Root level starts at 0
+                FROM DM_CoQuan
+                WHERE 
+                    -- If a search term is provided, start from matching records
+                    (@TenCoQuan IS NOT NULL AND TenCoQuan LIKE '%' + @TenCoQuan + '%')
+                    OR 
+                    -- If no search term, start from root nodes (CoQuanChaID IS NULL)
+                    (@TenCoQuan IS NULL AND CoQuanChaID IS NULL)
+
+                UNION ALL
+
+                -- Recursive member: Find all children of the current node
+                SELECT 
+                    c.CoQuanID, 
+                    c.TenCoQuan, 
+                    c.MaCoQuan, 
+                    c.CoQuanChaID,
+                    rh.Level + 1 -- Increase level for each generation
+                FROM DM_CoQuan c
+                INNER JOIN RecursiveHierarchy rh
+                ON c.CoQuanChaID = rh.CoQuanID
+            )
+            -- Final SELECT statement to display the hierarchy
+            SELECT 
+                CoQuanID, 
+                TenCoQuan, 
+                MaCoQuan, 
+                CoQuanChaID, 
+                Level
+            FROM RecursiveHierarchy
+            ORDER BY Level, CoQuanID; -- Sort by hierarchy level and ID
+        END;
 
 
 --region Authorization Mangement System

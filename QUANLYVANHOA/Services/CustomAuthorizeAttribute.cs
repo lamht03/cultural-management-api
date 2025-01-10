@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using QUANLYVANHOA.Interfaces;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Security.Claims;
 
 public class CustomAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
