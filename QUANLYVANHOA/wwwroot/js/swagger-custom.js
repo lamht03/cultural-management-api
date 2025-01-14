@@ -1,7 +1,2 @@
-﻿// Add custom footer
-window.onload = function () {
-    const footer = document.createElement('div');
-    footer.className = 'swagger-footer';
-    footer.innerHTML = '<div>Created by <b>Lam-HT-Backend</b></div>';
-    document.body.appendChild(footer);
-};
+﻿document.querySelector('.swagger-ui select').style.setProperty('font-family', 'Courier New, Courier, monospace', 'important');
+document.querySelector('.swagger-ui select').style.setProperty('font-weight', 'bolder', 'important');
