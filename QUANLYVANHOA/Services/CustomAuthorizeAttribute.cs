@@ -56,44 +56,6 @@ public class CustomAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
         }
     }
 
-    //public void OnAuthorization(AuthorizationFilterContext context)
-    //{
-    //    if (!context.HttpContext.User.Identity.IsAuthenticated)
-    //    {
-    //        context.Result = new UnauthorizedResult();
-    //        return;
-    //    }
-
-    //    var userName = context.HttpContext.User.Identity.Name;
-    //    var userPermissions = GetUserPermissions(userName, _functionName);
-
-    //    if ((userPermissions & _requiredPermission) != _requiredPermission)
-    //    {
-    //        context.Result = new ForbidResult();
-    //    }
-    //}
-
-    private int GetUserPermissions(string userName, string functionName)
-    {
-        int permissions = 0;
-        //string connectionString = "Server=192.168.100.129;Database=DB_QuanLyVanHoa;User Id=The Debuggers;Password=ifyouwanttoconnectyouneedtobecomeaprofessionalprogrammer;";
-        string connectionString = new Connection().GetConnectionString();
-        using (SqlConnection conn = new SqlConnection(connectionString))
-        {
-            conn.Open();
-            SqlCommand cmd = new SqlCommand("FIG_GetAllUserFunctionsAndPermissions", conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@UserName", userName);
-            cmd.Parameters.AddWithValue("@FunctionName", functionName);
-
-            object result = cmd.ExecuteScalar();
-            if (result != null)
-            {
-                permissions = Convert.ToInt32(result);
-            }
-        }
-        return permissions;
-    }
 
     public static Dictionary<string, int> GetAllUserFunctionsAndPermissions(string userName)
     {

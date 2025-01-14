@@ -12,10 +12,10 @@ using QUANLYVANHOA.Interfaces.HeThong;
 
 public class UserService : IUserService
 {
-    private readonly ISysUserRepository _userRepository;
+    private readonly IHeThongNguoiDungRepository _userRepository;
     private readonly IConfiguration _configuration;
 
-    public UserService(ISysUserRepository userRepository, IConfiguration configuration)
+    public UserService(IHeThongNguoiDungRepository userRepository, IConfiguration configuration)
     {
         _userRepository = userRepository;
         _configuration = configuration;
@@ -23,7 +23,7 @@ public class UserService : IUserService
 
     public async Task<(bool IsValid, string Token, string RefreshToken, string Message)> AuthenticateUser(string userName, string password)
     {
-        var user = await _userRepository.VerifyLogin(userName, password);
+        var user = await _userRepository.DangNhap(userName, password);
 
         if (user == null)
         {
@@ -57,14 +57,14 @@ public class UserService : IUserService
         var refreshTokenExpiry = DateTime.UtcNow.AddDays(7); // Refresh token có thời hạn 7 ngày
 
         // Gọi stored procedure để lưu session mới
-        await _userRepository.CreateSession(user.UserID, refreshToken, refreshTokenExpiry);
+        await _userRepository.TaoPhienDangNhap(user.NguoiDungID, refreshToken, refreshTokenExpiry);
         return (true, token, refreshToken, "Login successful.");
     }
 
     public async Task<(string Token, string RefreshToken)> RefreshToken(string refreshToken)
     {
         // Lấy session của người dùng dựa trên refresh token
-        var session = await _userRepository.GetSessionByRefreshToken(refreshToken);
+        var session = await _userRepository.LayPhienDangNhapTheoRefreshToken(refreshToken);
 
         // Kiểm tra xem session có tồn tại và refresh token có hết hạn hay không
         if (session == null || session.ExpiryDate <= DateTime.UtcNow || session.IsRevoked)
@@ -73,14 +73,14 @@ public class UserService : IUserService
         }
 
         // Lấy thông tin người dùng từ database
-        var user = await _userRepository.GetByID(session.UserID);
+        var user = await _userRepository.LayTheoID(session.NguoiDungID);
         if (user == null)
         {
             return (null, null); // Người dùng không tồn tại
         }
 
         // Lấy các quyền của người dùng từ hệ thống
-        var permissions = CustomAuthorizeAttribute.GetAllUserFunctionsAndPermissions(user.UserName);
+        var permissions = CustomAuthorizeAttribute.GetAllUserFunctionsAndPermissions(user.TenNguoiDung);
 
         var jwtSettings = _configuration.GetSection("Jwt");
         var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
@@ -90,9 +90,9 @@ public class UserService : IUserService
         {
             Subject = new ClaimsIdentity(new[]
             {
-            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.Name, user.TenNguoiDung),
             new Claim(ClaimTypes.Role, user.Email),
-            new Claim("FunctionsAndPermissions", JsonConvert.SerializeObject(permissions)) // Quyền của người dùng
+            new Claim("Access Permissions", JsonConvert.SerializeObject(permissions)) // Quyền của người dùng
         }),
             Expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpiryMinutes"])),
             Issuer = jwtSettings["Issuer"],
@@ -107,7 +107,7 @@ public class UserService : IUserService
         var newRefreshToken = GenerateRefreshToken();
 
         // Cập nhật refresh token và thời gian hết hạn mới vào cơ sở dữ liệu
-        await _userRepository.UpdateSessionRefreshToken(session.SessionID, newRefreshToken, DateTime.UtcNow.AddDays(7));
+        await _userRepository.CapNhatRefreshToken(session.PhienDangNhapID, newRefreshToken, DateTime.UtcNow.AddDays(7));
 
         return (newToken, newRefreshToken); // Trả về access token và refresh token mới
     }

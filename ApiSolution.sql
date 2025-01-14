@@ -424,8 +424,8 @@
 
     --DM_CoQuan's Processing
         GO
-        CREATE PROC CoQuan_GetAll
-            @TenCoQuan NVARCHAR(50) =NULL
+        CREATE PROCEDURE DMCoQuan_GetAll
+            @TenCoQuan NVARCHAR(50) = NULL -- Input variable for agency name
         AS
         BEGIN
             -- Use a CTE for recursive hierarchy
@@ -436,6 +436,19 @@
                     TenCoQuan, 
                     MaCoQuan, 
                     CoQuanChaID,
+                    CapID,
+                    ThamQuyenID,
+                    TinhID,
+                    HuyenID,
+                    XaID,
+                    CQCoHieuLuc,
+                    CQCapUBND,
+                    CQCapThanhTra,
+                    CQThuocHeThongPM,
+                    QTCanBoTiepDan,
+                    QTVanThuTiepNhanDon,
+                    QTTiepCongDanvaXuLyDonPhucTap,
+                    QTGiaiQuyetPhucTap,
                     0 AS Level -- Root level starts at 0
                 FROM DM_CoQuan
                 WHERE 
@@ -453,39 +466,64 @@
                     c.TenCoQuan, 
                     c.MaCoQuan, 
                     c.CoQuanChaID,
-                    rh.Level + 1 -- Increase level for each generation
+                    c.CapID,
+                    c.ThamQuyenID,
+                    c.TinhID,
+                    c.HuyenID,
+                    c.XaID,
+                    c.CQCoHieuLuc,
+                    c.CQCapUBND,
+                    c.CQCapThanhTra,
+                    c.CQThuocHeThongPM,
+                    c.QTCanBoTiepDan,
+                    c.QTVanThuTiepNhanDon,
+                    c.QTTiepCongDanvaXuLyDonPhucTap,
+                    c.QTGiaiQuyetPhucTap,
+                    rh.Level + 1 -- Increment the level for each child node
                 FROM DM_CoQuan c
-                INNER JOIN RecursiveHierarchy rh
-                ON c.CoQuanChaID = rh.CoQuanID
+                INNER JOIN RecursiveHierarchy rh ON c.CoQuanChaID = rh.CoQuanID
             )
             -- Final SELECT statement to display the hierarchy
             SELECT 
                 CoQuanID, 
                 TenCoQuan, 
                 MaCoQuan, 
-                CoQuanChaID, 
-                Level
+                CoQuanChaID,
+                CapID,
+                ThamQuyenID,
+                TinhID,
+                HuyenID,
+                XaID,
+                CQCoHieuLuc,
+                CQCapUBND,
+                CQCapThanhTra,
+                CQThuocHeThongPM,
+                QTCanBoTiepDan,
+                QTVanThuTiepNhanDon,
+                QTTiepCongDanvaXuLyDonPhucTap,
+                QTGiaiQuyetPhucTap,
+                Level -- Include the hierarchical level
             FROM RecursiveHierarchy
-            ORDER BY Level, CoQuanID; -- Sort by hierarchy level and ID
+            ORDER BY Level, CoQuanID; -- Sort by level and ID for better structure visualization
         END;
 
 
 --region Authorization Mangement System
     --region Stored procedures of Users
-        CREATE TABLE Sys_User (	
-            UserID INT PRIMARY KEY IDENTITY(1,1),
-            UserName NVARCHAR(50),
-            FullName NVARCHAR (100) null,
+        CREATE TABLE HT_NguoiDung (	
+            NguoiDungID INT PRIMARY KEY IDENTITY(1,1),
+            TenNguoiDung NVARCHAR(50),
+            TenDayDu NVARCHAR (100) null,
             Email NVARCHAR(50),
-            Password NVARCHAR(100),
-            Status BIT ,
-            Note NVARCHAR(100),
+            MatKhau NVARCHAR(100),
+            TrangThai BIT ,
+            GhiChu NVARCHAR(100),
         );
         GO
 
         --Get All Users
-            ALTER PROCEDURE UMS_GetListPaging
-                @UserName NVARCHAR(50) = NULL, -- Updated to match the column size
+            CREATE PROCEDURE NguoiDung_GetListPaging
+                @TenNguoiDung NVARCHAR(50) = NULL, -- Updated to match the column size
                 @PageNumber INT = 1,
                 @PageSize INT = 20
             AS
@@ -493,21 +531,15 @@
                 -- Calculate the total number of records matching the search criteria
                 DECLARE @TotalRecords INT;
                 SELECT @TotalRecords = COUNT(*)
-                FROM Sys_User
-                WHERE @UserName IS NULL OR UserName LIKE '%' + @UserName + '%';
+                FROM HT_NguoiDung
+                WHERE @TenNguoiDung IS NULL OR TenNguoiDung LIKE '%' + @TenNguoiDung + '%';
 
                 -- Return data for the current page
                 SELECT 
-                    UserID,
-                    UserName,
-                    FullName,
-                    Email,       -- Added Email field
-                    Password,
-                    Status,      -- Added Status field
-                    Note		 -- Added Note field
-                FROM Sys_User
-                WHERE @UserName IS NULL OR UserName LIKE '%' + @UserName + '%'
-                ORDER BY UserID  -- Can be adjusted based on sorting requirements
+                    a.*		 -- Added Note field
+                FROM HT_NguoiDung a
+                WHERE @TenNguoiDung IS NULL OR TenNguoiDung LIKE '%' + @TenNguoiDung + '%'
+                ORDER BY NguoiDungID  -- Can be adjusted based on sorting requirements
                 OFFSET (@PageNumber - 1) * @PageSize ROWS
                 FETCH NEXT @PageSize ROWS ONLY;
 
@@ -516,113 +548,98 @@
             END
             GO
         --Get User by UserID
-            CREATE PROCEDURE UMS_GetByID
-                @UserID int
+            CREATE PROCEDURE NguoiDung_GetByID
+                @NguoiDungID int
             AS
             BEGIN
-                SELECT * FROM Sys_User WHERE UserID = @UserID;
-            END
-            GO
-        --Get by UserName
-            CREATE PROC UMS_GetByUserName
-                @UserName NVARCHAR(50)
-            AS
-            BEGIN
-                SELECT * FROM Sys_User su WHERE su.UserName = @UserName
-            END	
-            GO
-        --Get User By Refresh Token
-            CREATE PROC UMS_GetByRefreshToken
-                @RefreshToken NVARCHAR(500)
-            AS
-            BEGIN
-                SELECT * FROM Sys_User  WHERE @RefreshToken = RefreshToken
+                SELECT * FROM HT_NguoiDung WHERE NguoiDungID = @NguoiDungID;
             END
             GO
         --Get by Email
-            CREATE PROCEDURE UMS_GetByEmail
+            CREATE PROCEDURE NguoiDung_GetByEmail
                 @Email NVARCHAR(255)
             AS
             BEGIN
                 SET NOCOUNT ON;
                 
-                SELECT * FROM Sys_User
+                SELECT * FROM HT_NguoiDung
                 WHERE Email = @Email;
+                SET NOCOUNT OFF;
             END;
             GO
         --Create User
-            ALTER PROCEDURE UMS_Create
-                @UserName NVARCHAR(50),
-                @FullName NVARCHAR (100),
+            CREATE PROCEDURE NguoiDung_Create
+                @TenNguoiDung NVARCHAR(50),
+                @TenDayDu NVARCHAR (100),
                 @Email NVARCHAR(50),
-                @Password NVARCHAR(100),
-                @Status BIT,
-                @Note NVARCHAR(100) = 'Regular user'
+                @MatKhau NVARCHAR(100),
+                @TrangThai BIT,
+                @GhiChu NVARCHAR(100) = 'Regular user'
             AS
             BEGIN
                 -- Insert new user record
-                INSERT INTO Sys_User (UserName, Email, Password, Status, Note)
-                VALUES (@UserName, @Email, @Password, @Status, @Note);
+                INSERT INTO HT_NguoiDung (TenNguoiDung, Email, MatKhau, TrangThai, GhiChu)
+                VALUES (@TenNguoiDung, @Email, @MatKhau, @TrangThai, @GhiChu);
             END
             GO
         --Update User
-            ALTER PROCEDURE UMS_Update
-                @UserID INT,
-                @UserName NVARCHAR(50),
-                @FullName NVARCHAR(100),
+            CREATE PROCEDURE NguoiDung_Update
+                @NguoiDungID INT,
+                @TenNguoiDung NVARCHAR(50),
+                @TenDayDu NVARCHAR(100),
                 @Email NVARCHAR(50),
-                @Password NVARCHAR(100),
-                @Status BIT,
-                @Note NVARCHAR(100)
+                @MatKhau NVARCHAR(100),
+                @TrangThai BIT,
+                @GhiChu NVARCHAR(100)
             AS
             BEGIN
                 -- Update existing user record
-                UPDATE Sys_User
+                UPDATE HT_NguoiDung
                 SET 
-                    UserName = @UserName,
+                    TenNguoiDung = @TenNguoiDung,
                     Email = @Email,
-                    Password = @Password,
-                    Status = @Status,
-                    Note = @Note,
-                    FullName = @FullName
-                WHERE UserID = @UserID;
+                    MatKhau = @MatKhau,
+                    TrangThai = @TrangThai,
+                    GhiChu = @GhiChu,
+                    TenDayDu = @TenDayDu
+                WHERE NguoiDungID = @NguoiDungID;
             END
             GO
         --Delete User
-            ALTER PROCEDURE [dbo].[UMS_Delete]
-                @UserID INT
+            CREATE PROCEDURE [dbo].[NguoiDung_Delete]
+                @NguoiDungID INT
             AS
             BEGIN
-                DELETE FROM Sys_UserInGroup
-                WHERE UserID = @UserID;
-                DELETE FROM Session
-                WHERE UserID = @UserID
-                DELETE FROM Sys_User
-                WHERE UserID = @UserID;
+                DELETE FROM HT_NhomNguoiDung
+                WHERE NguoiDungID = @NguoiDungID;
+                DELETE FROM HT_PhienDangNhap
+                WHERE @NguoiDungID = @NguoiDungID
+                DELETE FROM HT_NguoiDung
+                WHERE NguoiDungID = @NguoiDungID;
             END
 
             GO
         --Veryfy Login
-            create PROCEDURE VerifyLogin
-                @UserName NVARCHAR(50),
-                @Password NVARCHAR(100)
+            CREATE PROCEDURE VerifyLogin
+                @TenNguoiDung NVARCHAR(50),
+                @MatKhau NVARCHAR(100)
             AS
             BEGIN
                 SELECT *
-                FROM Sys_User
-                WHERE UserName = @UserName AND Password = @Password;
+                FROM HT_NguoiDung
+                WHERE TenNguoiDung = @TenNguoiDung AND MatKhau = @MatKhau;
             END
             GO
     --region Stored procedures of UserGroups
-        CREATE TABLE Sys_Group (
-            GroupID INT PRIMARY KEY IDENTITY(1,1),
-            GroupName NVARCHAR(50),
-            Description NVARCHAR(100)
+        CREATE TABLE HT_NhomPhanQuyen (
+            NhomPhanQuyenID INT PRIMARY KEY IDENTITY(1,1),
+            TenNhomPhanQuyen NVARCHAR(50),
+            MoTa NVARCHAR(100)
         );
         GO
         --Get All Group
-            create PROCEDURE GMS_GetListPaging
-                @GroupName NVARCHAR(50) = NULL, -- Updated to match the column size
+            CREATE PROCEDURE NhomPhanQuyen_GetListPaging
+                @TenNhomPhanQuyen NVARCHAR(50) = NULL, -- Updated to match the column size
                 @PageNumber INT = 1,
                 @PageSize INT = 20
             AS
@@ -630,17 +647,17 @@
                 -- Calculate the total number of records matching the search criteria
                 DECLARE @TotalRecords INT;
                 SELECT @TotalRecords = COUNT(*)
-                FROM Sys_Group sug
-                WHERE @GroupName IS NULL OR GroupName LIKE '%' + @GroupName + '%';
+                FROM HT_NhomPhanQuyen sug
+                WHERE @TenNhomPhanQuyen IS NULL OR TenNhomPhanQuyen LIKE '%' + @TenNhomPhanQuyen + '%';
 
                 -- Return data for the current page
                 SELECT 
-                    sug.GroupID,
-                    sug.GroupName,
-                    sug.Description  
-                FROM Sys_Group sug
-                WHERE @GroupName IS NULL OR GroupName LIKE '%' + @GroupName + '%'
-                ORDER BY sug.GroupID  -- Can be adjusted based on sorting requirements
+                    sug.NhomPhanQuyenID,
+                    sug.TenNhomPhanQuyen,
+                    sug.MoTa  
+                FROM HT_NhomPhanQuyen sug
+                WHERE @TenNhomPhanQuyen IS NULL OR TenNhomPhanQuyen LIKE '%' + @TenNhomPhanQuyen + '%'
+                ORDER BY sug.NhomPhanQuyenID  -- Can be adjusted based on sorting requirements
                 OFFSET (@PageNumber - 1) * @PageSize ROWS
                 FETCH NEXT @PageSize ROWS ONLY;
 
@@ -649,58 +666,58 @@
             END
             GO
         --Get Group By ID
-                CREATE PROC GMS_GetByID
-                    @GroupID INT 
+                CREATE PROC NhomPhanQuyen_GetByID
+                    @NhomPhanQuyenID INT 
                 AS 
                 BEGIN
-                    SELECT * FROM Sys_Group sg WHERE  sg.GroupID = @GroupID
+                    SELECT * FROM HT_NhomPhanQuyen sg WHERE  sg.NhomPhanQuyenID = @NhomPhanQuyenID
                 END
                 GO
         --Create Group 
-            CREATE PROCEDURE GMS_Create
-                @GroupName NVARCHAR(50),
-                @Description NVARCHAR(100)
+            CREATE PROCEDURE NhomPhanQuyen_Create
+                @TenNhomPhanQuyen NVARCHAR(50),
+                @MoTa NVARCHAR(100)
             AS
             BEGIN
                 -- Insert a new record into Sys_Group
-                INSERT INTO Sys_Group (GroupName, Description)
-                VALUES (@GroupName, @Description);
+                INSERT INTO HT_NhomPhanQuyen (TenNhomPhanQuyen, MoTa)
+                VALUES (@TenNhomPhanQuyen, @MoTa);
             END
             GO
         --Update Group
-            CREATE PROCEDURE GMS_Update
-                @GroupID INT,
-                @GroupName NVARCHAR(50),
-                @Description NVARCHAR(100)
+            CREATE PROCEDURE NhomPhanQuyen_Update
+                @NhomPhanQuyenID INT,
+                @TenNhomPhanQuyen NVARCHAR(50),
+                @MoTa NVARCHAR(100)
             AS
             BEGIN
                 -- Update the existing record in Sys_Group
-                UPDATE Sys_Group
-                SET GroupName = @GroupName,
-                    Description = @Description
-                WHERE GroupID = @GroupID;
+                UPDATE HT_NhomPhanQuyen
+                SET TenNhomPhanQuyen = @TenNhomPhanQuyen,
+                    MoTa = @MoTa
+                WHERE NhomPhanQuyenID = @NhomPhanQuyenID;
             END
             GO
         --Delete Group
-            CREATE PROCEDURE GMS_Delete
-                @GroupID INT
+            CREATE PROCEDURE NhomPhanQuyen_Delete
+                @NhomPhanQuyenID INT
             AS
             BEGIN
                 -- Delete the record from Sys_Group
-                DELETE FROM Sys_Group
-                WHERE GroupID = @GroupID;
+                DELETE FROM HT_NhomPhanQuyen
+                WHERE NhomPhanQuyenID = @NhomPhanQuyenID;
             END
             GO
     --region Stored procedures of Function
-        CREATE TABLE Sys_Function (
-            FunctionID INT PRIMARY KEY IDENTITY(1,1),
-            FunctionName NVARCHAR(50),
-            Description NVARCHAR(100),
+        CREATE TABLE HT_ChucNang (
+            ChucNangID INT PRIMARY KEY IDENTITY(1,1),
+            TenChucNang NVARCHAR(50),
+            MoTa NVARCHAR(100),
         );
         GO
         -- GetListPaging of Function
-            CREATE PROCEDURE FMS_GetListPaging
-                @FunctionName NVARCHAR(50) = NULL, -- Updated to match the column size
+            CREATE PROCEDURE ChucNang_GetListPaging
+                @TenChucNang NVARCHAR(50) = NULL, -- Updated to match the column size
                 @PageNumber INT = 1,
                 @PageSize INT = 20
             AS
@@ -708,18 +725,17 @@
                 -- Calculate the total number of records matching the search criteria
                 DECLARE @TotalRecords INT;
                 SELECT @TotalRecords = COUNT(*)
-                FROM Sys_Function sf
-                WHERE @FunctionName IS NULL OR FunctionName LIKE '%' + @FunctionName + '%';
+                FROM HT_ChucNang 
+                WHERE @TenChucNang IS NULL OR TenChucNang LIKE '%' + @TenChucNang + '%';
 
                 -- Return data for the current page
                 SELECT 
-                    FunctionID,
-                    FunctionName,
-                    Description      
-                
-                FROM Sys_Function sf
-                WHERE @FunctionName IS NULL OR FunctionName LIKE '%' + @FunctionName + '%'
-                ORDER BY FunctionID  -- Can be adjusted based on sorting requirements
+                    ChucNangID,
+                    TenChucNang,
+                    MoTa      
+                FROM HT_ChucNang 
+                WHERE @TenChucNang IS NULL OR TenChucNang LIKE '%' + @TenChucNang + '%'
+                ORDER BY ChucNangID  -- Can be adjusted based on sorting requirements
                 OFFSET (@PageNumber - 1) * @PageSize ROWS
                 FETCH NEXT @PageSize ROWS ONLY;
 
@@ -728,311 +744,224 @@
             END
             GO
         -- Get Function by ID
-            create PROC FMS_GetByID
-                @FunctionID int
+            CREATE PROC ChucNang_GetByID
+                @ChucNangID int
             AS
             BEGIN
-                SELECT * FROM Sys_Function sf WHERE sf.FunctionID = @FunctionID
+                SELECT * FROM HT_ChucNang sf WHERE sf.ChucNangID = @ChucNangID
             END
             GO
         -- Create Function
-            CREATE PROCEDURE FMS_Create
-                @FunctionName NVARCHAR(50),
-                @Description NVARCHAR(100)
+            CREATE PROCEDURE ChucNang_Create
+                @TenChucNang NVARCHAR(50),
+                @MoTa NVARCHAR(100)
             AS
             BEGIN
                 -- Insert a new record into Sys_Function
-                INSERT INTO Sys_Function (FunctionName, Description)
-                VALUES (@FunctionName, @Description);
+                INSERT INTO HT_ChucNang (TenChucNang, MoTa)
+                VALUES (@TenChucNang, @MoTa);
             END
             GO
         -- Update Function
-            CREATE PROCEDURE FMS_Update
-                @FunctionID INT,
-                @FunctionName NVARCHAR(50),
-                @Description NVARCHAR(100)
+            CREATE PROCEDURE ChucNang_Update
+                @ChucNangID INT,
+                @TenChucNang NVARCHAR(50),
+                @MoTa NVARCHAR(100)
             AS
             BEGIN
                 -- Update the existing record in Sys_Function
-                UPDATE Sys_Function
-                SET FunctionName = @FunctionName,
-                    Description = @Description
-                WHERE FunctionID = @FunctionID;
+                UPDATE HT_ChucNang
+                SET TenChucNang = @TenChucNang,
+                    MoTa = @MoTa
+                WHERE ChucNangID = @ChucNangID;
             END
             GO
         -- Delete Function
-            ALTER PROCEDURE [dbo].[FMS_Delete]
-                @FunctionID INT
+            CREATE PROCEDURE [dbo].[ChucNang_Delete]
+                @ChucNangID INT
             AS
             BEGIN
                 -- Delete the record from Sys_Function
-                DELETE FROM Sys_FunctionInGroup
-                WHERE FunctionID = @FunctionID;
-                DELETE FROM Sys_Function
-                WHERE FunctionID = @FunctionID;
+                DELETE FROM HT_NhomChucNang
+                WHERE @ChucNangID = @ChucNangID;
+                DELETE FROM HT_ChucNang
+                WHERE ChucNangID = @ChucNangID;
             END
     --region Stored procedures of UserInGroup
-        CREATE TABLE Sys_UserInGroup (
-            UserInGroupID INT PRIMARY KEY IDENTITY(1,1) ,
-            UserID INT NOT NULL,
-            GroupID INT NOT NULL,
-            FOREIGN KEY (UserID) REFERENCES Sys_User(UserID),
-            FOREIGN KEY (GroupID) REFERENCES Sys_Group(GroupID)
+        CREATE TABLE HT_NhomNguoiDung (
+            NhomNguoiDungID INT PRIMARY KEY IDENTITY(1,1) ,
+            NguoiDungID INT NOT NULL,
+            NhomPhanQuyenID INT NOT NULL,
+            FOREIGN KEY (NguoiDungID) REFERENCES HT_NguoiDung(NguoiDungID),
+            FOREIGN KEY (NhomPhanQuyenID) REFERENCES HT_NhomPhanQuyen(NhomPhanQuyenID)
         );
         GO
 
-        CREATE PROCEDURE UIG_GetAll
-        AS
-        BEGIN
-            SELECT UserInGroupID, UserID, GroupID
-            FROM Sys_UserInGroup;
-        END;
-        GO
-
-        CREATE PROCEDURE UIG_GetByGroupID
-            @GroupID INT
-        AS
-        BEGIN
-            SELECT UserInGroupID, UserID, GroupID
-            FROM Sys_UserInGroup
-            WHERE GroupID = @GroupID;
-        END;
-        GO	
-
-        CREATE PROCEDURE UIG_GetByUserID
-            @UserID INT
-        AS
-        BEGIN
-            SELECT UserInGroupID, UserID, GroupID
-            FROM Sys_UserInGroup
-            WHERE UserID = @UserID;
-        END;
-        GO	
-
-        CREATE PROCEDURE UIG_GetByID
-            @UserInGroupID INT
-        AS
-        BEGIN
-            SELECT UserInGroupID, UserID, GroupID
-            FROM Sys_UserInGroup
-            WHERE UserInGroupID = @UserInGroupID;
-        END;
-        GO
 
         -- Add User to Group
-            CREATE PROC UIG_Create  
-                @UserID INT ,
-                @GroupID INT
+            CREATE PROC NhomNguoiDung_AddUserToAuthorizationGroup  
+                @NguoiDungID INT ,
+                @NhomPhanQuyenID INT
             AS
             BEGIN
-                INSERT INTO Sys_UserInGroup (UserID, GroupID)
-                VALUES (@UserID,@GroupID);
+                INSERT INTO HT_NhomNguoiDung (NguoiDungID, NhomPhanQuyenID)
+                VALUES (@NguoiDungID,@NhomPhanQuyenID);
             END
             GO
 
-        CREATE PROCEDURE UIG_Update
-            @UserInGroupID INT,
-            @UserID INT,
-            @GroupID INT
+        CREATE PROCEDURE NhomNguoiDung_DeleteUserInAuthorizationGroup
+            @NguoiDungID INT,
+            @NhomNguoiDungID INT
         AS
         BEGIN
-            UPDATE Sys_UserInGroup
-            SET UserID = @UserID, GroupID = @GroupID
-            WHERE UserInGroupID = @UserInGroupID;
-        END;
-        GO
-
-        create PROCEDURE UIG_Delete
-            @UserInGroupID INT
-        AS
-        BEGIN
-            DELETE FROM Sys_UserInGroup
-            WHERE UserInGroupID = @UserInGroupID;
+            DELETE FROM HT_NhomNguoiDung
+            WHERE NguoiDungID = @NguoiDungID AND NhomNguoiDungID = @NhomNguoiDungID
         END;
         GO	
     --region Stored procedures of FunctionInGroup
-    CREATE TABLE Sys_FunctionInGroup (
-        FunctionInGroupID INT PRIMARY KEY IDENTITY(1,1),
-        FunctionID INT,
-        GroupID INT,
-        Permission INT NOT NULL, 
-        FOREIGN KEY (FunctionID) REFERENCES Sys_Function(FunctionID),
-        FOREIGN KEY (GroupID) REFERENCES Sys_Group(GroupID)
+    CREATE TABLE HT_NhomChucNang (
+        NhomChucNangID INT PRIMARY KEY IDENTITY(1,1),
+        ChucNangID INT,
+        NhomPhanQuyenID INT,
+        Quyen INT NOT NULL, 
+        FOREIGN KEY (ChucNangID) REFERENCES HT_ChucNang(ChucNangID),
+        FOREIGN KEY (NhomPhanQuyenID) REFERENCES HT_NhomPhanQuyen(NhomPhanQuyenID)
     );
     GO
 
-    CREATE PROCEDURE FIG_GetAll
+    CREATE PROC NhomChucNang_GetUserFunctionAccess
+    @NhomPhanQuyenID INT
     AS
     BEGIN
-        SELECT FunctionInGroupID, FunctionID, GroupID, Permission
-        FROM Sys_FunctionInGroup;
+        SELECT a.TenChucNang,a.[MoTa],b.NhomPhanQuyenID, c.TenNhomPhanQuyen,b.Quyen FROM HT_ChucNang a 
+        JOIN HT_NhomChucNang b on a.ChucNangID = b.ChucNangID 
+        JOIN HT_NhomPhanQuyen c on b.NhomPhanQuyenID = c.NhomPhanQuyenID 
+        where c.NhomPhanQuyenID = @NhomPhanQuyenID
     END
     GO
 
-    CREATE PROCEDURE FIG_GetByGroupID
-        @GroupID INT
+    CREATE PROCEDURE NhomChucNang_AddFunctionToAuthorizationsGroup
+        @ChucNangID INT,
+        @NhomPhanQuyenID INT,
+        @Quyen INT
     AS
     BEGIN
-        SELECT FunctionInGroupID, FunctionID, GroupID, Permission
-        FROM Sys_FunctionInGroup
-        WHERE GroupID = @GroupID;
-    END
+        INSERT INTO HT_NhomChucNang (ChucNangID, NhomPhanQuyenID, Quyen)
+        VALUES (@ChucNangID, @NhomPhanQuyenID, @Quyen);
+    END;
     GO
 
-    CREATE PROCEDURE FIG_GetByFunctionID
-        @FunctionID INT
+    CREATE PROCEDURE NhomChucNang_UpdateFunctionalAccessPermissions
+        @ChucNangID INT,
+        @NhomPhanQuyenID INT,
+        @Quyen INT
     AS
     BEGIN
-        SELECT FunctionInGroupID, FunctionID, GroupID, Permission
-        FROM Sys_FunctionInGroup
-        WHERE FunctionID = @FunctionID;
-    END
-    GO
-
-    CREATE PROCEDURE FIG_GetByID
-        @FunctionInGroupID INT
-    AS
-    BEGIN
-        SELECT FunctionInGroupID, FunctionID, GroupID, Permission
-        FROM Sys_FunctionInGroup
-        WHERE FunctionInGroupID = @FunctionInGroupID;
-    END
-    GO
-
-    CREATE PROCEDURE FIG_Create
-        @FunctionID INT,
-        @GroupID INT,
-        @Permission INT
-    AS
-    BEGIN
-        INSERT INTO Sys_FunctionInGroup (FunctionID, GroupID, Permission)
-        VALUES (@FunctionID, @GroupID, @Permission);
+        UPDATE HT_NhomChucNang
+        SET Quyen = @Quyen
+        WHERE ChucNangID = @ChucNangID AND NhomPhanQuyenID = @NhomPhanQuyenID;
     END;
     GO	
 
-    CREATE PROCEDURE FIG_Update
-        @FunctionID INT,
-        @GroupID INT,
-        @Permission INT
+    CREATE PROCEDURE NhomChucNang_DeleteFunctionInAuthorizationGroup
+        @ChucNangID INT,
+        @NhomPhanQuyenID INT
     AS
     BEGIN
-        UPDATE Sys_FunctionInGroup
-        SET Permission = @Permission
-        WHERE FunctionID = @FunctionID AND GroupID = @GroupID;
-    END;
-    GO	
-
-    CREATE PROCEDURE FIG_Delete
-        @FunctionInGroupID INT
-    AS
-    BEGIN
-        DELETE FROM Sys_FunctionInGroup
-        WHERE FunctionInGroupID = @FunctionInGroupID;
+        DELETE FROM HT_NhomChucNang
+        WHERE ChucNangID = @ChucNangID and NhomPhanQuyenID = @NhomPhanQuyenID;
     END
     GO	
 
-    CREATE PROCEDURE FIG_GetAllUserPermissions
-        @UserName NVARCHAR(50),
-        @FunctionName NVARCHAR(50)
+    CREATE PROCEDURE NhomChucNang_GetAllUserFunctionsAndPermissions
+        @TenNguoiDung NVARCHAR(50)
     AS
     BEGIN
-        SELECT Permission
-        FROM Sys_FunctionInGroup fg
-        INNER JOIN Sys_Function f ON fg.FunctionID = f.FunctionID
-        INNER JOIN Sys_UserInGroup ug ON fg.GroupID = ug.GroupID
-        INNER JOIN Sys_User u ON ug.UserID = u.UserID
-        WHERE u.UserName = @UserName AND f.FunctionName = @FunctionName
-    END
-    GO	
-
-    CREATE PROCEDURE FIG_GetAllUserFunctionsAndPermissions
-        @UserName NVARCHAR(50)
-    AS
-    BEGIN
-        SELECT f.FunctionName, fg.Permission
-        FROM Sys_FunctionInGroup fg
-        INNER JOIN Sys_Function f ON fg.FunctionID = f.FunctionID
-        INNER JOIN Sys_UserInGroup ug ON fg.GroupID = ug.GroupID
-        INNER JOIN Sys_User u ON ug.UserID = u.UserID
-        WHERE u.UserName = @UserName
+        SELECT f.TenChucNang, fg.Quyen
+        FROM HT_NhomChucNang fg
+        INNER JOIN HT_ChucNang f ON fg.ChucNangID = f.ChucNangID
+        INNER JOIN HT_NhomNguoiDung ug ON fg.NhomPhanQuyenID = ug.NhomPhanQuyenID
+        INNER JOIN HT_NguoiDung u ON ug.NguoiDungID = u.NguoiDungID
+        WHERE u.TenNguoiDung = @TenNguoiDung
     END
     GO	
     --region Stored procedures of RefreshToken
-    CREATE TABLE Sys_Session
-    (
-        SessionID INT IDENTITY PRIMARY KEY,
-        UserID INT FOREIGN KEY REFERENCES Sys_User(UserID),
-        RefreshToken NVARCHAR(255) NOT NULL,
-        ExpiryDate DATETIME NOT NULL,
-        IsRevoked BIT NOT NULL DEFAULT 0,   -- Đánh dấu refresh token này đã bị thu hồi hay chưa
-        CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
-    );
-    GO
+        CREATE TABLE HT_PhienDangNhap
+        (
+            PhienDangNhapID INT IDENTITY PRIMARY KEY,
+            NguoiDungID INT FOREIGN KEY REFERENCES HT_NguoiDung(NguoiDungID),
+            RefreshToken NVARCHAR(255) NOT NULL,
+            ExpiryDate DATETIME NOT NULL,
+            IsRevoked BIT NOT NULL DEFAULT 0,   -- Đánh dấu refresh token này đã bị thu hồi hay chưa
+            CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
+        );
+        GO
 
-    ALTER PROCEDURE CreateSession
-        @UserID INT,
-        @RefreshToken NVARCHAR(255),
-        @ExpiryDate DATETIME
-    AS
-    BEGIN
-        -- Tạo phiên (Session) mới cho người dùng với refresh token
-        INSERT INTO Sys_Session (UserID, RefreshToken, ExpiryDate, IsRevoked, CreatedAt)
-        VALUES (@UserID, @RefreshToken, @ExpiryDate, 0, GETDATE());
-    END
-    GO
-
-
-    ALTER PROCEDURE GetSessionByRefreshToken
-        @RefreshToken NVARCHAR(255)
-    AS
-    BEGIN
-        SELECT SessionID, UserID, RefreshToken, ExpiryDate, IsRevoked, CreatedAt
-        FROM Sys_Session
-        WHERE RefreshToken = @RefreshToken AND IsRevoked = 0 AND ExpiryDate > GETDATE();
-    END
-    GO
-
-    ALTER PROCEDURE UpdateSessionRefreshToken
-        @SessionID INT,
-        @NewRefreshToken NVARCHAR(255),
-        @NewExpiryDate DATETIME
-    AS
-    BEGIN
-        UPDATE Sys_Session
-        SET RefreshToken = @NewRefreshToken, ExpiryDate = @NewExpiryDate, CreatedAt = GETDATE()
-        WHERE SessionID = @SessionID AND IsRevoked = 0;
-    END
-    GO
+        CREATE PROCEDURE PhienDangNhap_Create
+            @NguoiDungID INT,
+            @RefreshToken NVARCHAR(255),
+            @ExpiryDate DATETIME
+        AS
+        BEGIN
+            -- Tạo phiên (Session) mới cho người dùng với refresh token
+            INSERT INTO HT_PhienDangNhap (NguoiDungID, RefreshToken, ExpiryDate, IsRevoked, CreatedAt)
+            VALUES (@NguoiDungID, @RefreshToken, @ExpiryDate, 0, GETDATE());
+        END
+        GO
 
 
-    ALTER PROCEDURE RevokeSession
-        @SessionID INT
-    AS
-    BEGIN
-        UPDATE Sys_Session
-        SET IsRevoked = 1, CreatedAt = GETDATE()
-        WHERE SessionID = @SessionID;
-    END
-    GO
 
-    ALTER PROCEDURE RevokeAllSessions
-        @UserID INT
-    AS
-    BEGIN
-        UPDATE Sys_Session
-        SET IsRevoked = 1, CreatedAt = GETDATE()
-        WHERE UserID = @UserID AND IsRevoked = 0;
-    END
-    GO
+        CREATE PROCEDURE PhienDangNhap_GetByRefreshToken
+            @RefreshToken NVARCHAR(255)
+        AS
+        BEGIN
+            SELECT PhienDangNhapID, NguoiDungID, RefreshToken, ExpiryDate, IsRevoked, CreatedAt
+            FROM HT_PhienDangNhap
+            WHERE RefreshToken = @RefreshToken AND IsRevoked = 0 AND ExpiryDate > GETDATE();
+        END
+        GO
 
-    ALTER PROCEDURE DeleteAllSessions
-        @UserID INT
-    AS
-    BEGIN
-        DELETE FROM Sys_Session
-        WHERE UserID = @UserID;
-    END
-    GO
+        CREATE PROCEDURE PhienDangNhap_UpdateRefreshToken
+            @PhienDangNhapID INT,
+            @NewRefreshToken NVARCHAR(255),
+            @NewExpiryDate DATETIME
+        AS
+        BEGIN
+            UPDATE HT_PhienDangNhap
+            SET RefreshToken = @NewRefreshToken, ExpiryDate = @NewExpiryDate, CreatedAt = GETDATE()
+            WHERE PhienDangNhapID = @PhienDangNhapID AND IsRevoked = 0;
+        END
+        GO
+
+        CREATE PROCEDURE PhienDangNhap_Revoke
+            @PhienDangNhapID INT
+        AS
+        BEGIN
+            UPDATE HT_PhienDangNhap
+            SET IsRevoked = 1, CreatedAt = GETDATE()
+            WHERE PhienDangNhapID = @PhienDangNhapID;
+        END
+        GO
+
+        CREATE PROCEDURE PhienDangNhap_RevokeAllSessionsOfUser
+            @NguoiDungID INT
+        AS
+        BEGIN
+            UPDATE HT_PhienDangNhap
+            SET IsRevoked = 1, CreatedAt = GETDATE()
+            WHERE NguoiDungID = @NguoiDungID AND IsRevoked = 0;
+        END
+        GO
+
+        CREATE PROCEDURE PhienDangNhap_DeleteAllSessionsOfUser
+            @NguoiDungID INT
+        AS
+        BEGIN
+            DELETE FROM HT_PhienDangNhap
+            WHERE NguoiDungID = @NguoiDungID;
+        END
+        GO
+
 
 --region Category Mangement System
 --region Stored procedures of DonViTinh
@@ -2827,7 +2756,7 @@ VALUES
 GO	
 
 --Thêm chức năng
-INSERT INTO Sys_Function (FunctionName, Description)
+INSERT INTO Sys_Function (Description,FunctionName )
 	VALUES ('ManageUsers', N'Quản lý người dùng'),
 	('ManageMonumentRanking', N'Quản lý di tích xếp hạng'),
 	('ManageUnitofMeasure', N'Quản lý đơn vị tính'),
@@ -2839,10 +2768,9 @@ INSERT INTO Sys_Function (FunctionName, Description)
 	('ManageReportForm', N'Quản lý mẫu phiếu báo cáo'),
 	('ManageAuthorization', N'Quản lý ủy quyền');
 GO
-SELECT * FROM Sys_Function
 
 -- Thêm nhóm
-INSERT INTO Sys_Group (GroupName, Description)
+INSERT INTO Sys_Group (Description,GroupName)
 VALUES
 ('AdminGroup', N'Nhóm quản trị'),
 ('UserGroup', N'Nhóm người dùng');

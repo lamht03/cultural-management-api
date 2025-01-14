@@ -1,9 +1,9 @@
-﻿//using QUANLYVANHOA.Models.DanhMuc;
+﻿using QUANLYVANHOA.Models.DanhMuc;
 
-//namespace QUANLYVANHOA.Interfaces.DanhMuc
-//{
-//    public interface IDanhMucCoQuanRepository
-//    {
-//        Task<IEnumerable<DanhMucCoQuan>> DanhMucCoQuanGetAll(string tenCoQuan);
-//    }
-//}
+namespace QUANLYVANHOA.Interfaces.DanhMuc
+{
+    public interface IDanhMucCoQuanRepository
+    {
+        Task<IEnumerable<DanhMucCoQuan>> DanhMucCoQuanGetAll(string tenCoQuan);
+    }
+}

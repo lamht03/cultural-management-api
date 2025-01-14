@@ -1,1 +1,91 @@
-﻿
+﻿/* Change the header background */
+.topbar {
+    background: linear-gradient(90deg, #00c5fc,#fffb8bdb, #00ff80) !important; /* Green header */
+    font-family: Courier New, Courier, monospace !important;
+}
+
+/* Add custom style */
+.swagger-ui .info p {
+    font-style: italic;
+    color: #555;
+    font-family: Courier New, Courier, monospace !important;
+    text-align:center;
+    color:gold;
+    font-weight:900;
+    margin:0px;
+}
+
+.swagger-ui button, .swagger-ui input, .swagger-ui optgroup, .swagger-ui select, .swagger-ui textarea {
+    font-weight: bolder;
+    font-family: Courier New, Courier, monospace !important;
+}
+
+
+.swagger-ui .topbar .download-url-wrapper .select-label span {
+    font-weight: bolder;
+    font-family: Courier New, Courier, monospace !important;
+    color : black !important
+}
+
+.swagger-ui .info .title {
+    color :aqua;
+    font-family:'Curlz MT';
+    text-align: center;
+    font-style: italic;
+}
+
+.swagger-ui .info hgroup.main a {
+    text-align:center;
+    display:block;
+    font-family:'Script MT'
+}
+
+.swagger-ui .info > div {
+    text-align:center;
+}
+
+.swagger-ui .link, .swagger-ui .link:active, .swagger-ui .link:focus, .swagger-ui .link:hover, .swagger-ui .link:link, .swagger-ui .link:visited {
+    font-family:SimSun-ExtB;
+    font-size:15px;
+    font-weight:600;
+    color:lime;
+    font-style:initial;
+}
+
+.swagger-ui .opblock-tag.no-desc span {
+    font-family:'Agency FB';
+    color: orangered;
+}
+
+.swagger-ui .opblock .opblock-summary-operation-id, .swagger-ui .opblock .opblock-summary-path, .swagger-ui .opblock .opblock-summary-path__deprecated {
+    font-family:'Gill Sans MT'
+
+}
+
+.swagger-ui .opblock .opblock-summary-method {
+    font-family:'Viner Hand ITC';
+    font-size:17px;
+    color:white;
+    font-weight:900;
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary-method {
+    background: #5879ff;
+}
+
+.swagger-ui .opblock.opblock-post .opblock-summary-method {
+    background: #00ff3a;
+}
+
+.swagger-ui .info {
+    margin: 50px 0;
+}
+
+.swagger-ui .opblock.opblock-get .opblock-summary-method {
+    background: linear-gradient(45deg, #ff0000, #00ffec, #fff000);
+}
+
+
+.swagger-ui .opblock.opblock-post .opblock-summary-method {
+    background: linear-gradient(45deg, #4d5bff, #00ff0a, #e100ff);
+}

@@ -1,9 +1,9 @@
 ﻿namespace QUANLYVANHOA.Models.HeThong
 {
-    public class Session
+    public class HeThongPhienDangNhap
     {
-        public int SessionID { get; set; }
-        public int UserID { get; set; }
+        public int PhienDangNhapID { get; set; }
+        public int NguoiDungID { get; set; }
         public string RefreshToken { get; set; }
         public DateTime ExpiryDate { get; set; }
         public bool IsRevoked { get; set; }

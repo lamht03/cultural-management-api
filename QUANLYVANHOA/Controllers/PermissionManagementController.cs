@@ -94,10 +94,10 @@ namespace QUANLYVANHOA.Controllers
 
         [CustomAuthorize(2, "ManageAuthorization")]
         [HttpPost("CreateFunction")]
-        public async Task<IActionResult> CreateFunction([FromBody] SysFunctionInsertModel function)
+        public async Task<IActionResult> CreateFunction([FromBody] HeThongChucNangInsertModel function)
         {
 
-            var existingFunction = await _permissionManagement.GetAllFunction(function.FunctionName, 1, 20);
+            var existingFunction = await _permissionManagement.GetAllFunction(function.TenChucNang, 1, 20);
             {
                 if (existingFunction.Item1.Any())
                 {
@@ -109,7 +109,7 @@ namespace QUANLYVANHOA.Controllers
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(function.FunctionName) || function.FunctionName.Contains(" "))
+            if (string.IsNullOrWhiteSpace(function.TenChucNang) || function.TenChucNang.Contains(" "))
             {
                 return BadRequest(new Response
                 {
@@ -118,7 +118,7 @@ namespace QUANLYVANHOA.Controllers
                 });
             }
 
-            if (function.FunctionName.Length > 50)
+            if (function.TenChucNang.Length > 50)
             {
                 return BadRequest(new Response
                 {
@@ -146,9 +146,9 @@ namespace QUANLYVANHOA.Controllers
 
         [HttpPost("UpdateFunction")]
         [CustomAuthorize(4, "ManageAuthorization")]
-        public async Task<IActionResult> UpdateFunction([FromBody] SysFunctionUpdateModel function)
+        public async Task<IActionResult> UpdateFunction([FromBody] HeThongChucNangUpdateModel function)
         {
-            var existingFunction = await _permissionManagement.GetFunctionByID(function.FunctionID);
+            var existingFunction = await _permissionManagement.GetFunctionByID(function.ChucNangID);
             if (existingFunction == null)
             {
                 return Ok(new Response
@@ -159,7 +159,7 @@ namespace QUANLYVANHOA.Controllers
             }
 
 
-            var existingFunctionName = await _permissionManagement.GetAllFunction(function.FunctionName, 1, 20);
+            var existingFunctionName = await _permissionManagement.GetAllFunction(function.TenChucNang, 1, 20);
             {
                 if (existingFunctionName.Item1.Any())
                 {
@@ -171,7 +171,7 @@ namespace QUANLYVANHOA.Controllers
                 }
             }
 
-            if (string.IsNullOrWhiteSpace(function.FunctionName) || function.FunctionName.Contains(" "))
+            if (string.IsNullOrWhiteSpace(function.TenChucNang) || function.TenChucNang.Contains(" "))
             {
                 return BadRequest(new Response
                 {
@@ -180,7 +180,7 @@ namespace QUANLYVANHOA.Controllers
                 });
             }
 
-            if (function.FunctionName.Length > 50)
+            if (function.TenChucNang.Length > 50)
             {
                 return BadRequest(new Response
                 {
@@ -356,9 +356,9 @@ namespace QUANLYVANHOA.Controllers
 
         [HttpPost("UpdateGroup")]
         [CustomAuthorize(4, "ManageAuthorization")]
-        public async Task<IActionResult> UpdateGroup([FromBody] SysGroupUpdateModel group)
+        public async Task<IActionResult> UpdateGroup([FromBody] NhomPhanQuyenUpdateModel group)
         {
-            var existingGroup = await _permissionManagement.GetGroupByID(group.GroupID);
+            var existingGroup = await _permissionManagement.GetGroupByID(group.NhomPhanQuyenID);
             if (existingGroup == null)
             {
                 return Ok(new Response
@@ -368,7 +368,7 @@ namespace QUANLYVANHOA.Controllers
                 });
             }
 
-            if (string.IsNullOrWhiteSpace(group.GroupName) || group.GroupName.Contains(" "))
+            if (string.IsNullOrWhiteSpace(group.TenNhomPhanQuyen) || group.TenNhomPhanQuyen.Contains(" "))
             {
                 return BadRequest(new Response
                 {
@@ -377,7 +377,7 @@ namespace QUANLYVANHOA.Controllers
                 });
             }
 
-            if (group.GroupName.Length > 50)
+            if (group.TenNhomPhanQuyen.Length > 50)
             {
                 return BadRequest(new Response
                 {
@@ -491,14 +491,14 @@ namespace QUANLYVANHOA.Controllers
 
         [HttpPost("InsertFunctionInGroup")]
         [CustomAuthorize(2, "ManageAuthorization")]
-        public async Task<IActionResult> InsertFunctionInGroup([FromBody] SysFunctionInGroupInsertModel model)
+        public async Task<IActionResult> InsertFunctionInGroup([FromBody] NhomChucNangInsertModel model)
         {
-            if (model.GroupID <= 0 || model.FunctionID <= 0)
+            if (model.GroupID <= 0 || model.ChucNangID <= 0)
             {
                 return BadRequest(new { Status = 0, Message = "Invalid data. GroupID and FunctionID must be greater than 0." });
             }
 
-            var newFunctionInGroupID = await _permissionManagement.InsertFunctionInGroup(model);
+            var newFunctionInGroupID = await _permissionManagement.AddFunctionIntoGroup(model);
             return CreatedAtAction(nameof(GetFunctionInGroupByID), new { id = newFunctionInGroupID }, new { Status = 1, Message = "Inserted data successfully" });
         }
 
@@ -526,7 +526,7 @@ namespace QUANLYVANHOA.Controllers
                 return Ok(new { Status = 0, Message = "ID not found" });
             }
 
-            await _permissionManagement.DeleteFunctionInGroup(id);
+            await _permissionManagement.DeleteFunctionFromGroup(id);
             return Ok(new { Status = 1, Message = "Deleted data successfully" });
         }
 
@@ -587,12 +587,12 @@ namespace QUANLYVANHOA.Controllers
 
         [HttpPost("InsertUserInGroup")]
         [CustomAuthorize(2, "ManageAuthorization")]
-        public async Task<IActionResult> InsertUserInGroup([FromBody] SysUserInGroupCreateModel model)
+        public async Task<IActionResult> InsertUserInGroup([FromBody] ThemNguoiDungVaoNhomPhanQuyenModel model)
         {
-            var existingUserInGroup = await _permissionManagement.GetUserInGroupByID(model.UserID);
+            var existingUserInGroup = await _permissionManagement.GetUserInGroupByID(model.NguoiDungID);
 
 
-            if (model.UserID <= 0 || model.GroupID <= 0)
+            if (model.NguoiDungID <= 0 || model.NhomPhanQuyenID <= 0)
             {
                 return BadRequest(new { Status = 0, Message = "Invalid data. UserID and GroupID must be greater than 0." });
             }
@@ -603,7 +603,7 @@ namespace QUANLYVANHOA.Controllers
 
         [HttpPost("UpdateUserInGroup")]
         [CustomAuthorize(4, "ManageAuthorization")]
-        public async Task<IActionResult> UpdateUserInGroup([FromBody] SysUserInGroupUpdateModel model)
+        public async Task<IActionResult> UpdateUserInGroup([FromBody] XoaNguoiDungKhoiNhomPhanQuyenModel model)
         {
             var existingUserInGroup = await _permissionManagement.GetUserInGroupByID(model.UserInGroupID);
             if (existingUserInGroup == null)

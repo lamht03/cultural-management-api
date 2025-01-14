@@ -15,11 +15,11 @@ namespace QUANLYVANHOA.Controllers.HeThong
     [ApiController]
     public class SysUsersController : ControllerBase
     {
-        private readonly ISysUserRepository _userRepository;
+        private readonly IHeThongNguoiDungRepository _userRepository;
         private readonly IPermissionManagementRepository _permissionManagementRepository;
         private readonly IUserService _userService;
 
-        public SysUsersController(ISysUserRepository userRepository, IPermissionManagementRepository userInGroupRepository, IUserService userService)
+        public SysUsersController(IHeThongNguoiDungRepository userRepository, IPermissionManagementRepository userInGroupRepository, IUserService userService)
         {
             _userRepository = userRepository;
             _userService = userService;
@@ -53,7 +53,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            var (users, totalRecords) = await _userRepository.GetAll(userName, pageNumber, pageSize);
+            var (users, totalRecords) = await _userRepository.LayDanhSachPhanTrang(userName, pageNumber, pageSize);
             var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
 
             if (!users.Any())
@@ -83,7 +83,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         [HttpGet("Search User by ID")]
         public async Task<IActionResult> GetByID(int userId)
         {
-            var user = await _userRepository.GetByID(userId);
+            var user = await _userRepository.LayTheoID(userId);
             if (user == null)
             {
                 return Ok(new Response
@@ -105,9 +105,9 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
         [CustomAuthorize(2, "ManageUsers")]
         [HttpPost("Add User")]
-        public async Task<IActionResult> Create([FromBody] SysUserInsertModel user)
+        public async Task<IActionResult> Create([FromBody] HeThongNguoiDungInsertModel user)
         {
-            if (string.IsNullOrWhiteSpace(user.UserName))
+            if (string.IsNullOrWhiteSpace(user.TenNguoiDung))
             {
                 return BadRequest(new Response
                 {
@@ -116,13 +116,13 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            var existingUserName = await _userRepository.GetAll(user.UserName, 1, 20);
+            var existingUserName = await _userRepository.LayDanhSachPhanTrang(user.TenNguoiDung, 1, 20);
             if (existingUserName.Item1.Any())
             {
                 return BadRequest(new Response { Status = 0, Message = "Username already exists. Please choose a different username." });
             }
 
-            if (string.IsNullOrWhiteSpace(user.Password) || user.Password.Contains(" "))
+            if (string.IsNullOrWhiteSpace(user.MatKhau) || user.MatKhau.Contains(" "))
             {
                 return BadRequest(new Response
                 {
@@ -131,7 +131,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            if (user.UserName.Length > 50)
+            if (user.TenNguoiDung.Length > 50)
             {
                 return BadRequest(new Response
                 {
@@ -140,7 +140,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            if (user.Password.Length > 100)
+            if (user.MatKhau.Length > 100)
             {
                 return BadRequest(new Response
                 {
@@ -165,7 +165,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             }
 
             // Kiểm tra email đã tồn tại trong hệ thống bằng GetByEmailAsync
-            var existingUser = await _userRepository.GetByEmail(user.Email);
+            var existingUser = await _userRepository.LayTheoEmail(user.Email);
             if (existingUser != null)
             {
                 return BadRequest(new Response
@@ -176,7 +176,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             }
 
 
-            if (user.Note.Length > 100)
+            if (user.GhiChu.Length > 100)
             {
                 return BadRequest(new Response
                 {
@@ -185,7 +185,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            int rowsAffected = await _userRepository.Create(user);
+            int rowsAffected = await _userRepository.TaoNguoiDungMoi(user);
             if (rowsAffected == 0)
             {
                 return StatusCode(500, new Response
@@ -208,7 +208,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         public async Task<IActionResult> Update([FromBody] SysUserUpdateModel user)
         {
 
-            var existingUser = await _userRepository.GetByID(user.UserID);
+            var existingUser = await _userRepository.LayTheoID(user.NguoiDungID);
             if (existingUser == null)
             {
                 return Ok(new Response
@@ -218,9 +218,9 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            if (existingUser.UserName != user.UserName)
+            if (existingUser.TenNguoiDung != user.TenNguoiDung)
             {
-                var existingUserName = await _userRepository.GetAll(user.UserName, 1, 20);
+                var existingUserName = await _userRepository.LayDanhSachPhanTrang(user.TenNguoiDung, 1, 20);
                 if (existingUserName.Item1.Any())
                 {
                     return BadRequest(new Response { Status = 0, Message = "Username already exists. Please choose a different username." });
@@ -228,17 +228,17 @@ namespace QUANLYVANHOA.Controllers.HeThong
             }
 
 
-            if (user.UserName.Contains(" ") || user.UserName.Length > 50)
+            if (user.TenNguoiDung.Contains(" ") || user.TenNguoiDung.Length > 50)
             {
                 return BadRequest(new Response { Status = 0, Message = "Invalid password. Password must not contain spaces and must be less than 100 characters." });
             }
 
-            if (user.Password.Contains(" ") || user.Password.Length > 100)
+            if (user.MatKhau.Contains(" ") || user.MatKhau.Length > 100)
             {
                 return BadRequest(new Response { Status = 0, Message = "Invalid password. Password must not contain spaces and must be less than 100 characters." });
             }
 
-            if (string.IsNullOrWhiteSpace(user.UserName) || user.UserName.Contains(" "))
+            if (string.IsNullOrWhiteSpace(user.TenNguoiDung) || user.TenNguoiDung.Contains(" "))
             {
                 return BadRequest(new Response
                 {
@@ -247,7 +247,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            if (string.IsNullOrWhiteSpace(user.Password) || user.Password.Contains(" "))
+            if (string.IsNullOrWhiteSpace(user.MatKhau) || user.MatKhau.Contains(" "))
             {
                 return BadRequest(new Response
                 {
@@ -256,7 +256,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            if (user.UserName.Length > 50)
+            if (user.TenNguoiDung.Length > 50)
             {
                 return BadRequest(new Response
                 {
@@ -265,7 +265,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            if (user.Password.Length > 100)
+            if (user.MatKhau.Length > 100)
             {
                 return BadRequest(new Response
                 {
@@ -284,7 +284,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            if (user.Note.Length > 100)
+            if (user.GhiChu.Length > 100)
             {
                 return BadRequest(new Response
                 {
@@ -293,7 +293,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            int rowsAffected = await _userRepository.Update(user);
+            int rowsAffected = await _userRepository.SuaThongTinNguoiDung(user);
             if (rowsAffected == 0)
             {
                 return StatusCode(500, new Response
@@ -315,7 +315,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         [HttpPost("Delete User")]
         public async Task<IActionResult> Delete(int userId)
         {
-            var existingUser = await _userRepository.GetByID(userId);
+            var existingUser = await _userRepository.LayTheoID(userId);
             if (existingUser == null)
             {
                 return Ok(new Response
@@ -325,7 +325,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            int rowsAffected = await _userRepository.Delete(userId);
+            int rowsAffected = await _userRepository.XoaThongTinNguoiDung(userId);
             if (rowsAffected == 0)
             {
                 return StatusCode(500, new Response
@@ -353,25 +353,25 @@ namespace QUANLYVANHOA.Controllers.HeThong
             }
 
             // Check for null or empty username and password
-            if (string.IsNullOrEmpty(model.UserName) || string.IsNullOrEmpty(model.Password))
+            if (string.IsNullOrEmpty(model.TenNguoiDung) || string.IsNullOrEmpty(model.MatKhau))
             {
                 return BadRequest(new Response { Status = 0, Message = "Username and password are required." });
             }
 
             // Check for spaces within username
-            if (model.UserName.Contains(" "))
+            if (model.TenNguoiDung.Contains(" "))
             {
                 return BadRequest(new Response { Status = 0, Message = "Username cannot contain spaces." });
             }
 
             // Check for leading or trailing spaces in password
-            if (model.Password.Contains(" "))
+            if (model.MatKhau.Contains(" "))
             {
                 return BadRequest(new Response { Status = 0, Message = "Invalid username or password" });
             }
 
             // Authenticate user
-            var (isValid, token, refreshToken, message) = await _userService.AuthenticateUser(model.UserName, model.Password);
+            var (isValid, token, refreshToken, message) = await _userService.AuthenticateUser(model.TenNguoiDung, model.MatKhau);
 
             if (!isValid)
             {
@@ -395,22 +395,22 @@ namespace QUANLYVANHOA.Controllers.HeThong
         {
 
             // Validate the incoming model
-            if (model == null || string.IsNullOrWhiteSpace(model.UserName) || string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.ConfirmPassword))
+            if (model == null || string.IsNullOrWhiteSpace(model.TenNguoiDung) || string.IsNullOrWhiteSpace(model.MatKhau) || string.IsNullOrWhiteSpace(model.XacNhanMatKhau))
             {
                 return BadRequest(new Response { Status = 0, Message = "Username, password, and confirm password are required." });
             }
 
-            if (model.Password != model.ConfirmPassword)
+            if (model.MatKhau != model.XacNhanMatKhau)
             {
                 return BadRequest(new Response { Status = 0, Message = "Password and confirm password do not match." });
             }
 
-            if (model.Password.Contains(" ") || model.Password.Length > 100)
+            if (model.MatKhau.Contains(" ") || model.MatKhau.Length > 100)
             {
                 return BadRequest(new Response { Status = 0, Message = "Invalid password. Password must not contain spaces and must be less than 100 characters." });
             }
 
-            if (model.UserName.Contains(" ") || model.UserName.Length > 50)
+            if (model.TenNguoiDung.Contains(" ") || model.TenNguoiDung.Length > 50)
             {
                 return BadRequest(new Response { Status = 0, Message = "Invalid password. Password must not contain spaces and must be less than 100 characters." });
             }
@@ -427,7 +427,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             }
 
             // Kiểm tra email đã tồn tại trong hệ thống bằng GetByEmailAsync
-            var existingEmail = await _userRepository.GetByEmail(model.Email);
+            var existingEmail = await _userRepository.LayTheoEmail(model.Email);
             if (existingEmail != null)
             {
                 return BadRequest(new Response
@@ -439,27 +439,27 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
 
             // Check if the username already exists
-            var existingUser = await _userRepository.GetAll(model.UserName, 1, 20);
+            var existingUser = await _userRepository.LayDanhSachPhanTrang(model.TenNguoiDung, 1, 20);
             if (existingUser.Item1.Any())
             {
                 return BadRequest(new Response { Status = 0, Message = "Username already exists. Please choose a different username." });
             }
 
             // Call stored procedure to register the user
-            int rowsAffected = await _userRepository.Register(model);
+            int rowsAffected = await _userRepository.DangKyTaiKhoan(model);
             if (rowsAffected == 0)
             {
                 return StatusCode(500, new Response { Status = 0, Message = "An error occurred while registering the user." });
             }
 
             // Retrieve the newly created user by username
-            var newUser = await _userRepository.GetAll(model.UserName, 1, 20);
+            var newUser = await _userRepository.LayDanhSachPhanTrang(model.TenNguoiDung, 1, 20);
             if (newUser.Item1.Any())
             {
-                var userInGroupModel = new SysUserInGroupCreateModel
+                var userInGroupModel = new ThemNguoiDungVaoNhomPhanQuyenModel
                 {
-                    UserID = newUser.Item1.First().UserID,  // Use the ID of the newly created user
-                    GroupID = 2               // Default group ID
+                    NguoiDungID = newUser.Item1.First().NguoiDungID,  // Use the ID of the newly created user
+                    NhomPhanQuyenID = 2               // Default group ID
                 };
                 int groupRowsAffected = await _permissionManagementRepository.InsertUserInGroup(userInGroupModel);
                 if (groupRowsAffected == 0)
@@ -530,7 +530,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             try
             {
                 // Lấy session từ refresh token
-                var session = await _userRepository.GetSessionByRefreshToken(model.RefreshToken);
+                var session = await _userRepository.LayPhienDangNhapTheoRefreshToken(model.RefreshToken);
 
                 if (session == null)
                 {
@@ -538,7 +538,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 }
 
                 // Vô hiệu hóa session (revoking session)
-                await _userRepository.RevokeSession(session.SessionID);
+                await _userRepository.VoHieuHoaPhienDangNhap(session.PhienDangNhapID);
 
                 return Ok(new { message = "Logout successful. Refresh token has been revoked." });
             }

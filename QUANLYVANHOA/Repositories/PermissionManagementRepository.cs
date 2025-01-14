@@ -15,9 +15,9 @@ namespace QUANLYVANHOA.Repositories
         }
 
         #region Repository of Function
-        public async Task<(IEnumerable<SysFunction>, int)> GetAllFunction(string? functionName, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<HeThongChucNang>, int)> GetAllFunction(string? functionName, int pageNumber, int pageSize)
         {
-            var functionList = new List<SysFunction>();
+            var functionList = new List<HeThongChucNang>();
             int totalRecords = 0;
 
             using (var connection = new SqlConnection(_connectionString))
@@ -35,11 +35,11 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            functionList.Add(new SysFunction
+                            functionList.Add(new HeThongChucNang
                             {
-                                FunctionID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
-                                FunctionName = reader.GetString(reader.GetOrdinal("FunctionName")),
-                                Description = reader.GetString(reader.GetOrdinal("Description"))
+                                ChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
+                                TenChucNang = reader.GetString(reader.GetOrdinal("FunctionName")),
+                                MoTa = reader.GetString(reader.GetOrdinal("Description"))
                             });
                         }
 
@@ -55,9 +55,9 @@ namespace QUANLYVANHOA.Repositories
             return (functionList, totalRecords);
         }
 
-        public async Task<SysFunction> GetFunctionByID(int functionId)
+        public async Task<HeThongChucNang> GetFunctionByID(int functionId)
         {
-            SysFunction function = null;
+            HeThongChucNang function = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -71,11 +71,11 @@ namespace QUANLYVANHOA.Repositories
                     {
                         if (await reader.ReadAsync())
                         {
-                            function = new SysFunction
+                            function = new HeThongChucNang
                             {
-                                FunctionID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
-                                FunctionName = reader.GetString(reader.GetOrdinal("FunctionName")),
-                                Description = reader.GetString(reader.GetOrdinal("Description"))
+                                ChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
+                                TenChucNang = reader.GetString(reader.GetOrdinal("FunctionName")),
+                                MoTa = reader.GetString(reader.GetOrdinal("Description"))
                             };
                         }
                     }
@@ -85,15 +85,15 @@ namespace QUANLYVANHOA.Repositories
             return function;
         }
 
-        public async Task<int> CreateFunction(SysFunctionInsertModel function)
+        public async Task<int> CreateFunction(HeThongChucNangInsertModel function)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 using (var command = new SqlCommand("FMS_Create", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@FunctionName", function.FunctionName);
-                    command.Parameters.AddWithValue("@Description", function.Description);
+                    command.Parameters.AddWithValue("@FunctionName", function.TenChucNang);
+                    command.Parameters.AddWithValue("@Description", function.MoTa);
 
                     await connection.OpenAsync();
                     return await command.ExecuteNonQueryAsync();
@@ -101,16 +101,16 @@ namespace QUANLYVANHOA.Repositories
             }
         }
 
-        public async Task<int> UpdateFunction(SysFunctionUpdateModel function)
+        public async Task<int> UpdateFunction(HeThongChucNangUpdateModel function)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 using (var command = new SqlCommand("FMS_Update", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@FunctionID", function.FunctionID);
-                    command.Parameters.AddWithValue("@FunctionName", function.FunctionName);
-                    command.Parameters.AddWithValue("@Description", function.Description);
+                    command.Parameters.AddWithValue("@FunctionID", function.ChucNangID);
+                    command.Parameters.AddWithValue("@FunctionName", function.TenChucNang);
+                    command.Parameters.AddWithValue("@Description", function.MoTa);
 
                     await connection.OpenAsync();
                     return await command.ExecuteNonQueryAsync();
@@ -135,9 +135,9 @@ namespace QUANLYVANHOA.Repositories
         #endregion
 
         #region Repository of Group
-        public async Task<(IEnumerable<SysGroup>, int)> GetAllGroup(string? groupName, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<HeThongNhomPhanQuyen>, int)> GetAllGroup(string? groupName, int pageNumber, int pageSize)
         {
-            var groupList = new List<SysGroup>();
+            var groupList = new List<HeThongNhomPhanQuyen>();
             int totalRecords = 0;
 
             using (var connection = new SqlConnection(_connectionString))
@@ -155,11 +155,11 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            groupList.Add(new SysGroup
+                            groupList.Add(new HeThongNhomPhanQuyen
                             {
-                                GroupID = reader.GetInt32(reader.GetOrdinal("GroupID")),
-                                GroupName = reader.GetString(reader.GetOrdinal("GroupName")),
-                                Description = reader.GetString(reader.GetOrdinal("Description"))
+                                NhomPhanQuyenID = reader.GetInt32(reader.GetOrdinal("GroupID")),
+                                TenNhomPhanQuyen = reader.GetString(reader.GetOrdinal("GroupName")),
+                                MoTa = reader.GetString(reader.GetOrdinal("Description"))
                             });
                         }
 
@@ -175,9 +175,9 @@ namespace QUANLYVANHOA.Repositories
             return (groupList, totalRecords);
         }
 
-        public async Task<SysGroup> GetGroupByID(int groupID)
+        public async Task<HeThongNhomPhanQuyen> GetGroupByID(int groupID)
         {
-            SysGroup group = null;
+            HeThongNhomPhanQuyen group = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -191,11 +191,11 @@ namespace QUANLYVANHOA.Repositories
                     {
                         if (await reader.ReadAsync())
                         {
-                            group = new SysGroup
+                            group = new HeThongNhomPhanQuyen
                             {
-                                GroupID = reader.GetInt32(reader.GetOrdinal("GroupID")),
-                                GroupName = reader.GetString(reader.GetOrdinal("GroupName")),
-                                Description = reader.GetString(reader.GetOrdinal("Description"))
+                                NhomPhanQuyenID = reader.GetInt32(reader.GetOrdinal("GroupID")),
+                                TenNhomPhanQuyen = reader.GetString(reader.GetOrdinal("GroupName")),
+                                MoTa = reader.GetString(reader.GetOrdinal("Description"))
                             };
                         }
                     }
@@ -221,16 +221,16 @@ namespace QUANLYVANHOA.Repositories
             }
         }
 
-        public async Task<int> UpdateGroup(SysGroupUpdateModel group)
+        public async Task<int> UpdateGroup(NhomPhanQuyenUpdateModel group)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 using (var command = new SqlCommand("GMS_Update", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@GroupID", group.GroupID);
-                    command.Parameters.AddWithValue("@GroupName", group.GroupName);
-                    command.Parameters.AddWithValue("@Description", group.Description);
+                    command.Parameters.AddWithValue("@GroupID", group.NhomPhanQuyenID);
+                    command.Parameters.AddWithValue("@GroupName", group.TenNhomPhanQuyen);
+                    command.Parameters.AddWithValue("@Description", group.MoTa);
 
                     await connection.OpenAsync();
                     return await command.ExecuteNonQueryAsync();
@@ -255,9 +255,9 @@ namespace QUANLYVANHOA.Repositories
         #endregion
 
         #region Repository of Function In Group
-        public async Task<IEnumerable<SysFunctionInGroup>> GetAllFunctionInGroup()
+        public async Task<IEnumerable<HeThongNhomChucNang>> GetAllFunctionInGroup()
         {
-            var functionInGroupList = new List<SysFunctionInGroup>();
+            var functionInGroupList = new List<HeThongNhomChucNang>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -271,12 +271,12 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            functionInGroupList.Add(new SysFunctionInGroup
+                            functionInGroupList.Add(new HeThongNhomChucNang
                             {
-                                FunctionInGroupID = reader.GetInt32(reader.GetOrdinal("FunctionInGroupID")),
-                                FunctionID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
+                                NhomChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionInGroupID")),
+                                ChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
                                 GroupID = reader.GetInt32(reader.GetOrdinal("GroupID")),
-                                Permission = reader.GetInt32(reader.GetOrdinal("Permission"))
+                                Quyen = reader.GetInt32(reader.GetOrdinal("Permission"))
                             });
                         }
                     }
@@ -286,9 +286,9 @@ namespace QUANLYVANHOA.Repositories
             return functionInGroupList;
         }
 
-        public async Task<IEnumerable<SysFunctionInGroup>> GetFunctionInGroupByGroupID(int groupID)
+        public async Task<IEnumerable<HeThongNhomChucNang>> GetFunctionInGroupByGroupID(int groupID)
         {
-            var functionInGroupList = new List<SysFunctionInGroup>();
+            var functionInGroupList = new List<HeThongNhomChucNang>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -303,12 +303,12 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            functionInGroupList.Add(new SysFunctionInGroup
+                            functionInGroupList.Add(new HeThongNhomChucNang
                             {
-                                FunctionInGroupID = reader.GetInt32(reader.GetOrdinal("FunctionInGroupID")),
-                                FunctionID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
+                                NhomChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionInGroupID")),
+                                ChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
                                 GroupID = reader.GetInt32(reader.GetOrdinal("GroupID")),
-                                Permission = reader.GetInt32(reader.GetOrdinal("Permission"))
+                                Quyen = reader.GetInt32(reader.GetOrdinal("Permission"))
                             });
                         }
                     }
@@ -318,9 +318,9 @@ namespace QUANLYVANHOA.Repositories
             return functionInGroupList;
         }
 
-        public async Task<IEnumerable<SysFunctionInGroup>> GetFunctionInGroupByFunctionID(int functionID)
+        public async Task<IEnumerable<HeThongNhomChucNang>> GetFunctionInGroupByFunctionID(int functionID)
         {
-            var functionInGroupList = new List<SysFunctionInGroup>();
+            var functionInGroupList = new List<HeThongNhomChucNang>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -335,12 +335,12 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            functionInGroupList.Add(new SysFunctionInGroup
+                            functionInGroupList.Add(new HeThongNhomChucNang
                             {
-                                FunctionInGroupID = reader.GetInt32(reader.GetOrdinal("FunctionInGroupID")),
-                                FunctionID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
+                                NhomChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionInGroupID")),
+                                ChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
                                 GroupID = reader.GetInt32(reader.GetOrdinal("GroupID")),
-                                Permission = reader.GetInt32(reader.GetOrdinal("Permission"))
+                                Quyen = reader.GetInt32(reader.GetOrdinal("Permission"))
                             });
                         }
                     }
@@ -350,9 +350,9 @@ namespace QUANLYVANHOA.Repositories
             return functionInGroupList;
         }
 
-        public async Task<SysFunctionInGroup> GetFunctionInGroupByID(int functionInGroupID)
+        public async Task<HeThongNhomChucNang> GetFunctionInGroupByID(int functionInGroupID)
         {
-            SysFunctionInGroup functionInGroup = null;
+            HeThongNhomChucNang functionInGroup = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -367,12 +367,12 @@ namespace QUANLYVANHOA.Repositories
                     {
                         if (await reader.ReadAsync())
                         {
-                            functionInGroup = new SysFunctionInGroup
+                            functionInGroup = new HeThongNhomChucNang
                             {
-                                FunctionInGroupID = reader.GetInt32(reader.GetOrdinal("FunctionInGroupID")),
-                                FunctionID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
+                                NhomChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionInGroupID")),
+                                ChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
                                 GroupID = reader.GetInt32(reader.GetOrdinal("GroupID")),
-                                Permission = reader.GetInt32(reader.GetOrdinal("Permission"))
+                                Quyen = reader.GetInt32(reader.GetOrdinal("Permission"))
                             };
                         }
                     }
@@ -382,16 +382,16 @@ namespace QUANLYVANHOA.Repositories
             return functionInGroup;
         }
 
-        public async Task<int> InsertFunctionInGroup(SysFunctionInGroupInsertModel functionInGroup)
+        public async Task<int> AddFunctionIntoGroup(NhomChucNangInsertModel functionInGroup)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 using (var command = new SqlCommand("FIG_Create", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@FunctionID", functionInGroup.FunctionID);
+                    command.Parameters.AddWithValue("@FunctionID", functionInGroup.ChucNangID);
                     command.Parameters.AddWithValue("@GroupID", functionInGroup.GroupID);
-                    command.Parameters.AddWithValue("@Permission", functionInGroup.Permission);
+                    command.Parameters.AddWithValue("@Permission", functionInGroup.Quyen);
 
                     await connection.OpenAsync();
                     return await command.ExecuteNonQueryAsync();
@@ -417,7 +417,7 @@ namespace QUANLYVANHOA.Repositories
             }
         }
 
-        public async Task<int> DeleteFunctionInGroup(int functionInGroupID)
+        public async Task<int> DeleteFunctionFromGroup(int functionInGroupID)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -435,9 +435,9 @@ namespace QUANLYVANHOA.Repositories
         #endregion
 
         #region Repository of User In Group
-        public async Task<IEnumerable<SysUserInGroup>> GetAllUserInGroup()
+        public async Task<IEnumerable<HeThongNhomNguoiDung>> GetAllUserInGroup()
         {
-            var userInGroupList = new List<SysUserInGroup>();
+            var userInGroupList = new List<HeThongNhomNguoiDung>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -451,11 +451,11 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            userInGroupList.Add(new SysUserInGroup
+                            userInGroupList.Add(new HeThongNhomNguoiDung
                             {
-                                UserInGroupID = reader.GetInt32(reader.GetOrdinal("UserInGroupID")),
+                                NhomNguoiDungID = reader.GetInt32(reader.GetOrdinal("UserInGroupID")),
                                 UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
-                                GroupID = reader.GetInt32(reader.GetOrdinal("GroupID"))
+                                NhomPhanQuyen = reader.GetInt32(reader.GetOrdinal("GroupID"))
                             });
                         }
                     }
@@ -465,9 +465,9 @@ namespace QUANLYVANHOA.Repositories
             return userInGroupList;
         }
 
-        public async Task<IEnumerable<SysUserInGroup>> GetUserInGroupByGroupID(int groupID)
+        public async Task<IEnumerable<HeThongNhomNguoiDung>> GetUserInGroupByGroupID(int groupID)
         {
-            var userInGroupList = new List<SysUserInGroup>();
+            var userInGroupList = new List<HeThongNhomNguoiDung>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -482,11 +482,11 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            userInGroupList.Add(new SysUserInGroup
+                            userInGroupList.Add(new HeThongNhomNguoiDung
                             {
-                                UserInGroupID = reader.GetInt32(reader.GetOrdinal("UserInGroupID")),
+                                NhomNguoiDungID = reader.GetInt32(reader.GetOrdinal("UserInGroupID")),
                                 UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
-                                GroupID = reader.GetInt32(reader.GetOrdinal("GroupID"))
+                                NhomPhanQuyen = reader.GetInt32(reader.GetOrdinal("GroupID"))
                             });
                         }
                     }
@@ -496,9 +496,9 @@ namespace QUANLYVANHOA.Repositories
             return userInGroupList;
         }
 
-        public async Task<IEnumerable<SysUserInGroup>> GetUserInGroupByUserID(int userID)
+        public async Task<IEnumerable<HeThongNhomNguoiDung>> GetUserInGroupByUserID(int userID)
         {
-            var userInGroupList = new List<SysUserInGroup>();
+            var userInGroupList = new List<HeThongNhomNguoiDung>();
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -513,11 +513,11 @@ namespace QUANLYVANHOA.Repositories
                     {
                         while (await reader.ReadAsync())
                         {
-                            userInGroupList.Add(new SysUserInGroup
+                            userInGroupList.Add(new HeThongNhomNguoiDung
                             {
-                                UserInGroupID = reader.GetInt32(reader.GetOrdinal("UserInGroupID")),
+                                NhomNguoiDungID = reader.GetInt32(reader.GetOrdinal("UserInGroupID")),
                                 UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
-                                GroupID = reader.GetInt32(reader.GetOrdinal("GroupID"))
+                                NhomPhanQuyen = reader.GetInt32(reader.GetOrdinal("GroupID"))
                             });
                         }
                     }
@@ -527,9 +527,9 @@ namespace QUANLYVANHOA.Repositories
             return userInGroupList;
         }
 
-        public async Task<SysUserInGroup> GetUserInGroupByID(int userInGroupID)
+        public async Task<HeThongNhomNguoiDung> GetUserInGroupByID(int userInGroupID)
         {
-            SysUserInGroup userInGroup = null;
+            HeThongNhomNguoiDung userInGroup = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -544,11 +544,11 @@ namespace QUANLYVANHOA.Repositories
                     {
                         if (await reader.ReadAsync())
                         {
-                            userInGroup = new SysUserInGroup
+                            userInGroup = new HeThongNhomNguoiDung
                             {
-                                UserInGroupID = reader.GetInt32(reader.GetOrdinal("UserInGroupID")),
+                                NhomNguoiDungID = reader.GetInt32(reader.GetOrdinal("UserInGroupID")),
                                 UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
-                                GroupID = reader.GetInt32(reader.GetOrdinal("GroupID"))
+                                NhomPhanQuyen = reader.GetInt32(reader.GetOrdinal("GroupID"))
                             };
                         }
                     }
@@ -558,7 +558,7 @@ namespace QUANLYVANHOA.Repositories
             return userInGroup;
         }
 
-        public async Task<int> InsertUserInGroup(SysUserInGroupCreateModel userInGroup)
+        public async Task<int> InsertUserInGroup(ThemNguoiDungVaoNhomPhanQuyenModel userInGroup)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -567,14 +567,14 @@ namespace QUANLYVANHOA.Repositories
                 using (var command = new SqlCommand("UIG_Create", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@UserID", userInGroup.UserID);
-                    command.Parameters.AddWithValue("@GroupID", userInGroup.GroupID);
+                    command.Parameters.AddWithValue("@UserID", userInGroup.NguoiDungID);
+                    command.Parameters.AddWithValue("@GroupID", userInGroup.NhomPhanQuyenID);
                     return await command.ExecuteNonQueryAsync();
                 }
             }
         }
 
-        public async Task<int> UpdateUserInGroup(SysUserInGroupUpdateModel userInGroup)
+        public async Task<int> UpdateUserInGroup(XoaNguoiDungKhoiNhomPhanQuyenModel userInGroup)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -584,8 +584,8 @@ namespace QUANLYVANHOA.Repositories
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@UserInGroupID", userInGroup.UserInGroupID);
-                    command.Parameters.AddWithValue("@UserID", userInGroup.UserID);
-                    command.Parameters.AddWithValue("@GroupID", userInGroup.GroupID);
+                    command.Parameters.AddWithValue("@UserID", userInGroup.NguoiDungID);
+                    command.Parameters.AddWithValue("@GroupID", userInGroup.NhomPhanQuyenID);
 
                     return await command.ExecuteNonQueryAsync();
                 }

@@ -1,4 +1,4 @@
-﻿using System.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using System.Data;
 using QUANLYVANHOA.Utilities;
 using QUANLYVANHOA.Models.HeThong;
@@ -6,28 +6,28 @@ using QUANLYVANHOA.Interfaces.HeThong;
 
 namespace QUANLYVANHOA.Repositories.HeThong
 {
-    public class SysUserRepository : ISysUserRepository
+    public class HeThongNguoiDungRepository : IHeThongNguoiDungRepository
     {
         private readonly string _connectionString;
 
-        public SysUserRepository(IConfiguration configuration)
+        public HeThongNguoiDungRepository(IConfiguration configuration)
         {
             _connectionString = new Connection().GetConnectionString();
         }
 
-        public async Task<(IEnumerable<SysUser>, int)> GetAll(string? userName, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<HeThongNguoiDung>, int)> LayDanhSachPhanTrang(string? TenNguoiDung, int pageNumber, int pageSize)
         {
-            var userList = new List<SysUser>();
+            var userList = new List<HeThongNguoiDung>();
             int totalRecords = 0;
 
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
-                using (var command = new SqlCommand("UMS_GetListPaging", connection))
+                using (var command = new SqlCommand("NguoiDung_GetListPaging", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@UserName", userName ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@TenNguoiDung", TenNguoiDung ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@PageNumber", pageNumber);
                     command.Parameters.AddWithValue("@PageSize", pageSize);
 
@@ -36,15 +36,15 @@ namespace QUANLYVANHOA.Repositories.HeThong
                         // Đọc dữ liệu người dùng
                         while (await reader.ReadAsync())
                         {
-                            userList.Add(new SysUser
+                            userList.Add(new HeThongNguoiDung
                             {
-                                UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
-                                UserName = reader.GetString(reader.GetOrdinal("UserName")),
-                                FullName = !reader.IsDBNull(reader.GetOrdinal("FullName")) ? reader.GetString(reader.GetOrdinal("FullName")) : null,
+                                NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
+                                TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
+                                TenDayDu = !reader.IsDBNull(reader.GetOrdinal("TenDayDu")) ? reader.GetString(reader.GetOrdinal("TenDayDu")) : null,
                                 Email = reader.GetString(reader.GetOrdinal("Email")),
-                                Password = reader.GetString(reader.GetOrdinal("Password")),
-                                Status = reader.GetBoolean(reader.GetOrdinal("Status")),
-                                Note = !reader.IsDBNull(reader.GetOrdinal("Note")) ? reader.GetString(reader.GetOrdinal("Note")) : null,
+                                MatKhau = reader.GetString(reader.GetOrdinal("MatKhau")),
+                                TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
+                                GhiChu = !reader.IsDBNull(reader.GetOrdinal("GhiChu")) ? reader.GetString(reader.GetOrdinal("GhiChu")) : null,
                             });
                         }
 
@@ -62,29 +62,29 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
 
-        public async Task<SysUser> GetByID(int userId)
+        public async Task<HeThongNguoiDung> LayTheoID(int NguoiDungID)
         {
-            SysUser user = null;
+            HeThongNguoiDung user = null;
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var cmd = new SqlCommand("UMS_GetByID", connection))
+                using (var cmd = new SqlCommand("NguoiDung_GetByID", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@UserID", userId);
+                    cmd.Parameters.AddWithValue("@NguoiDungID", NguoiDungID);
                     await connection.OpenAsync();
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         if (await reader.ReadAsync())
                         {
-                            user = new SysUser
+                            user = new HeThongNguoiDung
                             {
-                                UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
-                                UserName = reader.GetString(reader.GetOrdinal("UserName")),
-                                FullName = !reader.IsDBNull(reader.GetOrdinal("FullName")) ? reader.GetString(reader.GetOrdinal("FullName")) : null,
+                                NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
+                                TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
+                                TenDayDu = !reader.IsDBNull(reader.GetOrdinal("TenDayDu")) ? reader.GetString(reader.GetOrdinal("TenDayDu")) : null,
                                 Email = reader.GetString(reader.GetOrdinal("Email")),
-                                Password = reader.GetString(reader.GetOrdinal("Password")),
-                                Status = reader.GetBoolean(reader.GetOrdinal("Status")),
-                                Note = !reader.IsDBNull(reader.GetOrdinal("Note")) ? reader.GetString(reader.GetOrdinal("Note")) : null
+                                MatKhau = reader.GetString(reader.GetOrdinal("MatKhau")),
+                                TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
+                                GhiChu = !reader.IsDBNull(reader.GetOrdinal("GhiChu")) ? reader.GetString(reader.GetOrdinal("GhiChu")) : null
                             };
                         }
                     }
@@ -94,12 +94,12 @@ namespace QUANLYVANHOA.Repositories.HeThong
             return user;
         }
 
-        public async Task<SysUser> GetByEmail(string email)
+        public async Task<HeThongNguoiDung> LayTheoEmail(string email)
         {
-            SysUser user = null;
+            HeThongNguoiDung user = null;
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var cmd = new SqlCommand("UMS_GetByEmail", connection))
+                using (var cmd = new SqlCommand("NguoiDung_GetByEmail", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@Email", email);
@@ -108,15 +108,15 @@ namespace QUANLYVANHOA.Repositories.HeThong
                     {
                         if (await reader.ReadAsync())
                         {
-                            user = new SysUser
+                            user = new HeThongNguoiDung
                             {
-                                UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
-                                UserName = reader.GetString(reader.GetOrdinal("UserName")),
-                                FullName = !reader.IsDBNull(reader.GetOrdinal("FullName")) ? reader.GetString(reader.GetOrdinal("FullName")) : null,
+                                NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
+                                TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
+                                TenDayDu = !reader.IsDBNull(reader.GetOrdinal("TenDayDu")) ? reader.GetString(reader.GetOrdinal("TenDayDu")) : null,
                                 Email = reader.GetString(reader.GetOrdinal("Email")),
-                                Password = reader.GetString(reader.GetOrdinal("Password")),
-                                Status = reader.GetBoolean(reader.GetOrdinal("Status")),
-                                Note = !reader.IsDBNull(reader.GetOrdinal("Note")) ? reader.GetString(reader.GetOrdinal("Note")) : null
+                                MatKhau = reader.GetString(reader.GetOrdinal("MatKhau")),
+                                TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
+                                GhiChu = !reader.IsDBNull(reader.GetOrdinal("GhiChu")) ? reader.GetString(reader.GetOrdinal("GhiChu")) : null
                             };
                         }
                     }
@@ -127,38 +127,38 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
 
-        public async Task<int> Create(SysUserInsertModel user)
+        public async Task<int> TaoNguoiDungMoi(HeThongNguoiDungInsertModel user)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var cmd = new SqlCommand("UMS_Create", connection))
+                using (var cmd = new SqlCommand("NguoiDung_Create", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@UserName", user.UserName);
-                    cmd.Parameters.AddWithValue("@FullName", user.FullName);
+                    cmd.Parameters.AddWithValue("@TenNguoiDung", user.TenNguoiDung);
+                    cmd.Parameters.AddWithValue("@TenDayDu", user.TenDayDu);
                     cmd.Parameters.AddWithValue("@Email", user.Email);
-                    cmd.Parameters.AddWithValue("@Password", user.Password);
-                    cmd.Parameters.AddWithValue("@Status", user.Status);
-                    cmd.Parameters.AddWithValue("@Note", user.Note);
+                    cmd.Parameters.AddWithValue("@MatKhau", user.MatKhau);
+                    cmd.Parameters.AddWithValue("@TrangThai", user.TrangThai);
+                    cmd.Parameters.AddWithValue("@GhiChu", user.GhiChu);
                     await connection.OpenAsync();
                     return await cmd.ExecuteNonQueryAsync();
                 }
             }
         }
 
-        public async Task<int> Register(RegisterModel user)
+        public async Task<int> DangKyTaiKhoan(RegisterModel user)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var cmd = new SqlCommand("UMS_Create", connection))
+                using (var cmd = new SqlCommand("NguoiDung_Create", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@UserName", user.UserName);
-                    cmd.Parameters.AddWithValue("@FullName", user.FullName);
+                    cmd.Parameters.AddWithValue("@TenNguoiDung", user.TenNguoiDung);
+                    cmd.Parameters.AddWithValue("@TenDayDu", user.TenDayDu);
                     cmd.Parameters.AddWithValue("@Email", user.Email);
-                    cmd.Parameters.AddWithValue("@Password", user.Password);
-                    cmd.Parameters.AddWithValue("@Status", user.Status);
-                    cmd.Parameters.AddWithValue("@Note", user.Note);
+                    cmd.Parameters.AddWithValue("@MatKhau", user.MatKhau);
+                    cmd.Parameters.AddWithValue("@TrangThai", user.TrangThai);
+                    cmd.Parameters.AddWithValue("@GhiChu", user.GhiChu);
                     await connection.OpenAsync();
                     return await cmd.ExecuteNonQueryAsync();
 
@@ -166,20 +166,20 @@ namespace QUANLYVANHOA.Repositories.HeThong
             }
         }
 
-        public async Task<int> Update(SysUserUpdateModel user)
+        public async Task<int> SuaThongTinNguoiDung(SysUserUpdateModel user)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var cmd = new SqlCommand("UMS_Update", connection))
+                using (var cmd = new SqlCommand("NguoiDung_Update", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@UserID", user.UserID);
-                    cmd.Parameters.AddWithValue("@UserName", user.UserName);
-                    cmd.Parameters.AddWithValue("@FullName", user.FullName);
+                    cmd.Parameters.AddWithValue("@NguoiDungID", user.NguoiDungID);
+                    cmd.Parameters.AddWithValue("@TenNguoiDung", user.TenNguoiDung);
+                    cmd.Parameters.AddWithValue("@TenDayDu", user.TenDayDu);
                     cmd.Parameters.AddWithValue("@Email", user.Email);
-                    cmd.Parameters.AddWithValue("@Password", user.Password);
-                    cmd.Parameters.AddWithValue("@Status", user.Status);
-                    cmd.Parameters.AddWithValue("@Note", user.Note);
+                    cmd.Parameters.AddWithValue("@MatKhau", user.MatKhau);
+                    cmd.Parameters.AddWithValue("@TrangThai", user.TrangThai);
+                    cmd.Parameters.AddWithValue("@GhiChu", user.GhiChu);
                     await connection.OpenAsync();
                     return await cmd.ExecuteNonQueryAsync();
                 }
@@ -187,73 +187,46 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
 
-        public async Task<int> Delete(int userId)
+        public async Task<int> XoaThongTinNguoiDung(int NguoiDungID)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var cmd = new SqlCommand("UMS_Delete", connection))
+                using (var cmd = new SqlCommand("NguoiDung_Delete", connection))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@UserID", userId);
+                    cmd.Parameters.AddWithValue("@NguoiDungID", NguoiDungID);
                     await connection.OpenAsync();
                     return await cmd.ExecuteNonQueryAsync();
                 }
             }
         }
-        public async Task<SysUser> GetByRefreshToken(string refreshToken)
-        {
-            SysUser user = null;
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                using (var command = new SqlCommand("UMS_GetByRefreshToken", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@RefreshToken", refreshToken);
 
-                    await connection.OpenAsync();
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            user = new SysUser
-                            {
-                                UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
-                                UserName = reader.GetString(reader.GetOrdinal("UserName")),
-                                Email = reader.GetString(reader.GetOrdinal("Email")),
-                            };
-                        }
-                    }
-                }
-            }
-            return user;
-        }
-
-        public async Task<SysUser> VerifyLogin(string userName, string password)
+        public async Task<HeThongNguoiDung> DangNhap(string TenNguoiDung, string MatKhau)
         {
-            SysUser user = null;
+            HeThongNguoiDung user = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
                 using (var command = new SqlCommand("VerifyLogin", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@UserName", userName);
-                    command.Parameters.AddWithValue("@Password", password);
+                    command.Parameters.AddWithValue("@TenNguoiDung", TenNguoiDung);
+                    command.Parameters.AddWithValue("@MatKhau", MatKhau);
 
                     await connection.OpenAsync();
                     using (var reader = await command.ExecuteReaderAsync())
                     {
                         if (await reader.ReadAsync())
                         {
-                            user = new SysUser
+                            user = new HeThongNguoiDung
                             {
-                                UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
-                                UserName = reader.GetString(reader.GetOrdinal("UserName")),
-                                FullName = !reader.IsDBNull(reader.GetOrdinal("FullName")) ? reader.GetString(reader.GetOrdinal("FullName")) : null,
+                                NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
+                                TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
+                                TenDayDu = !reader.IsDBNull(reader.GetOrdinal("TenDayDu")) ? reader.GetString(reader.GetOrdinal("TenDayDu")) : null,
                                 Email = reader.GetString(reader.GetOrdinal("Email")),
-                                Password = reader.GetString(reader.GetOrdinal("Password")),
-                                Status = reader.GetBoolean(reader.GetOrdinal("Status")),
-                                Note = !reader.IsDBNull(reader.GetOrdinal("Note")) ? reader.GetString(reader.GetOrdinal("Note")) : null
+                                MatKhau = reader.GetString(reader.GetOrdinal("MatKhau")),
+                                TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
+                                GhiChu = !reader.IsDBNull(reader.GetOrdinal("GhiChu")) ? reader.GetString(reader.GetOrdinal("GhiChu")) : null
                             };
                         }
                     }
@@ -264,15 +237,15 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
         // 1. Lưu session mới vào cơ sở dữ liệu
-        public async Task CreateSession(int userId, string refreshToken, DateTime expiryDate)
+        public async Task TaoPhienDangNhap(int NguoiDungID, string refreshToken, DateTime expiryDate)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("CreateSession", connection))
+                using (var command = new SqlCommand("PhienDangNhap_Create", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@UserID", userId);
+                    command.Parameters.AddWithValue("@NguoiDungID", NguoiDungID);
                     command.Parameters.AddWithValue("@RefreshToken", refreshToken);
                     command.Parameters.AddWithValue("@ExpiryDate", expiryDate);
 
@@ -282,12 +255,12 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
         // 2. Lấy session theo refresh token
-        public async Task<Session> GetSessionByRefreshToken(string refreshToken)
+        public async Task<HeThongPhienDangNhap> LayPhienDangNhapTheoRefreshToken(string refreshToken)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("GetSessionByRefreshToken", connection))
+                using (var command = new SqlCommand("PhienDangNhap_GetByRefreshToken", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@RefreshToken", refreshToken);
@@ -296,10 +269,10 @@ namespace QUANLYVANHOA.Repositories.HeThong
                     {
                         if (await reader.ReadAsync())
                         {
-                            return new Session
+                            return new HeThongPhienDangNhap
                             {
-                                SessionID = reader.GetInt32(reader.GetOrdinal("SessionID")),
-                                UserID = reader.GetInt32(reader.GetOrdinal("UserID")),
+                                PhienDangNhapID = reader.GetInt32(reader.GetOrdinal("PhienDangNhapID")),
+                                NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
                                 RefreshToken = reader.GetString(reader.GetOrdinal("RefreshToken")),
                                 ExpiryDate = reader.GetDateTime(reader.GetOrdinal("ExpiryDate")),
                                 IsRevoked = reader.GetBoolean(reader.GetOrdinal("IsRevoked")),
@@ -313,15 +286,15 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
         // 3. Cập nhật refresh token cho session
-        public async Task UpdateSessionRefreshToken(int sessionId, string newRefreshToken, DateTime newExpiryDate)
+        public async Task CapNhatRefreshToken(int sessionId, string newRefreshToken, DateTime newExpiryDate)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("UpdateSessionRefreshToken", connection))
+                using (var command = new SqlCommand("PhienDangNhap_UpdateRefreshToken", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@SessionID", sessionId);
+                    command.Parameters.AddWithValue("@PhienDangNhapID", sessionId);
                     command.Parameters.AddWithValue("@NewRefreshToken", newRefreshToken);
                     command.Parameters.AddWithValue("@NewExpiryDate", newExpiryDate);
 
@@ -331,12 +304,12 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
         // 4. Thu hồi session
-        public async Task RevokeSession(int sessionId)
+        public async Task VoHieuHoaPhienDangNhap(int sessionId)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("RevokeSession", connection))
+                using (var command = new SqlCommand("PhienDangNhap_Revoke", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@SessionID", sessionId);
@@ -347,15 +320,15 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
         // 5. Thu hồi tất cả session của người dùng
-        public async Task RevokeAllSessions(int userId)
+        public async Task VoHieuHoaTatCaPhienDangNhapCuaNguoiDung(int NguoiDungID)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("RevokeAllSessions", connection))
+                using (var command = new SqlCommand("PhienDangNhap_RevokeAllSessionsOfUser", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@UserID", userId);
+                    command.Parameters.AddWithValue("@NguoiDungID", NguoiDungID);
 
                     await command.ExecuteNonQueryAsync();
                 }
@@ -363,15 +336,15 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
         // 6. Xóa tất cả session của người dùng
-        public async Task DeleteAllSessions(int userId)
+        public async Task XoaTatCaPhienDangNhapCuaNguoiDung(int NguoiDungID)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                using (var command = new SqlCommand("DeleteAllSessions", connection))
+                using (var command = new SqlCommand("PhienDangNhap_DeleteAllSessionsOfUser", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@UserID", userId);
+                    command.Parameters.AddWithValue("@NguoiDungID", NguoiDungID);
 
                     await command.ExecuteNonQueryAsync();
                 }

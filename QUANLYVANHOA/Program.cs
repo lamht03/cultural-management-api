@@ -21,7 +21,7 @@ builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"))
 // Tự động đăng ký tất cả các repository trong assembly
 // Assembly là một đơn vị mã đã được biên dịch (compiled unit)
 // => contain: Types(classes, interfaces, enums), Methods, properties, events
-builder.Services.AddRepositoriesAndServices(typeof(SysUserRepository).Assembly); // typeof(SysUserRepository) đại diện, object chứa metadata
+builder.Services.AddRepositoriesAndServices(typeof(HeThongNguoiDungRepository).Assembly); // typeof(SysUserRepository) đại diện, object chứa metadata
 
 ////Register repository and service
 //builder.Services.AddScoped<ISysUserRepository, SysUserRepository>();
@@ -70,13 +70,13 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Professional API - created by LamHT",
+        Title = "Professional API - created by LâmHT",
         Version = "1.0",
         Description = "An ASP.NET 9 Web API for QLVH Production",
         TermsOfService = new Uri("https://www.facebook.com/hatung.lam.589"),
         Contact = new OpenApiContact
         {
-            Name = "Lam HT",
+            Name = "Lâm HT",
             Email = "hatunglambg2003@gmail.com",
             Url = new Uri("https://github.com/Lam-Ht-IT"),            
         }
