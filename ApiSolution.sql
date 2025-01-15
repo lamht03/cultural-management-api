@@ -617,7 +617,6 @@
                 DELETE FROM HT_NguoiDung
                 WHERE NguoiDungID = @NguoiDungID;
             END
-
             GO
         --Veryfy Login
             CREATE PROCEDURE VerifyLogin
@@ -673,6 +672,23 @@
                     SELECT * FROM HT_NhomPhanQuyen sg WHERE  sg.NhomPhanQuyenID = @NhomPhanQuyenID
                 END
                 GO
+
+                CREATE PROC NhomChucNang_GetAllFunctionsAndPermissionsInAuthorizationGroup
+                    @NhomPhanQuyenID int
+                AS
+                BEGIN
+                    SELECT a.ChucNangID, a.TenChucNang,b.NhomPhanQuyenID, c.TenNhomPhanQuyen,b.Quyen FROM HT_ChucNang a 
+                    JOIN HT_NhomChucNang b on a.ChucNangID = b.ChucNangID 
+                    JOIN HT_NhomPhanQuyen c on b.NhomPhanQuyenID = c.NhomPhanQuyenID where c.NhomPhanQuyenID = @NhomPhanQuyenID
+                END
+                GO
+                CREATE PROC NhomPhanQuyen_GetAllUsersInAuthorizationGroup
+                    @NhomPhanQuyenID INT
+                AS
+                BEGIN
+                    SELECT a.NguoiDungID, a.TenNguoiDung,a.TenDayDu,b.NhomPhanQuyenID, c.TenNhomPhanQuyen From HT_NguoiDung a  JOIN HT_NhomNguoiDung b  on a.NguoiDungID = b.NguoiDungID JOIN HT_NhomPhanQuyen c on b.NhomPhanQuyenID = c.NhomPhanQuyenID where c.NhomPhanQuyenID = @NhomPhanQuyenID
+                END
+                GO
         --Create Group 
             CREATE PROCEDURE NhomPhanQuyen_Create
                 @TenNhomPhanQuyen NVARCHAR(50),
@@ -708,6 +724,7 @@
                 WHERE NhomPhanQuyenID = @NhomPhanQuyenID;
             END
             GO
+
     --region Stored procedures of Function
         CREATE TABLE HT_ChucNang (
             ChucNangID INT PRIMARY KEY IDENTITY(1,1),
@@ -818,16 +835,24 @@
             WHERE NguoiDungID = @NguoiDungID AND NhomNguoiDungID = @NhomNguoiDungID
         END;
         GO	
+
+        CREATE PROC NhomNguoiDung_GetUserInAuthorizationGroupByUserID
+            @NguoiDungID INT
+        AS
+        begin 
+            SELECT * FROM HT_NhomNguoiDung WHERE NguoiDungID = @NguoiDungID
+        END
+        go
     --region Stored procedures of FunctionInGroup
-    CREATE TABLE HT_NhomChucNang (
-        NhomChucNangID INT PRIMARY KEY IDENTITY(1,1),
-        ChucNangID INT,
-        NhomPhanQuyenID INT,
-        Quyen INT NOT NULL, 
-        FOREIGN KEY (ChucNangID) REFERENCES HT_ChucNang(ChucNangID),
-        FOREIGN KEY (NhomPhanQuyenID) REFERENCES HT_NhomPhanQuyen(NhomPhanQuyenID)
-    );
-    GO
+        CREATE TABLE HT_NhomChucNang (
+            NhomChucNangID INT PRIMARY KEY IDENTITY(1,1),
+            ChucNangID INT,
+            NhomPhanQuyenID INT,
+            Quyen INT NOT NULL, 
+            FOREIGN KEY (ChucNangID) REFERENCES HT_ChucNang(ChucNangID),
+            FOREIGN KEY (NhomPhanQuyenID) REFERENCES HT_NhomPhanQuyen(NhomPhanQuyenID)
+        );
+        GO
 
     CREATE PROC NhomChucNang_GetUserFunctionAccess
     @NhomPhanQuyenID INT
@@ -839,8 +864,7 @@
         where c.NhomPhanQuyenID = @NhomPhanQuyenID
     END
     GO
-
-    CREATE PROCEDURE NhomChucNang_AddFunctionToAuthorizationsGroup
+    CREATE PROCEDURE NhomChucNang_AddFunctionToAuthorizationGroup
         @ChucNangID INT,
         @NhomPhanQuyenID INT,
         @Quyen INT
@@ -885,6 +909,15 @@
         WHERE u.TenNguoiDung = @TenNguoiDung
     END
     GO	
+
+    /*Procedure for checking input data*/
+    CREATE PROC NhomChucNang_GetFunctionInGroupByFunctionID
+        @ChucNangID int
+    AS
+    BEGIN
+        SELECT * FROM HT_NhomChucNang WHERE ChucNangID = @ChucNangID
+    END
+    GO
     --region Stored procedures of RefreshToken
         CREATE TABLE HT_PhienDangNhap
         (
@@ -961,7 +994,6 @@
             WHERE NguoiDungID = @NguoiDungID;
         END
         GO
-
 
 --region Category Mangement System
 --region Stored procedures of DonViTinh
@@ -1044,7 +1076,7 @@
         DELETE FROM DM_DonViTinh WHERE DonViTinhID = @DonViTinhID;
     END
     GO
---endregion
+
 
 --region Stored procedures LoaiDiTich
     CREATE TABLE DM_LoaiDiTich(
@@ -1120,7 +1152,7 @@
         DELETE FROM DM_LoaiDiTich WHERE LoaiDiTichID = @LoaiDiTichID;
     END
     GO
---endregion
+
 
 --region Stored procedures of DiTichXepHang
     CREATE TABLE DM_DiTichXepHang (
@@ -1215,7 +1247,7 @@
         WHERE DiTichXepHangID = @DiTichXepHangID;
     END
     GO
---endregion
+
 
 --region Stored procedures of DM_KyBaoCao
     CREATE TABLE DM_KyBaoCao (
@@ -1322,8 +1354,8 @@
     END;
     GO	
 
---endregion
---endregion
+
+
 
 --region Comprehensive Management Of Report Templates
 --region Stored Procedure of Report Form Management
@@ -1401,7 +1433,7 @@
         DELETE FROM BC_MauPhieu  WHERE MauPhieuID = @MauPhieuID
     END
     GO	
---endregion	
+	
 
 --region Stored procedures of DM_LoaiMauPieu
     CREATE TABLE DM_LoaiMauPhieu
@@ -1491,8 +1523,8 @@
         DELETE FROM DM_LoaiMauPhieu WHERE LoaiMauPhieuID = @LoaiMauPhieuID;
     END
     GO
---endregion
---endregion
+
+
 
 --region Stored procedures of ChiTieu
     CREATE TABLE DM_ChiTieu (
@@ -2111,22 +2143,22 @@
             WHERE ChiTieuID = @ChiTieuID;
         END;
         GO
---endregion
+
 
 --region Stored procedures of DM_TieuChi
-CREATE TABLE DM_TieuChi (
-	TieuChiID INT PRIMARY KEY IDENTITY(1,1),
-	MaTieuChi NVARCHAR(100),
-	TenTieuChi NVARCHAR(100) NOT NULL,
-	TieuChiChaID INT NULL,
-	CONSTRAINT FK_TieuChi_TieuChiCha FOREIGN KEY (TieuChiChaID) REFERENCES DM_TieuChi(TieuChiID),
-	GhiChu NVARCHAR(300) DEFAULT '',
-	KieuDuLieuCot INT,
-	TrangThai BIT DEFAULT 0,
-	LoaiTieuChi INT,
-	CapDo INT
-);
-GO 
+    CREATE TABLE DM_TieuChi (
+        TieuChiID INT PRIMARY KEY IDENTITY(1,1),
+        MaTieuChi NVARCHAR(100),
+        TenTieuChi NVARCHAR(100) NOT NULL,
+        TieuChiChaID INT NULL,
+        CONSTRAINT FK_TieuChi_TieuChiCha FOREIGN KEY (TieuChiChaID) REFERENCES DM_TieuChi(TieuChiID),
+        GhiChu NVARCHAR(300) DEFAULT '',
+        KieuDuLieuCot INT,
+        TrangThai BIT DEFAULT 0,
+        LoaiTieuChi INT,
+        CapDo INT
+    );
+    GO 
 
 -- Procedure to retrieve all criteria with paging and hierarchical data
     CREATE PROCEDURE TC_GetAll
@@ -2324,7 +2356,6 @@ BEGIN
     WHERE TieuChiID = @TieuChiID;
 END;
 GO
-
 CREATE PROCEDURE TC_Delete
     @TieuChiID INT
 AS
@@ -2365,8 +2396,8 @@ BEGIN
     WHERE TieuChiID = @TieuChiID;
 END;
 GO
---endregion
---endregion
+
+
 
 
 
@@ -2469,7 +2500,7 @@ VALUES
 INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
 VALUES 
 ('CT0010', N'Số vận động viên cấp cao', NULL, 10);
---endregion
+
 
 --region Childen level 1
 INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
@@ -2563,7 +2594,7 @@ VALUES
 INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
 VALUES 
 ('CT10_2', N'Cấp 1', 10, 10);
---endregion
+
 
 --region children level 2
 INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
@@ -2725,8 +2756,8 @@ VALUES
 INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
 VALUES 
 ('CT9_2_4', N'Số đường dây nóng', 41, 9);
---endregion
---endregion
+
+
 GO
 INSERT INTO DM_LoaiDiTich (TenLoaiDiTich, GhiChu)
 VALUES (N'Di tích kiến trúc nghệ thuật', '1'),
@@ -2745,18 +2776,18 @@ VALUES
 (N'Kỳ báo cáo năm 2023', 1, N'2023', 3),
 (N'Kỳ báo cáo năm 2024', 0, N'2024', 3),
 (N'Kỳ báo cáo dự án X', 1, N'Báo cáo tiến độ dự án X', 4);
---endregion
+
 
 --region Insert records into  Authorization Management
 -- Thêm người dùng
-INSERT INTO Sys_User (UserName, Email, Password, Status, Note)
+INSERT INTO HT_NguoiDung (TenNguoiDung, Email, MatKhau  , TrangThai, GhiChu)
 VALUES
 ('admin', 'admin@example.com', 'admin', 1, 'Admin user'),
 ('user1', 'user1@example.com', 'user1', 1, 'Regular user');
 GO	
 
 --Thêm chức năng
-INSERT INTO Sys_Function (Description,FunctionName )
+INSERT INTO HT_ChucNang (MoTa,TenChucNang )
 	VALUES ('ManageUsers', N'Quản lý người dùng'),
 	('ManageMonumentRanking', N'Quản lý di tích xếp hạng'),
 	('ManageUnitofMeasure', N'Quản lý đơn vị tính'),
@@ -2770,13 +2801,13 @@ INSERT INTO Sys_Function (Description,FunctionName )
 GO
 
 -- Thêm nhóm
-INSERT INTO Sys_Group (Description,GroupName)
+INSERT INTO HT_NhomPhanQuyen (MoTa,TenNhomPhanQuyen)
 VALUES
 ('AdminGroup', N'Nhóm quản trị'),
 ('UserGroup', N'Nhóm người dùng');
 GO
 -- Thêm người dùng vào nhóm
-INSERT INTO Sys_UserInGroup (UserID, GroupID)
+INSERT INTO HT_NhomNguoiDung (NguoiDungID, NhomPhanQuyenID)
 VALUES
 (1, 1),  -- admin vào AdminGroup
 (2, 2);  -- user1 vào UserGroup
@@ -2784,7 +2815,7 @@ GO
 
 
 -- Thêm chức năng vào nhóm và phân quyền
-INSERT INTO Sys_FunctionInGroup (FunctionID, GroupID, Permission)
+INSERT INTO HT_NhomChucNang (ChucNangID, NhomPhanQuyenID, Quyen)
 VALUES
 (1, 1, 15),
 (1, 2, 0),
@@ -2807,8 +2838,8 @@ VALUES
 (10,1,15),
 (10,2,0)
 GO  
---endregion
---endregion
+
+
 
 --region Query
 	DELETE FROM Sys_User;
@@ -2845,7 +2876,7 @@ GO
 
 
 
-SELECT * FROM Sys_Function sf
+SELECT * FROM HT_ChucNang
 SELECT * FROM Sys_FunctionInGroup sfig
 SELECT * FROM Sys_UserInGroup suig
 SELECT * FROM Sys_User su
@@ -2862,13 +2893,11 @@ SELECT * FROM DM_LoaiMauPhieu
 SELECT * FROM DM_TieuChi dtc
 SELECT * FROM DM_ChiTieu dtc
 
-
-
 UPDATE Sys_User
 SET Password = 'user1' WHERE UserID = 2
 
 UPDATE Sys_FunctionInGroup 
-SET  Permission = 15 WHERE FunctionInGroupID = 1
+SET  Permission = 15 WHERE FunctionInNhomPhanQuyenID = 1
 
 UPDATE Sys_Function 
 SET FunctionName = 'ManageMonumentRanking'  WHERE FunctionID = 2
@@ -2915,4 +2944,4 @@ ADD TieuChiIDs NVARCHAR(MAX);
 ALTER TABLE BC_ChiTietMauPhieu
 DROP COLUMN TieuChiID;
 
---endregion
+

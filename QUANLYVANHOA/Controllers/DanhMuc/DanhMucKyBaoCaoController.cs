@@ -6,7 +6,7 @@ using QUANLYVANHOA.Interfaces.DanhMuc;
 
 namespace QUANLYVANHOA.Controllers.DanhMuc
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/DanhMucKyBaoCao")]
     [ApiController]
     public class DanhMucKyBaoCaoController : ControllerBase
     {
@@ -17,8 +17,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _kyBaoCaoRepository = kyBaoCaoRepository;
         }
 
-        [CustomAuthorize(1, "ManageReportingPeriod")]
-        [HttpGet("List")]
+        [CustomAuthorize(1, "Quản lý kỳ báo cáo")]
+        [HttpGet("DanhSachKyBaoCao")]
         public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
         {
             if (!string.IsNullOrWhiteSpace(name))
@@ -58,8 +58,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(1, "ManageReportingPeriod")]
-        [HttpGet("FindByID")]
+        [CustomAuthorize(1, "Quản lý kỳ báo cáo")]
+        [HttpGet("TimKiemThongTinKyBaoCao")]
         public async Task<IActionResult> GetByID(int id)
         {
             if (id <= 0)
@@ -76,8 +76,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Get information successfully", Data = kyBaoCao });
         }
 
-        [HttpPost("Insert")]
-        [CustomAuthorize(2, "ManageReportingPeriod")]
+        [HttpPost("ThemMoiKyBaoCao")]
+        [CustomAuthorize(2, "Quản lý kỳ báo cáo")]
         public async Task<IActionResult> Insert([FromBody] DanhMucKyBaoCaoModelInsert model)
         {
             var existingKyBaoCaoName = await _kyBaoCaoRepository.GetAll(model.TenKyBaoCao, 1, 20);
@@ -110,8 +110,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             }
         }
 
-        [HttpPost("Update")]
-        [CustomAuthorize(4, "ManageReportingPeriod")]
+        [HttpPost("CapNhatKyBaoCao")]
+        [CustomAuthorize(4, "Quản lý kỳ báo cáo")]
         public async Task<IActionResult> Update(DanhMucKyBaoCaoModelUpdate kyBaoCao)
         {
             var existingKyBaoCaoName = await _kyBaoCaoRepository.GetAll(kyBaoCao.TenKyBaoCao, 1, 20);
@@ -140,8 +140,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Updated data successfully" });
         }
 
-        [HttpPost("Delete")]
-        [CustomAuthorize(8, "ManageReportingPeriod")]
+        [HttpPost("XoaKyBaoCao")]
+        [CustomAuthorize(8, "Quản lý kỳ báo cáo")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)

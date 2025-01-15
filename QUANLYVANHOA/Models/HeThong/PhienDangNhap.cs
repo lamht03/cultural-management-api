@@ -1,6 +1,6 @@
 ﻿namespace QUANLYVANHOA.Models.HeThong
 {
-    public class HeThongPhienDangNhap
+    public class PhienDangNhap
     {
         public int PhienDangNhapID { get; set; }
         public int NguoiDungID { get; set; }

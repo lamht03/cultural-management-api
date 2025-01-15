@@ -2,7 +2,7 @@
 
 namespace QUANLYVANHOA.Models.HeThong
 {
-    public class HeThongChucNang
+    public class ChucNang
     {
         [JsonPropertyName("ChucNangID")]
         public int ChucNangID { get; set; }
@@ -14,7 +14,7 @@ namespace QUANLYVANHOA.Models.HeThong
         public string MoTa { get; set; }
     }
 
-    public class HeThongChucNangInsertModel
+    public class ChucNangInsertModel
     {
         [JsonPropertyName("TenChucNang")]
         public string TenChucNang { get; set; }
@@ -23,7 +23,7 @@ namespace QUANLYVANHOA.Models.HeThong
         public string MoTa { get; set; }
     }
 
-    public class HeThongChucNangUpdateModel
+    public class ChucNangUpdateModel
     {
         [JsonPropertyName("ChucNangID")]
         public int ChucNangID { get; set; }

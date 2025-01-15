@@ -9,7 +9,7 @@ using QUANLYVANHOA.Interfaces.DanhMuc;
 
 namespace QUANLYVANHOA.Controllers.DanhMuc
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/DanhMucLoaiMauPhieu/")]
     [ApiController]
     public class DanhMucLoaiMauPhieuController : ControllerBase
     {
@@ -20,8 +20,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _loaiMauPhieuRepository = loaiMauPhieuRepository;
         }
 
-        [CustomAuthorize(1, "ManageFormType")]
-        [HttpGet("List")]
+        [CustomAuthorize(1, "Quản lý loại mẫu phiếu")]
+        [HttpGet("DanhSachLoaiMauPhieu")]
         public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
         {
             if (!string.IsNullOrWhiteSpace(name))
@@ -75,8 +75,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [HttpGet("FindByID")]
-        [CustomAuthorize(1, "ManageFormType")]
+        [HttpGet("TimKiemLoaiMauPhieuTheoID")]
+        [CustomAuthorize(1, "Quản lý loại mẫu phiếu")]
         public async Task<IActionResult> GetByID(int id)
         {
             if (id <= 0)
@@ -91,8 +91,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Get information successfully", Data = loaiMauPhieu });
         }
 
-        [HttpPost("Insert")]
-        [CustomAuthorize(2, "ManageFormType")]
+        [HttpPost("ThemMoiLoaiMauPhieu")]
+        [CustomAuthorize(2, "Quản lý loại mẫu phiếu")]
         public async Task<IActionResult> Insert([FromBody] DanhMucLoaiMauPhieuModelInsert model)
         {
 
@@ -141,8 +141,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Insertion failed" });
         }
 
-        [HttpPost("Update")]
-        [CustomAuthorize(4, "ManageFormType")]
+        [HttpPost("CapNhapThongTinLoaiMauPhieu")]
+        [CustomAuthorize(4, "Quản lý loại mẫu phiếu")]
         public async Task<IActionResult> Update([FromBody] DanhMucLoaiMauPhieuModelUpdate model)
         {
             var existingLoaiMauPhieuName = await _loaiMauPhieuRepository.GetAll(model.TenLoaiMauPhieu, 1, 20);
@@ -182,8 +182,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Update failed" });
         }
 
-        [HttpPost("Delete")]
-        [CustomAuthorize(8, "ManageFormType")]
+        [HttpPost("XoaThongTinLoaiMauPhieu")]
+        [CustomAuthorize(8, "Quản lý loại mẫu phiếu")]
         public async Task<IActionResult> Delete(int id)
         {
             var existingLoaiMauPhieu = await _loaiMauPhieuRepository.GetByID(id);

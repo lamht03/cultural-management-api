@@ -9,7 +9,7 @@ using QUANLYVANHOA.Interfaces.DanhMuc;
 
 namespace QUANLYVANHOA.Controllers.DanhMuc
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/DanhMucLoaiDiTich")]
     [ApiController]
     public class DanhMucLoaiDiTichController : ControllerBase
     {
@@ -20,8 +20,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _loaiDiTichRepository = loaiDiTichRepository;
         }
 
-        [HttpGet("List")]
-        [CustomAuthorize(1, "ManageTypeofMonument")]
+        [HttpGet("DanhSachLoaiDiTich")]
+        [CustomAuthorize(1, "Quản lý loại di tích")]
         public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
         {
             if (!string.IsNullOrWhiteSpace(name))
@@ -74,8 +74,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [HttpGet("FindByID")]
-        [CustomAuthorize(1, "ManageTypeofMonument")]
+        [HttpGet("TimKiemLoaiDiTichTheoID")]
+        [CustomAuthorize(1, "Quản lý loại di tích")]
         public async Task<IActionResult> GetByID(int id)
         {
             var loaiDiTich = await _loaiDiTichRepository.GetByID(id);
@@ -86,8 +86,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Get information successfully", Data = loaiDiTich });
         }
 
-        [HttpPost("Insert")]
-        [CustomAuthorize(2, "ManageTypeofMonument")]
+        [HttpPost("ThemMoiLoaiDiTich")]
+        [CustomAuthorize(2, "Quản lý loại di tích")]
         public async Task<IActionResult> Insert([FromBody] DanhMucLoaiDiTichModelInsert model)
         {
             var existingLoaiDiTichName = await _loaiDiTichRepository.GetAll(model.TenLoaiDiTich, 1, 20);
@@ -129,8 +129,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Insertion failed" });
         }
 
-        [HttpPost("Update")]
-        [CustomAuthorize(4, "ManageTypeofMonument")]
+        [HttpPost("CapNhatThongTinLoaiDiTich")]
+        [CustomAuthorize(4, "Quản lý loại di tích")]
         public async Task<IActionResult> Update([FromBody] DanhMucLoaiDiTichModelUpdate model)
         {
             var existingLoaiDiTichName = await _loaiDiTichRepository.GetAll(model.TenLoaiDiTich, 1, 20);
@@ -167,8 +167,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Update failed" });
         }
 
-        [HttpPost("Delete")]
-        [CustomAuthorize(8, "ManageTypeofMonument")]
+        [HttpPost("XoaLoaiDiTich")]
+        [CustomAuthorize(8, "Quản lý loại di tích")]
         public async Task<IActionResult> Delete(int id)
         {
             var existingLoaiDiTich = await _loaiDiTichRepository.GetByID(id);

@@ -11,23 +11,23 @@ using System.Threading.Tasks;
 
 namespace QUANLYVANHOA.Controllers.HeThong
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/NguoiDung/")]
     [ApiController]
-    public class SysUsersController : ControllerBase
+    public class NguoiDungController : ControllerBase
     {
-        private readonly IHeThongNguoiDungRepository _userRepository;
-        private readonly IPermissionManagementRepository _permissionManagementRepository;
+        private readonly INguoiDungRepository _userRepository;
+        private readonly IPhanQuyenRepository _permissionManagementRepository;
         private readonly IUserService _userService;
 
-        public SysUsersController(IHeThongNguoiDungRepository userRepository, IPermissionManagementRepository userInGroupRepository, IUserService userService)
+        public NguoiDungController(INguoiDungRepository userRepository, IPhanQuyenRepository userInGroupRepository, IUserService userService)
         {
             _userRepository = userRepository;
             _userService = userService;
             _permissionManagementRepository = userInGroupRepository;
         }
 
-        [CustomAuthorize(1, "ManageUsers")]
-        [HttpGet("UsersList")]
+        [CustomAuthorize(1, "Quản lý người dùng")]
+        [HttpGet("DanhSachNguoiDung")]
         public async Task<IActionResult> GetAll(string? userName, int pageNumber = 1, int pageSize = 20)
         {
             if (!string.IsNullOrWhiteSpace(userName))
@@ -79,8 +79,8 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [CustomAuthorize(1, "ManageUsers")]
-        [HttpGet("Search User by ID")]
+        [CustomAuthorize(1, "Quản lý người dùng")]
+        [HttpGet("TimKiemNguoiDungTheoID")]
         public async Task<IActionResult> GetByID(int userId)
         {
             var user = await _userRepository.LayTheoID(userId);
@@ -103,9 +103,9 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [CustomAuthorize(2, "ManageUsers")]
-        [HttpPost("Add User")]
-        public async Task<IActionResult> Create([FromBody] HeThongNguoiDungInsertModel user)
+        [CustomAuthorize(2, "Quản lý người dùng")]
+        [HttpPost("ThemTaiKhoanNguoiDung")]
+        public async Task<IActionResult> Create([FromBody] NguoiDungInsertModel user)
         {
             if (string.IsNullOrWhiteSpace(user.TenNguoiDung))
             {
@@ -203,9 +203,9 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [CustomAuthorize(4, "ManageUsers")]
-        [HttpPost("Update User")]
-        public async Task<IActionResult> Update([FromBody] SysUserUpdateModel user)
+        [CustomAuthorize(4, "Quản lý người dùng")]
+        [HttpPost("CapNhatThongTinTaiKhoanNguoiDung")]
+        public async Task<IActionResult> Update([FromBody] NguoiDungUpdateModel user)
         {
 
             var existingUser = await _userRepository.LayTheoID(user.NguoiDungID);
@@ -311,8 +311,8 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [CustomAuthorize(8, "ManageUsers")]
-        [HttpPost("Delete User")]
+        [CustomAuthorize(8, "Quản lý người dùng")]
+        [HttpPost("XoaTaiKhoanNguoiDung")]
         public async Task<IActionResult> Delete(int userId)
         {
             var existingUser = await _userRepository.LayTheoID(userId);
@@ -343,7 +343,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [HttpPost("Login")]
+        [HttpPost("DangNhap")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             // Check if the model is null
@@ -390,7 +390,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
 
 
-        [HttpPost("Register")]
+        [HttpPost("DangKi")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
 
@@ -487,7 +487,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
 
 
-        [HttpPost("RefreshToken")]
+        [HttpPost("LamMoiToken")]
         public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequest model)
         {
             if (string.IsNullOrEmpty(model.RefreshToken))
@@ -519,7 +519,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [HttpPost("Logout")]
+        [HttpPost("DangXuat")]
         public async Task<IActionResult> Logout([FromBody] RefreshTokenRequest model)
         {
             if (string.IsNullOrEmpty(model.RefreshToken))

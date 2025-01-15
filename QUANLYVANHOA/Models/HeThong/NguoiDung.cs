@@ -2,7 +2,7 @@
 
 namespace QUANLYVANHOA.Models.HeThong
 {
-    public class HeThongNguoiDung
+    public class NguoiDung
     {
         [JsonPropertyName("NguoiDungID")]
         public int NguoiDungID { get; set; }
@@ -34,7 +34,7 @@ namespace QUANLYVANHOA.Models.HeThong
         [JsonPropertyName("MatKhau")]
         public string MatKhau { get; set; }
     }
-    public class HeThongNguoiDungInsertModel
+    public class NguoiDungInsertModel
     {
         [JsonPropertyName("TenNguoiDung")]
         public string TenNguoiDung { get; set; }
@@ -56,7 +56,7 @@ namespace QUANLYVANHOA.Models.HeThong
 
     }
 
-    public class SysUserUpdateModel
+    public class NguoiDungUpdateModel
     {
         [JsonPropertyName("NguoiDungID")]
         public int NguoiDungID { get; set; }
@@ -105,18 +105,6 @@ namespace QUANLYVANHOA.Models.HeThong
 
         [JsonPropertyName("GhiChu")]
         public string? GhiChu { get; set; }
-    }
-
-    public class UpdateRefreshTokenModel
-    {
-        [JsonPropertyName("NguoiDungID")]
-        public int NguoiDungID { get; set; }
-
-        [JsonPropertyName("RefreshToken")]
-        public string? RefreshToken { get; set; }
-
-        [JsonPropertyName("RefreshTokenExpiryTime")]
-        public DateTime? RefreshTokenExpiryTime { get; set; }
     }
 
 }

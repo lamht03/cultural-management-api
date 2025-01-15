@@ -2,7 +2,7 @@
 
 namespace QUANLYVANHOA.Models.HeThong
 {
-    public class HeThongNhomNguoiDung
+    public class NhomNguoiDung
     {
         [JsonPropertyName("NhomNguoiDung")]
         public int NhomNguoiDungID { get; set; }

@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using QUANLYVANHOA.Models.DanhMuc;
 using QUANLYVANHOA.Interfaces.DanhMuc;
-// HADEP TRAI BO DOI VCL
+
 namespace QUANLYVANHOA.Controllers.DanhMuc
 {
 
-    [Route("api/[controller]")]
-    [CustomAuthorize(1, "ManageTarget")]
+    [Route("api/v1/DanhMucChiTieu/")]
+    [CustomAuthorize(1, "Quản lý chỉ tiêu")]
     [ApiController]
     public class DanhMucChiTieuController : ControllerBase
     {
@@ -22,8 +22,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _loaiMauPhieuRepository = loaiMauPhieuRepository;
         }
 
-        [CustomAuthorize(1, "ManageTarget")]
-        [HttpGet("List")]
+        [CustomAuthorize(1, "Quản lý chỉ tiêu")]
+        [HttpGet("DanhSachChiTieu")]
         public async Task<IActionResult> GetAll(string? name/*, int pageNumber = 1, int pageSize = 100*/)
         {
             if (!string.IsNullOrWhiteSpace(name))
@@ -63,8 +63,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(1, "ManageTarget")]
-        [HttpGet("FindByID")]
+        [CustomAuthorize(1, "Quản lý chỉ tiêu")]
+        [HttpGet("TimChiTieuTheoID")]
         public async Task<IActionResult> GetByID(int id)
         {
             if (id <= 0)
@@ -81,8 +81,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Get information successfully", Data = chiTieu });
         }
 
-        [HttpGet("GetByLoaiMauPhieuID")]
-        [CustomAuthorize(2, "ManageTarget")]
+        [HttpGet("TimChiTieuTheoLoaiMauPhieuID")]
+        [CustomAuthorize(2, "Quản lý chỉ tiêu")]
         public async Task<IActionResult> GetByLoaiMauPhieuID(int loaiMauPhieuID)
         {
             if (loaiMauPhieuID <= 0)
@@ -108,8 +108,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             }
         }
 
-        [CustomAuthorize(2, "ManageTarget")]
-        [HttpPost("Insert")]
+        [CustomAuthorize(2, "Quản lý chỉ tiêu")]
+        [HttpPost("ThemMoiChiTieu")]
         public async Task<IActionResult> Insert([FromBody] DanhMucChiTieuInsertModel chiTieu)
         {
             var existingChiTieu = await _chiTieuRepository.GetAll(chiTieu.TenChiTieu);
@@ -160,8 +160,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Inserted data successfully" });
         }
 
-        [HttpPost("InsertChildren")]
-        [CustomAuthorize(2, "ManageTarget")]
+        [HttpPost("ThemChiTieuCon")]
+        [CustomAuthorize(2, "Quản lý chỉ tiêu")]
         public async Task<IActionResult> InsertChiTieuCon([FromBody] DanhMucChiTieuInsertChidrenModel chiTieuModelInsertChidren)
         {
             var existingChiTieu = await _chiTieuRepository.GetAll(chiTieuModelInsertChidren.TenChiTieu);
@@ -210,8 +210,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
 
-        [CustomAuthorize(4, "ManageTarget")]
-        [HttpPost("Update")]
+        [CustomAuthorize(4, "Quản lý chỉ tiêu")]
+        [HttpPost("CapNhatThongTinChiTieu")]
         public async Task<IActionResult> Update(DanhMucChiTieuUpdateModel chiTieu)
         {
             if (!string.IsNullOrWhiteSpace(chiTieu.TenChiTieu))
@@ -265,8 +265,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Updated data successfully" });
         }
 
-        [CustomAuthorize(8, "ManageTarget")]
-        [HttpPost("Delete")]
+        [CustomAuthorize(8, "Quản lý chỉ tiêu")]
+        [HttpPost("XoaChiTieu")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)

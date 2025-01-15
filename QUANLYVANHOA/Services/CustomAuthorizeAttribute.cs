@@ -66,9 +66,9 @@ public class CustomAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
 
         {
             conn.Open();
-            SqlCommand cmd = new SqlCommand("FIG_GetAllUserFunctionsAndPermissions", conn);
+            SqlCommand cmd = new SqlCommand("NhomChucNang_GetAllUserFunctionsAndPermissions", conn);
             cmd.CommandType = System.Data.CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@UserName", userName);
+            cmd.Parameters.AddWithValue("@TenNguoiDung", userName);
 
             using (var reader = cmd.ExecuteReader())
             {

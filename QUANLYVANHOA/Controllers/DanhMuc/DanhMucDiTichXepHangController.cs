@@ -10,7 +10,7 @@ using QUANLYVANHOA.Interfaces.DanhMuc;
 
 namespace QUANLYVANHOA.Controllers.DanhMuc
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/DanhMucDiTichXepHang")]
     [ApiController]
     public class DanhMucDiTichXepHangController : ControllerBase
     {
@@ -21,8 +21,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _ditichxephangrepository = ditichxephangrepository;
         }
 
-        [CustomAuthorize(1, "ManageMonumentRanking")]
-        [HttpGet("List")]
+        [CustomAuthorize(1, "Quản lý di tích xếp hạng")]
+        [HttpGet("DanhSachDiTichXepHang")]
         public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
         {
             if (!string.IsNullOrWhiteSpace(name))
@@ -76,8 +76,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(1, "ManageMonumentRanking")]
-        [HttpGet("FindByID")]
+        [CustomAuthorize(1, "Quản lý di tích xếp hạng")]
+        [HttpGet("TimKiemDiTichXepHangTheoID")]
         public async Task<IActionResult> GetByID(int id)
         {
             var ditichxephang = await _ditichxephangrepository.GetByID(id);
@@ -88,8 +88,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Get information successfully", Data = ditichxephang });
         }
 
-        [CustomAuthorize(2, "ManageMonumentRanking")]
-        [HttpPost("Insert")]
+        [CustomAuthorize(2, "Quản lý di tích xếp hạng")]
+        [HttpPost("ThemDiTichXepHang")]
         public async Task<IActionResult> Insert([FromBody] DanhMucDiTichXepHangModelInsert model)
         {
             var existingTenDiTich = await _ditichxephangrepository.GetAll(model.TenDiTich, 1, 20);
@@ -126,8 +126,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Insertion failed" });
         }
 
-        [CustomAuthorize(4, "ManageMonumentRanking")]
-        [HttpPost("Update")]
+        [CustomAuthorize(4, "Quản lý di tích xếp hạng")]
+        [HttpPost("CapNhatDiTichXepHang")]
         public async Task<IActionResult> Update([FromBody] DanhMucDiTichXepHangModelUpdate diTichXepHang)
         {
             var existingTenDiTich = await _ditichxephangrepository.GetAll(diTichXepHang.TenDiTich, 1, 20);
@@ -162,8 +162,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Update failed" });
         }
 
-        [CustomAuthorize(8, "ManageMonumentRanking")]
-        [HttpPost("Delete")]
+        [CustomAuthorize(8, "Quản lý di tích xếp hạng")]
+        [HttpPost("XoaDiTichXepHang")]
         public async Task<IActionResult> Delete(int id)
         {
             var existingDiTich = await _ditichxephangrepository.GetByID(id);

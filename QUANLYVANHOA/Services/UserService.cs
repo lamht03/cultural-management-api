@@ -12,10 +12,10 @@ using QUANLYVANHOA.Interfaces.HeThong;
 
 public class UserService : IUserService
 {
-    private readonly IHeThongNguoiDungRepository _userRepository;
+    private readonly INguoiDungRepository _userRepository;
     private readonly IConfiguration _configuration;
 
-    public UserService(IHeThongNguoiDungRepository userRepository, IConfiguration configuration)
+    public UserService(INguoiDungRepository userRepository, IConfiguration configuration)
     {
         _userRepository = userRepository;
         _configuration = configuration;

@@ -7,7 +7,7 @@ using QUANLYVANHOA.Interfaces.DanhMuc;
 
 namespace QUANLYVANHOA.Controllers.DanhMuc
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/DanhMucTieuChi/")]
     [ApiController]
     public class DanhMucTieuChiController : ControllerBase
     {
@@ -18,8 +18,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _tieuchirepository = tieuchirepository;
         }
 
-        [CustomAuthorize(1, "ManageCriteria")]
-        [HttpGet("List")]
+        [CustomAuthorize(1, "Quản lý tiêu chí")]
+        [HttpGet("DanhSachTieuChi")]
         public async Task<IActionResult> GetAll(string? name/*, int pageNumber = 1, int pageSize = 20*/)
         {
             if (!string.IsNullOrWhiteSpace(name))
@@ -59,8 +59,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(1, "ManageCriteria")]
-        [HttpGet("FindByID")]
+        [CustomAuthorize(1, "Quản lý tiêu chí")]
+        [HttpGet("TimKiemTieuChiTheoID")]
         public async Task<IActionResult> GetByID(int id)
         {
             if (id <= 0)
@@ -78,8 +78,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Get information successfully", Data = tieuChi });
         }
 
-        [HttpPost("Insert")]
-        [CustomAuthorize(2, "ManageCriteria")]
+        [HttpPost("ThemMoiTieuChi")]
+        [CustomAuthorize(2, "Quản lý tiêu chí")]
         public async Task<IActionResult> Insert([FromBody] DanhMucTieuChiModelInsert tieuchi)
         {
             var existingTieuChi = await _tieuchirepository.GetAll(tieuchi.TenTieuChi);
@@ -121,8 +121,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Inserted data successfully" });
         }
 
-        [HttpPost("Update")]
-        [CustomAuthorize(4, "ManageCriteria")]
+        [HttpPost("CapNhatTieuChi")]
+        [CustomAuthorize(4, "Quản lý tiêu chí")]
         public async Task<IActionResult> Update([FromBody] DanhMucTieuChiModelUpdate tieuchi)
         {
 
@@ -177,8 +177,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Updated data Successfully" });
         }
 
-        [HttpPost("Delete")]
-        [CustomAuthorize(8, "ManageCriteria")]
+        [HttpPost("XoaTieuChi")]
+        [CustomAuthorize(8, "Quản lý tiêu chí")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)

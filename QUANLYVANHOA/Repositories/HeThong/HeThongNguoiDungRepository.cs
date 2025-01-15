@@ -6,7 +6,7 @@ using QUANLYVANHOA.Interfaces.HeThong;
 
 namespace QUANLYVANHOA.Repositories.HeThong
 {
-    public class HeThongNguoiDungRepository : IHeThongNguoiDungRepository
+    public class HeThongNguoiDungRepository : INguoiDungRepository
     {
         private readonly string _connectionString;
 
@@ -15,9 +15,9 @@ namespace QUANLYVANHOA.Repositories.HeThong
             _connectionString = new Connection().GetConnectionString();
         }
 
-        public async Task<(IEnumerable<HeThongNguoiDung>, int)> LayDanhSachPhanTrang(string? TenNguoiDung, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<NguoiDung>, int)> LayDanhSachPhanTrang(string? TenNguoiDung, int pageNumber, int pageSize)
         {
-            var userList = new List<HeThongNguoiDung>();
+            var userList = new List<NguoiDung>();
             int totalRecords = 0;
 
             using (var connection = new SqlConnection(_connectionString))
@@ -36,7 +36,7 @@ namespace QUANLYVANHOA.Repositories.HeThong
                         // Đọc dữ liệu người dùng
                         while (await reader.ReadAsync())
                         {
-                            userList.Add(new HeThongNguoiDung
+                            userList.Add(new NguoiDung
                             {
                                 NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
                                 TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
@@ -62,9 +62,9 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
 
-        public async Task<HeThongNguoiDung> LayTheoID(int NguoiDungID)
+        public async Task<NguoiDung> LayTheoID(int NguoiDungID)
         {
-            HeThongNguoiDung user = null;
+            NguoiDung user = null;
             using (var connection = new SqlConnection(_connectionString))
             {
                 using (var cmd = new SqlCommand("NguoiDung_GetByID", connection))
@@ -76,7 +76,7 @@ namespace QUANLYVANHOA.Repositories.HeThong
                     {
                         if (await reader.ReadAsync())
                         {
-                            user = new HeThongNguoiDung
+                            user = new NguoiDung
                             {
                                 NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
                                 TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
@@ -94,9 +94,9 @@ namespace QUANLYVANHOA.Repositories.HeThong
             return user;
         }
 
-        public async Task<HeThongNguoiDung> LayTheoEmail(string email)
+        public async Task<NguoiDung> LayTheoEmail(string email)
         {
-            HeThongNguoiDung user = null;
+            NguoiDung user = null;
             using (var connection = new SqlConnection(_connectionString))
             {
                 using (var cmd = new SqlCommand("NguoiDung_GetByEmail", connection))
@@ -108,7 +108,7 @@ namespace QUANLYVANHOA.Repositories.HeThong
                     {
                         if (await reader.ReadAsync())
                         {
-                            user = new HeThongNguoiDung
+                            user = new NguoiDung
                             {
                                 NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
                                 TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
@@ -127,7 +127,7 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
 
-        public async Task<int> TaoNguoiDungMoi(HeThongNguoiDungInsertModel user)
+        public async Task<int> TaoNguoiDungMoi(NguoiDungInsertModel user)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -166,7 +166,7 @@ namespace QUANLYVANHOA.Repositories.HeThong
             }
         }
 
-        public async Task<int> SuaThongTinNguoiDung(SysUserUpdateModel user)
+        public async Task<int> SuaThongTinNguoiDung(NguoiDungUpdateModel user)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -201,9 +201,9 @@ namespace QUANLYVANHOA.Repositories.HeThong
             }
         }
 
-        public async Task<HeThongNguoiDung> DangNhap(string TenNguoiDung, string MatKhau)
+        public async Task<NguoiDung> DangNhap(string TenNguoiDung, string MatKhau)
         {
-            HeThongNguoiDung user = null;
+            NguoiDung user = null;
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -218,7 +218,7 @@ namespace QUANLYVANHOA.Repositories.HeThong
                     {
                         if (await reader.ReadAsync())
                         {
-                            user = new HeThongNguoiDung
+                            user = new NguoiDung
                             {
                                 NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
                                 TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
@@ -255,7 +255,7 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
         // 2. Lấy session theo refresh token
-        public async Task<HeThongPhienDangNhap> LayPhienDangNhapTheoRefreshToken(string refreshToken)
+        public async Task<PhienDangNhap> LayPhienDangNhapTheoRefreshToken(string refreshToken)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -269,7 +269,7 @@ namespace QUANLYVANHOA.Repositories.HeThong
                     {
                         if (await reader.ReadAsync())
                         {
-                            return new HeThongPhienDangNhap
+                            return new PhienDangNhap
                             {
                                 PhienDangNhapID = reader.GetInt32(reader.GetOrdinal("PhienDangNhapID")),
                                 NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),

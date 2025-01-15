@@ -9,7 +9,7 @@ using QUANLYVANHOA.Interfaces.DanhMuc;
 
 namespace QUANLYVANHOA.Controllers.DanhMuc
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/DanhMucDonViTinh")]
     [ApiController]
     public class DanhMucDonViTinhController : ControllerBase
     {
@@ -20,8 +20,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _donViTinhRepository = donViTinhRepository;
         }
 
-        [CustomAuthorize(1, "ManageUnitofMeasure")]
-        [HttpGet("List")]
+        [CustomAuthorize(1, "Quản lý đơn vị tính")]
+        [HttpGet("DanhSachDonViTinh")]
         public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
         {
             if (!string.IsNullOrWhiteSpace(name))
@@ -74,8 +74,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(1, "ManageUnitofMeasure")]
-        [HttpGet("FindByID")]
+        [CustomAuthorize(1, "Quản lý đơn vị tính")]
+        [HttpGet("TimKiemDonViTinhTheoID")]
         public async Task<IActionResult> GetByID(int id)
         {
             var donViTinh = await _donViTinhRepository.GetByID(id);
@@ -86,8 +86,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Get information successfully", Data = donViTinh });
         }
 
-        [CustomAuthorize(2, "ManageUnitofMeasure")]
-        [HttpPost("Insert")]
+        [CustomAuthorize(2, "Quản lý đơn vị tính")]
+        [HttpPost("ThemMoiDonViTinh")]
         public async Task<IActionResult> Insert([FromBody] DanhMucDonViTinhModelInsert model)
         {
             var existingTenDonViTinh = await _donViTinhRepository.GetAll(model.TenDonViTinh, 1, 20);
@@ -134,8 +134,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Insertion failed" });
         }
 
-        [CustomAuthorize(4, "ManageUnitofMeasure")]
-        [HttpPost("Update")]
+        [CustomAuthorize(4, "Quản lý đơn vị tính")]
+        [HttpPost("CapNhatDonViTinh")]
         public async Task<IActionResult> Update([FromBody] DanhMucDonViTinhModelUpdate model)
         {
             var existingTenDonViTinh = await _donViTinhRepository.GetAll(model.TenDonViTinh, 1, 20);
@@ -176,8 +176,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Update failed" });
         }
 
-        [CustomAuthorize(8, "ManageUnitofMeasure")]
-        [HttpPost("Delete")]
+        [CustomAuthorize(8, "Quản lý đơn vị tính")]
+        [HttpPost("XoaDonViTinh")]
         public async Task<IActionResult> Delete(int id)
         {
             var existingDonViTinh = await _donViTinhRepository.GetByID(id);

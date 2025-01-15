@@ -4,20 +4,20 @@ using QUANLYVANHOA.Models.HeThong;
 
 namespace QUANLYVANHOA.Interfaces.HeThong
 {
-    public interface IHeThongNguoiDungRepository
+    public interface INguoiDungRepository
     {
-        Task<(IEnumerable<HeThongNguoiDung>, int)> LayDanhSachPhanTrang(string? userName, int pageNumber, int pageSize);
-        Task<HeThongNguoiDung> LayTheoID(int userId);
-        Task<HeThongNguoiDung> LayTheoEmail(string email);
+        Task<(IEnumerable<NguoiDung>, int)> LayDanhSachPhanTrang(string? userName, int pageNumber, int pageSize);
+        Task<NguoiDung> LayTheoID(int userId);
+        Task<NguoiDung> LayTheoEmail(string email);
 
-        Task<int> TaoNguoiDungMoi(HeThongNguoiDungInsertModel user);
-        Task<int> SuaThongTinNguoiDung(SysUserUpdateModel user);
+        Task<int> TaoNguoiDungMoi(NguoiDungInsertModel user);
+        Task<int> SuaThongTinNguoiDung(NguoiDungUpdateModel user);
         Task<int> XoaThongTinNguoiDung(int userId);
-        Task<HeThongNguoiDung> DangNhap(string userName, string password);
+        Task<NguoiDung> DangNhap(string userName, string password);
         Task<int> DangKyTaiKhoan(RegisterModel model);
 
         Task TaoPhienDangNhap(int userId, string refreshToken, DateTime expiryDate);
-        Task<HeThongPhienDangNhap> LayPhienDangNhapTheoRefreshToken(string refreshToken);
+        Task<PhienDangNhap> LayPhienDangNhapTheoRefreshToken(string refreshToken);
         Task CapNhatRefreshToken(int sessionId, string newRefreshToken, DateTime newExpiryDate);
         Task VoHieuHoaPhienDangNhap(int sessionId);
         Task VoHieuHoaTatCaPhienDangNhapCuaNguoiDung(int userId);
