@@ -93,6 +93,24 @@
         INSERT INTO DM_Tinh VALUES (N'Vĩnh Phúc',N'thành phố Hải Phòng',219,NULL);
         INSERT INTO DM_Tinh VALUES (N'Yên Bái',N'thành phố Hồ Chí Minh',NULL,NULL);
 
+    -- GetAll Procedure of DM_Tinh
+        GO
+        CREATE PROC DMTinh_GetAll
+        AS
+        BEGIN
+            SELECT *FROM DM_Tinh
+        END
+
+    -- GetByID procedure of DM_Tinh
+        GO
+        create proc DMTinh_GetByID
+            @TinhID INT
+        AS
+        BEGIN
+        select * FROM DM_Tinh WHERE TinhID = @TinhID
+        END 
+        GO
+        
     CREATE TABLE DM_Huyen
     ( 
         HuyenID INT PRIMARY KEY IDENTITY(1,1),
@@ -116,6 +134,26 @@
         INSERT INTO DM_Huyen VALUES (N'Yên Dũng',4,N'huyện Yên Dũng',NULL,NULL);
         INSERT INTO DM_Huyen VALUES (N'Yên Thế',4,N'huyện Yên Thế',NULL,NULL);
 
+    -- GetAll procedure of DM_Huyen
+        GO  
+        create PROC DMHuyen_GetByTinhID
+        @TinhID INT
+        AS
+        BEGIN
+        SELECT * FROM DM_Huyen WHERE TinhID = @TinhID
+        END
+
+    --GetByID procedure of DM_Huyen
+        GO
+        CREATE PROC DMHuyen_GetByID
+            @HuyenID INT
+        AS
+        BEGIN
+        SELECT * FROM DM_Huyen where HuyenID = @HuyenID
+        END
+        go  
+
+
     CREATE TABLE DM_Xa
     (
         XaID INT PRIMARY KEY IDENTITY(1,1),
@@ -127,7 +165,7 @@
         LoaiDiaDanh INT
     )
     -- Insert records into DM_Xa
-    SELECT * from DM_Xa
+        SELECT * from DM_Xa
         INSERT INTO DM_Xa VALUES (N'Dĩnh Kế',1,N'Phường Dĩnh Kế',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Đa Mai',1,N'Phường Đa Mai',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Hoàng Văn Thụ',1,N'Phường Hoàng Văn Thụ',NULL,NULL);
@@ -353,12 +391,32 @@
         INSERT INTO DM_Xa VALUES (N'Tiến Thắng',10,N'xã Tiến Thắng',NULL,NULL);
         INSERT INTO DM_Xa VALUES (N'Xuân Lương',10,N'xã Xuân Lương',NULL,NULL);
 
+    -- GetAll Procedure of DM_Xa
+        go
+        create PROC DMXa_GetByHuyenID
+        @HuyenID INT
+        AS
+        BEGIN
+        SELECT * FROM DM_Xa WHERE HuyenID = @HuyenID
+        end 
+        GO
+
+    --GetByID procedure of DM_Xa
+        CREATE proc   DMXa_GetByID
+            @XaID INT
+        AS
+        BEGIN 
+        select  * FROM DM_Xa where XaID = @XaID
+        END
+        go  
+
     CREATE TABLE DM_Cap
     (    
         CapID INT PRIMARY KEY IDENTITY(1,1),
         TenCap NVARCHAR (50),
-        ThuTu TINYINT
+        ThuTu INT
     )
+
     --Insert records into DM_Cap
         Insert DM_Cap
         VALUES  (N'Cấp Sở, Ngành', 1),
@@ -368,12 +426,29 @@
                 (N'Cấp Trung Ương',5),
                 (N'Cấp Phòng Ban',6)
 
+    -- GetAll Procedure of DM_Cap
+        GO
+        create PROC DMCap_GetAll
+        AS
+        BEGIN 
+        SELECT * FROM DM_Cap
+        end
+        GO
+
+    --GetByID procedure of DM_Cap
+        CREATE proc DMCap_GetByID
+            @CapID int
+        AS
+        BEGIN 
+        SELECT * FROM DM_Cap where CapID = @CapID
+        END
+        GO
 
     CREATE TABLE DM_ThamQuyen
     (
         ThamQuyenID INT PRIMARY KEY IDENTITY(1,1),
         TenThamQuyen NVARCHAR(50),
-        MaThamQuyen VARCHAR(20),
+        MaThamQuyen NVARCHAR(20),
         GhiChu NVARCHAR(255),
         TrangThai BIT
     )
@@ -386,17 +461,33 @@
             end
         where ThamQuyenID in (1,2,3)
         SELECT * from DM_ThamQuyen 
-    --Insert records into DM_ThamQuyen
+    -- Insert records into DM_ThamQuyen
         INSERT DM_ThamQuyen
-        VALUES  ('Cơ quan hành chính các cấp', null,null,null),
-                ('Cơ quan tư pháp các cấp', null,null,null),
-                ('Cơ quan Đảng', null,null,null)
+        VALUES  (N'Cơ Quan Hành Chính Các Cấp', null,null,null),
+                (N'Cơ Quan Tư Pháp Các Cấp', null,null,null),
+                (N'Cơ Quan Đảng', null,null,null)
 
+    -- GetAll procedure of DM_ThamQuyen
+        go
+        create proc DMThamQuyen_GetAll
+        AS
+        BEGIN 
+        SELECT * FROM DM_ThamQuyen
+        END
+        go
+    -- GetByID procedure of DM_ThamQuyen
+        create proc DMThamQuyen_GetByID
+            @ThamQuyenID INT
+        AS
+        BEGIN 
+        SELECT * FROM DM_ThamQuyen where ThamQuyenID = @ThamQuyenID
+        END
+        GO    
 
     CREATE TABLE DM_CoQuan
     (
         CoQuanID INT PRIMARY KEY IDENTITY(1,1),
-        TenCoQuan NVARCHAR(50),
+        TenCoQuan NVARCHAR(100),
         MaCoQuan VARCHAR(25),
         CoQuanChaID int,
         CONSTRAINT FK_DMCoQuan_DMCoQuan FOREIGN KEY (CoQuanChaID) REFERENCES DM_CoQuan(CoQuanID),
@@ -415,21 +506,515 @@
         CQCapThanhTra BIT,
         CQThuocHeThongPM BIT,
         QTCanBoTiepDan BIT,
-        QTVanThuTiepNhanDon bit,
+        QTVanThuTiepNhanDon bit,     
         QTTiepCongDanVaXuLyDonPhucTap BIT,
         QTGiaiQuyetPhucTap BIT
     )
 
-    --Insert records into DM_CoQuan
+    -- Insert records into DM_CoQuan
+        SET IDENTITY_INSERT DM_CoQuan ON;
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (1,N'Sở Văn Hóa Thể Thao',NULL,1,4,1,NULL,N'UBNDT_VT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (10,N'Ban Tiếp Công dân tỉnh',1,2,4,1,1,N'TCD',1,1,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (11,N'Thanh tra tỉnh',1,4,4,1,1,N'TTT',1,1,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (12,N'Sở Tài Chính',1,2,4,1,1,N'STC',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (13,N'Sở Lao Động TB & XH',1,2,4,1,1,N'Sở LĐTBXH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (14,N'Sở Xây Dựng',1,2,4,1,1,N'Sở XD',1,1,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (15,N'Sở Công Thương',1,2,4,1,1,N'Sở CT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (16,N'Sở Văn Hóa Thể Thao',1,2,4,1,1,N'Sở VHTT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (17,N'Sở Y Tế',1,2,4,1,1,N'Sở YT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (18,N'Sở Nội Vụ',1,2,4,1,1,N'Sở NV',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (19,N'Sở Tư Pháp',1,2,4,1,1,N'Sở TP',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (20,N'Sở Ngoại Vụ',1,2,4,1,1,N'Sở NgV',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (21,N'Sở Tài Nguyên Và Môi Trường',1,2,4,1,1,N'Sở TNMT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (22,N'Sở Giao Thông Vận Tải',1,2,4,1,1,N'Sở GTVT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (23,N'Sở Thông Tin và Truyền Thông',1,2,4,1,1,N'Sở TTTT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (24,N'Sở Khoa Học Và Công nghệ',1,2,4,1,1,N'Sở KHCN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (25,N'Sở Kế Hoạch Và Đầu Tư',1,2,4,1,1,N'Sở KHĐT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (26,N'Sở Giáo Dục và Đào Tạo',1,2,4,1,1,N'Sở GDĐT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (27,N'Sở Nông Nghiệp Phát Triển Nông Thôn',1,2,4,1,1,N'Sở NNPTNT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (28,N'UBND Thành phố Bắc Giang',1,3,4,1,1,N'TPBG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (29,N'UBND Huyện Hiệp Hòa',1,3,4,2,17,N'HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (30,N'UBND huyện Lạng Giang',1,3,4,3,42,N'LG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (31,N'UBND huyện Lục Nam',1,3,4,4,63,N'LN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (32,N'UBND huyện Lục Ngạn',1,3,4,5,88,N'LN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (33,N'UBND huyện Sơn Động',1,3,4,6,117,N'SĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (34,N'UBND huyện Tân Yên',1,3,4,7,141,N'TY',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (35,N'UBND huyện Việt Yên',1,3,4,8,165,N'VY',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (36,N'UBND huyện Yên Dũng',1,3,4,9,184,N'YD',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (37,N'UBND huyện Yên Thế',1,3,4,10,204,N'YT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (38,N'Ban Quản Lý Các Khu Công Nghiệp',1,2,4,1,1,N'QLKCN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (39,N'Ban Dân tộc',1,2,4,1,1,N'DT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (40,N'Ban Nội Chính',1,2,4,1,1,N'BNC',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (41,N'Công an Tỉnh',1,2,4,1,1,N'CAT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (42,N'Cơ quan khác',1,2,4,1,1,N'CQK',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (43,N'Tỉnh Ủy Bắc Giang',1,2,4,1,1,N'TU',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (44,N'Mặt trận Tổ quốc Việt Nam Tỉnh',1,2,4,1,1,N'MTTQVN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (45,N'Văn phòng Chính phủ',1,2,4,1,1,N'VPCP',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (46,N'Báo - Đài',1,2,4,1,1,N'BĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (47,N'Ủy ban Kiểm tra Tỉnh ủy',1,2,4,1,1,N'UBKTTU',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (48,N'Hội đồng nhân dân Tỉnh',1,2,4,1,1,N'HĐNDT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (49,N'Ban pháp chế HĐND Tỉnh',1,2,4,1,1,N'BPCHĐNDT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (50,N'Văn phòng UBND tỉnh',1,2,4,1,1,N'VPUBNDT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (51,N'Đoàn đại biểu quốc hội',1,2,4,1,1,N'ĐĐBQH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (52,N'Sở Du Lịch',1,2,4,1,1,N'Sở DL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (53,N'Ban Dân vận',1,2,4,1,1,N'BDV',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (54,N'Đài phát thanh truyền hình Tỉnh',1,2,4,1,1,N'DPTTHT',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (55,N'BQL Thành Cổ Xương Giang',1,2,4,1,1,N'TCXG',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (56,N'Trung tâm Xúc tiên đầu tư, thương mại, du lịch',1,2,4,1,1,N'XTDTTMDL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (57,N'Trường Cao đẳng  KTCN',1,2,4,1,1,N'CĐKTCN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (58,N'Quỹ Phát triển đất',1,2,4,1,1,N'QPTĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (59,N'Quỹ Phòng chống thiên tai',1,2,4,1,1,N'QPCTT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (60,N'Quỹ Bảo vệ môi trường',1,2,4,1,1,N'QBVMT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (61,N'Quỹ Khoa học công nghệ',1,2,4,1,1,N'QKHCN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (62,N'Quỹ Đầu tư phát triển',1,2,4,1,1,N'QDTPT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (63,N'Quỹ Bảo vệ và Phát triển rừng',1,2,4,1,1,N'DT-PT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (64,N'BQL dự án giao thông khu vực Thị Trấn Vôi - Kép',1,2,4,1,1,N'GTVK',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (65,N'BQL dự án chuyên ngành dân dụng và công nghiệp',1,2,4,1,1,N'DD&CN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (66,N'BQL dự án chuyên ngành nông nghiệp và PTNT',1,2,4,1,1,N'NN&PTNT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (67,N'BQL dự án chuyên ngành giao thông',1,2,4,1,1,N'CNGT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (68,N'Văn phòng Đoàn Đại biểu QH và HĐND tỉnh',1,2,4,1,1,N'QH&HĐND',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (69,N'Văn phòng UBND tỉnh và các chức danh dân cử',1,2,4,1,1,N'UBND&CDDC',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (70,N'Sự nghiệp thuộc Tỉnh Đoàn, Hội Nông dân',1,2,4,1,1,N'TĐ&HND',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (71,N'Đơn vị sự nghiệp trực thuộc Chi cục',1,2,4,1,1,N'SNTTCC',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (72,N'Báo Bắc Giang',1,2,4,1,1,N'BBG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (73,N'Bảo hiểm Xã hội tỉnh',1,2,4,1,1,N'BHXHT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (74,N'Cục thuế Tỉnh',1,2,4,1,1,N'CTT',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (75,N'Liên Đoàn Lao Động Tỉnh',1,2,4,1,1,N'LĐLĐT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (76,N'Phòng ban thuộc Sở',16,2,4,1,1,N'PBTS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (77,N'Cấp con của cấp Phòng',75,2,4,1,1,N'CCCCP',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (78,N'Thanh tra thành phố Bắc Giang',28,4,4,1,1,N'TTVT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (79,N'Ban Tiếp dân TP Bắc Giang',28,4,4,1,1,N'BTDVT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (80,N'Phòng Tài nguyên Môi trường Bắc Giang',28,4,4,1,1,N'VT TNMT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (81,N'Phòng Lao động TBXH Bắc Giang',28,4,4,1,1,N'LĐTBVT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (82,N'Phòng Kinh tế TP Bắc Giang',28,4,4,1,1,N'KTVT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (83,N'Phòng Giáo dục và Đào tạo Bắc Giang',28,4,4,1,1,N'GDĐT-VT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (84,N'Phòng Tài chính - Kế hoạch Bắc Giang',28,4,4,1,1,N'TCKH-VT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (85,N'Phòng Tư pháp Bắc Giang',28,4,4,1,1,N'TP-VT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (86,N'Phòng Nội vụ Bắc Giang',28,4,4,1,1,N'NV-VT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (87,N'Phòng Quản lý đô thị Bắc Giang',28,4,4,1,1,N'QLĐT-VT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (88,N'Phòng Văn hóa và Thông tin Bắc Giang',28,4,4,1,1,N'VHTT-VT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (89,N'Phòng Y tế TP Bắc Giang',28,4,4,1,1,N'YT-VT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (90,N'UBND Phường Dĩnh Kế',28,5,4,1,1,N'PDK',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (91,N'UBND Phường Đa Mai',28,5,4,1,2,N'PĐM',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (92,N'UBND Phường Hoàng Văn Thụ',28,5,4,1,3,N'PHVT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (93,N'UBND Phường Lê Lợi',28,5,4,1,4,N'PLL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (94,N'UBND Phường Mỹ Độ',28,5,4,1,5,N'PMĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (95,N'UBND Phường Ngô Quyền',28,5,4,1,6,N'PNQ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (96,N'UBND Phường Thọ Xương',28,5,4,1,7,N'PTX',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (97,N'UBND Phường Trần Nguyên Hãn',28,5,4,1,8,N'TNH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (98,N'UBND Phường Trần Phú',28,5,4,1,9,N'TP',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (99,N'UBND Phường Xương Giang',28,5,4,1,10,N'PXG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (100,N'UBND Xã Dĩnh Trì',28,5,4,1,11,N'XDC',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (101,N'UBND Xã Đồng Sơn',28,5,4,1,12,N'XĐS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (102,N'UBND Xã Song Khê',28,5,4,1,13,N'XSK',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (103,N'UBND Xã Song Mai',28,5,4,1,14,N'XSM',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (104,N'UBND Xã Tân Mỹ',28,5,4,1,15,N'XTM',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (105,N'UBND Xã Tân Tiến',28,5,4,1,16,N'XTT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (106,N'Trung tâm phát triển quỹ đất Bắc Giang',28,4,4,1,1,N'TTPTQĐVT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (107,N'Trung tâm Văn hóa, Thông tin và Thể thao Bắc Giang',28,4,4,1,1,N'TTVHTTTT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (108,N'Đội trật tự đô thị Bắc Giang',28,4,4,1,1,N'ĐTTĐT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (109,N'Thư viện Bắc Giang',28,4,4,1,1,N'TVBG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (110,N'Ban Quản lý các khu du lịch Bắc Giang',28,4,4,1,1,N'BQLDL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (111,N'Trung tâm hỗ trợ khách du lịch Bắc Giang',28,4,4,1,1,N'TTHTKDL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (112,N'Ban Quản lý siêu thị Big C Bắc Giang',28,4,4,1,1,N'BQLSTMN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (113,N'Ban Quản lý chợ Bắc Giang',28,4,4,1,1,N'BQLCBG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (114,N'Ban Quản lý chợ phường Dĩnh Kế',28,4,4,1,1,N'BQLCDK',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (115,N'Ban Quản lý chợ Đa Mai',28,4,4,1,1,N'BQLCĐM',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (116,N'Ban Quản lý chợ Trần Phú',28,4,4,1,1,N'BQLCTP',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (117,N'Ban Quản lý chợ Xương Giang',28,4,4,1,1,N'BQLCXG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (118,N'BQL dự án đầu tư xây dựng 1 Bắc Giang',28,4,4,1,1,N'ĐTXD1',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (119,N'BQL dự án đầu tư xây dựng 2 Bắc Giang',28,4,4,1,1,N'ĐTXD2',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (120,N'Thanh tra huyện Hiệp Hòa',29,4,4,2,17,N'TTHH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (121,N'Ban Tiếp dân huyện Hiệp Hòa',29,4,4,2,17,N'BTDHH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (122,N'Phòng Tài nguyên Môi trường Hiệp Hòa',29,4,4,2,17,N'TNMT-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (123,N'Phòng Tài chính - Kế hoạch Hiệp Hòa',29,4,4,2,17,N'TCKH-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (124,N'Phòng Kinh tế Hiệp Hòa',29,4,4,2,17,N'KT-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (125,N'Phòng Tư pháp Hiệp Hòa',29,4,4,2,17,N'TP-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (126,N'Phòng Nội vụ Hiệp Hòa',29,4,4,2,17,N'NV-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (127,N'Phòng Quản lý đô thị Hiệp Hòa',29,4,4,2,17,N'QLĐT-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (128,N'Phòng Lao động TBXH Hiệp Hòa',29,4,4,2,17,N'LĐTBXH-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (129,N'Phòng Y tế Hiệp Hòa',29,4,4,2,17,N'YT-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (130,N'Phòng Giáo dục và Đào tạo Hiệp Hòa',29,4,4,2,17,N'GDĐT-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (131,N'Phòng VHTT Hiệp Hòa',29,4,4,2,17,N'VHTT-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (132,N'Trung tâm phát triển quỹ đất Hiệp Hòa',29,4,4,2,17,N'TTPT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (133,N'Đài Truyền thanh Hiệp Hòa',29,4,4,2,17,N'DTT-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (134,N'Ban Quản lý chợ Hiệp Hòa',29,4,4,2,17,N'BQLC-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (135,N'Chi cục thuế Hiệp Hòa',29,4,4,2,17,N'CCT-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (136,N'Đội trật tự đô thị Hiệp Hòa',29,4,4,2,17,N'TTĐT-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (137,N'Chi nhánh văn phòng đăng ký đất đai TP Hiệp Hòa',29,4,4,2,17,N'VPDKDD-HH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (138,N'UBND thị trấn Bắc Lý',29,5,4,2,17,N'TTBL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (139,N'UBND xã Châu Minh',29,5,4,2,18,N'XCM',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (140,N'UBND xã Danh Thắng',29,5,4,2,19,N'XDT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (141,N'UBND xã Đại Thành',29,5,4,2,20,N'XĐT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (142,N'UBND xã Đoan Bái',29,5,4,2,21,N'XĐB',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (143,N'UBND xã Đông Lỗ',29,5,4,2,22,N'XĐL',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (144,N'UBND xã Đồng Tân',29,5,4,2,23,N'ĐT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (145,N'UBND xã Hòa Sơn',29,5,4,2,24,N'XHS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (146,N'UBND xã Hoàng An',29,5,4,2,25,N'XHA',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (147,N'UBND xã Hoàng Lương',29,5,4,2,26,N'XHL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (148,N'UBND xã Hoàng Thanh',29,5,4,2,27,N'XHT',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (149,N'UBND xã Hoàng Vân',29,5,4,2,28,N'XHV',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (150,N'UBND xã Hợp Thịnh',29,5,4,2,29,N'XHTHINH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (151,N'UBND xã Hùng Sơn',29,5,4,2,30,N'XHS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (152,N'UBND xã Hương Lâm',29,5,4,2,31,N'XHLAM',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (153,N'UBND xã Lương Phong',29,5,4,2,32,N'XLP',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (154,N'UBND xã Mai Đình',29,5,4,2,33,N'XMĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (155,N'UBND xã Mai Trung',29,5,4,2,34,N'XMT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (156,N'UBND xã Ngọc Sơn',29,5,4,2,35,N'XNS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (157,N'UBND xã Quang Minh',29,5,4,2,36,N'XQM',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (158,N'UBND xã Thái Sơn',29,5,4,2,37,N'XTS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (159,N'UBND xã Thanh Vân',29,5,4,2,38,N'XTV',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (160,N'UBND thị trấn Thắng',29,5,4,2,39,N'TTT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (161,N'UBND xã Thường Thắng',29,5,4,2,40,N'XTT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (162,N'UBND xã Xuân Cẩm',29,5,4,2,41,N'XXC',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (163,N'Trung tâm văn hóa thông tin và thể thao Hiệp Hòa',29,4,4,2,17,N'TTVHTT&TT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (164,N'BQL dự án đầu tư xây dựng 1 Hiệp Hòa',29,4,4,2,17,N'ĐTXD1',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (165,N'BQL dự án đầu tư xây dựng 2 Hiệp Hòa',29,4,4,2,17,N'ĐTXD2',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (166,N'CapPhong',29,4,4,2,17,N'CP',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (167,N'Thanh tra huyện Lạng Giang',30,4,4,3,42,N'TTLG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (168,N'Ban Tiếp dân huyện Lạng Giang',30,4,4,3,42,N'BTDLG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (169,N'Phòng Tài nguyên Môi trường Lạng Giang',30,4,4,3,42,N'LG TNMT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (170,N'Phòng Kinh tế và Hạ tầng huyện Lạng Giang',30,4,4,3,42,N'KTHT-LG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (171,N'Phòng Lao động TBXH Lạng Giang',30,4,4,3,42,N'LĐTB-LG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (172,N'Phòng Giáo dục và Đào tạo Lạng Giang',30,4,4,3,42,N'GDĐT-LG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (173,N'Ban Tổ chức Nội vụ huyện Lạng Giang',30,4,4,3,42,N'NV-LG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (174,N'Phòng Tài chính - Kế hoạch Lạng Giang',30,4,4,3,42,N'TCKH-LG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (175,N'Phòng Tư pháp Lạng Giang',30,4,4,3,42,N'TP-LG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (176,N'Phòng Y Tế Lạng Giang',30,4,4,3,42,N'YT-LG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (177,N'Phòng Văn Hóa và Thông tin Lạng Giang',30,4,4,3,42,N'VH-LG',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (178,N'UBND Huyện Lạng Giang',30,4,4,3,42,N'TTLG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (179,N'UBND xã An Hà',30,5,4,3,42,N'TTPH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (180,N'UBND xã Dương Đức',30,5,4,3,43,N'XLT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (181,N'UBND xã Đại Lâm',30,5,4,3,44,N'XLM',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (182,N'UBND xã Đào Mỹ',30,5,4,3,45,N'XLA',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (183,N'UBND xã Hương Lạc',30,5,4,3,46,N'XPH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (184,N'UBND xã Hương Sơn',30,5,4,3,47,N'XPLT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (185,N'UBND thị trấn Kép',30,5,4,3,48,N'TTK',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (186,N'UBND xã Mỹ Hà',30,5,4,3,49,N'XMH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (187,N'UBND xã Mỹ Thái',30,5,4,3,50,N'XMT',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (188,N'UBND xã Nghĩa Hòa',30,5,4,3,51,N'XNH',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (189,N'UBND xã Nghĩa Hưng',30,5,4,3,52,N'XNHUNG',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (190,N'UBND xã Quang Thịnh',30,5,4,3,53,N'XQT',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (191,N'UBND xã Tân Dĩnh',30,5,4,3,54,N'XTD',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (192,N'UBND xã Tân Hưng',30,5,4,3,55,N'XTH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (193,N'UBND xã Tân Thanh',30,5,4,3,56,N'XTT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (194,N'UBND xã Tiên Lục',30,5,4,3,57,N'XTL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (195,N'UBND xã Thái Đào',30,5,4,3,58,N'XTĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (196,N'UBND thị trấn Vôi',30,5,4,3,59,N'TTV',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (197,N'UBND xã Xuân Hương',30,5,4,3,60,N'XXH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (198,N'UBND xã Xương Lâm',30,5,4,3,61,N'XXL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (199,N'UBND xã Yên Mỹ',30,5,4,3,62,N'XYM',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (200,N'Chi nhánh Văn phòng Đăng ký Đất Đai huyện Đất đỏ',30,4,4,3,42,N'VPĐKLG-LG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (201,N'Phòng Nông Nghiệp và Phát triển Nông thôn Đất đỏ',30,4,4,3,42,N'PNNPTNT-LG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (202,N'Trung tâm phát triển Quỹ đất Đất đỏ',30,4,4,3,42,N'TTPTQĐ-LG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (203,N'Ban Quản lý dụ án Đầu tư xây dựng Đất đỏ',30,4,4,3,42,N'BQLDAĐTXD-LG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (204,N'Trung tâm Văn hoá Thông Tin và Thể Thao huyện Lạng Giang',30,4,4,3,42,N'TTVHTT&TT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (205,N'Ban quản lý các khu du lịch Lạng Giang',30,4,4,3,42,N'BQLKDL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (206,N'Ban quản lý di tích Lạng Giang',30,4,4,3,42,N'BQLDT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (207,N'Ban quản lý chợ Lạng Giang',30,4,4,3,42,N'CLG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (208,N'Ban quản lý chợ Kép',30,4,4,3,42,N'CK',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (209,N'Thanh tra huyện Lục Nam',31,4,4,4,63,N'TTLN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (210,N'Ban Tiếp dân huyện Lục Nam',31,4,4,4,63,N'BTDLN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (211,N'Phòng Tài nguyên Môi trường Lục Nam',31,4,4,4,63,N'LN TNMT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (212,N'Phòng Giáo dục và Đào tạo Lục Nam',31,4,4,4,63,N'GDĐT-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (213,N'Phòng Lao động TBXH Lục Nam',31,4,4,4,63,N'LNTB-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (214,N'Phòng Kinh Tế Hạ Tầng Lục Nam',31,4,4,4,63,N'KTHT-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (215,N'Phòng Tư Pháp Lục Nam',31,4,4,4,63,N'TP-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (216,N'Phòng Y Tế Lục Nam',31,4,4,4,63,N'YT-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (217,N'Phòng Văn Hóa và Thông tin Lục Nam',31,4,4,4,63,N'VHTT-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (218,N'Phòng Tài chính - Kế hoạch Lục Nam',31,4,4,4,63,N'TCKH-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (219,N'Phòng Nội Vụ Lục Nam',31,4,4,4,63,N'NV-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (220,N'Phòng Quản lý đô thị Lục Nam',31,4,4,4,63,N'QLNT-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (221,N'UBND thị trấn Đồi Ngô',31,5,4,4,63,N'TTĐN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (222,N'UBND xã Bắc Lũng',31,5,4,4,64,N'XBL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (223,N'UBND xã Bảo Đài',31,5,4,4,65,N'XBĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (224,N'UBND xã Bảo Sơn',31,5,4,4,66,N'XBS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (225,N'UBND xã Bình Sơn',31,5,4,4,67,N'XBS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (226,N'UBND xã Cẩm Lý',31,5,4,4,68,N'XCL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (227,N'UBND xã Chu Điện',31,5,4,4,69,N'XCĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (228,N'UBND xã Cương Sơn',31,5,4,4,70,N'XCS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (229,N'UBND xã Đan Hội',31,5,4,4,71,N'XĐH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (230,N'UBND xã Đông Hưng',31,5,4,4,72,N'XĐH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (231,N'UBND xã Đông Phú',31,5,4,4,73,N'XĐB',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (232,N'UBND xã Huyền Sơn',31,5,4,4,74,N'XHS',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (233,N'UBND xã Khám Lạng',31,5,4,4,75,N'XKL',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (234,N'UBND xã Lan Mẫu',31,5,4,4,76,N'XLM',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (235,N'UBND xã Lục Sơn',31,5,4,4,77,N'XLS',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (236,N'UBND xã Nghĩa Phương',31,5,4,4,78,N'XNP',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (237,N'UBND xã Phương Sơn',31,5,4,4,79,N'XPS',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (238,N'UBND xã Tam Dị',31,5,4,4,80,N'XTD',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (239,N'UBND xã Thanh Lâm',31,5,4,4,81,N'XTL',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (240,N'UBND xã Tiên Nha',31,5,4,4,82,N'XTN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (241,N'UBND xã Trường Giang',31,5,4,4,83,N'XTG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (242,N'UBND xã Trường Sơn',31,5,4,4,84,N'XTS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (243,N'UBND xã Vô Tranh',31,5,4,4,85,N'XVT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (244,N'UBND xã Vũ Xá',31,5,4,4,86,N'XVX',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (245,N'UBND xã Yên Sơn',31,5,4,4,87,N'XYS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (246,N'Phòng Nông nghiệp và Phát triển Nông thôn Lục Nam',31,4,4,4,63,N'NNPTNT-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (247,N'Thư viện Lục Nam',31,4,4,4,63,N'TVLN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (248,N'Đài truyền thanh Lục Nam',31,4,4,4,63,N'ĐTTLN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (249,N'Trung tâm Văn hóa, Thông tin và Thể thao Lục Nam',31,4,4,4,63,N'TTVHTT&TT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (250,N'Ban Quản lý các khu du lịch Lục Nam',31,4,4,4,63,N'BQLKDL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (251,N'Trung tâm Phát triển quỹ đất Lục Nam',31,4,4,4,63,N'PTQĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (252,N'Ban Quản lý bến xe Lục Nam',31,4,4,4,63,N'BQLBX',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (253,N'Ban Quản lý các chợ Lục Nam',31,4,4,4,63,N'BQLCLN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (254,N'Ban Quản lý doanh nghiệp Lục Nam',31,4,4,4,63,N'BQLDN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (255,N'BQL dự án đầu tư xây dựng Lục Nam',31,4,4,4,63,N'BQLDAĐTXD',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (256,N'Ban Tiếp dân huyện Lục Ngạn',32,4,4,5,88,N'BTDLN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (257,N'Thanh tra huyện Lục Ngạn',32,4,4,5,88,N'TTLN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (258,N'Phòng Tài nguyên Môi trường Lục Ngạn',32,4,4,5,88,N'TNMT-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (259,N'Phòng Quản lý đô thị Lục Ngạn',32,4,4,5,88,N'QLĐT-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (260,N'Trung tâm phát triển quỹ đất Lục Ngạn',32,4,4,5,88,N'TTPT-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (261,N'Phòng Tài chính - Kế hoạch Lục Ngạn',32,4,4,5,88,N'TCKH-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (262,N'Phòng Lao động TBXH Lục Ngạn',32,4,4,5,88,N'LĐTBXH-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (263,N'Phòng Giáo dục và Đào tạo Lục Ngạn',32,4,4,5,88,N'GDĐT-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (264,N'Phòng Kinh Tế Hạ Tầng Lục Ngạn',32,4,4,5,88,N'KT-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (265,N'Phòng Nội Vụ Lục Ngạn',32,4,4,5,88,N'NV-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (266,N'Phòng Tư Pháp Lục Ngạn',32,4,4,5,88,N'TP-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (267,N'Phòng Y Tế Lục Ngạn',32,4,4,5,88,N'YT-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (268,N'Phòng Văn Hóa Lục Ngạn',32,4,4,5,88,N'VH-LN',1,NULL,NULL,NULL,NULL,NULL,NULL,0,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (269,N'UBND thị trấn Chũ',32,5,4,5,88,N'TTC',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (270,N'UBND xã Biển Động',32,5,4,5,89,N'XBĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (271,N'UBND xã Biên Sơn',32,5,4,5,90,N'XBS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (272,N'UBND xã Cấm Sơn',32,5,4,5,91,N'XCS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (273,N'UBND xã Đèo Gia',32,5,4,5,92,N'XĐG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (274,N'UBND xã Đồng Cốc',32,5,4,5,93,N'XĐC',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (275,N'UBND xã Giáp Sơn',32,5,4,5,94,N'XGS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (276,N'UBND xã Hộ Đáp',32,5,4,5,95,N'XHĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (277,N'UBND xã Hồng Giang',32,5,4,5,96,N'XHG',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (278,N'UBND xã Kiên Lao',32,5,4,5,97,N'XKL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (279,N'UBND xã Kiên Thành',32,5,4,5,98,N'XKT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (280,N'UBND xã Kim Sơn',32,5,4,5,99,N'XKS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (281,N'UBND xã Mỹ An',32,5,4,5,100,N'XMA',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (282,N'UBND xã Nam Dương',32,5,4,5,101,N'XND',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (283,N'UBND xã Phì Điền',32,5,4,5,102,N'XPĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (284,N'UBND xã Phong Minh',32,5,4,5,103,N'XPM',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (285,N'UBND xã Phong Vân',32,5,4,5,104,N'XPV',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (286,N'UBND xã Phú Nhuận',32,5,4,5,105,N'XPN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (287,N'UBND xã Phượng Sơn',32,5,4,5,106,N'XPS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (288,N'UBND xã Quý Sơn',32,5,4,5,107,N'XQS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (289,N'UBND xã Sa Lý',32,5,4,5,108,N'XSL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (290,N'UBND xã Sơn Hải',32,5,4,5,109,N'XSH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (291,N'UBND xã Tân Hoa',32,5,4,5,110,N'XTH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (292,N'UBND xã Tân Lập',32,5,4,5,111,N'XTL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (293,N'UBND xã Tân Mộc',32,5,4,5,112,N'XTM',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (294,N'UBND xã Tân Quang',32,5,4,5,113,N'XTQ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (295,N'UBND xã Tân Sơn',32,5,4,5,114,N'XTS',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (296,N'UBND xã Thanh Hải',32,5,4,5,115,N'XTH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (297,N'UBND xã Trù Hựu',32,5,4,5,116,N'XTH',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (298,N'Phòng Nông Nghiệp và Phát triển Nông thôn Lục Ngạn',32,4,4,5,88,N'PNNPTNTLN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (299,N'Đài Truyền thanh Lục Ngạn',32,4,4,5,88,N'ĐTTLN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (300,N'Thư viện Lục Ngạn',32,4,4,5,88,N'TVLN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (301,N'Trung tâm Văn hoá-TTTT Lục Ngạn',32,4,4,5,88,N'TTVHTT',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (302,N'BQL dự án đầu tư xây dựng Lục Ngạn',32,4,4,5,88,N'BQLDAĐTXDLN',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (303,N'Thanh tra thị xã Sơn Động',33,4,4,6,117,N'TTSĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (304,N'Ban Tiếp dân Thị Xã Sơn Động',33,4,4,6,117,N'BTDTXSĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (305,N'Phòng Tài nguyên Môi trường Sơn Động',33,4,4,6,117,N'TNMT- SĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (306,N'Phòng Giáo dục và Đào tạo Sơn Động',33,4,4,6,117,N'GDĐT-TT',1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (307,N'Phòng Lao động TBXH Sơn Động',33,4,4,6,117,N'LĐTB-SĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (308,N'Phòng Kinh Tế Sơn Động',33,4,4,6,117,N'KT-SĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (309,N'Phòng Tài chính - Kế hoạch Sơn Động',33,4,4,6,117,N'TCKH-SĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (310,N'Phòng Quản lý đô thị Sơn Động',33,4,4,6,117,N'QLĐT-SĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (311,N'Phòng Nội Vụ Sơn Động',33,4,4,6,117,N'NV-SĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (312,N'Phòng Tư Pháp Sơn Động',33,4,4,6,117,N'TP-SĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (313,N'Phòng Văn Hóa Thông tin Sơn Động',33,4,4,6,117,N'VHTT-SĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (314,N'Phòng Y Tế Sơn Động',33,4,4,6,117,N'YT-SĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (315,N'UBND xã An Bá',33,5,4,6,117,N'XAB',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (316,N'UBND xã An Châu',33,5,4,6,118,N'XAC',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (317,N'UBND xã An Lạc',33,5,4,6,119,N'XAL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (318,N'UBND xã An Lập',33,5,4,6,120,N'XAL',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (319,N'UBND xã Bồng Am',33,5,4,6,121,N'XBA',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (320,N'UBND xã Cẩm Đàn',33,5,4,6,122,N'XCĐ',1,NULL,NULL,NULL,NULL,NULL,NULL,1,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (321,N'UBND xã Cấm Sơn',33,5,4,6,123,N'XCS',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (322,N'UBND xã Chiêm Sơn',33,5,4,6,124,N'XCHS',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (323,N'UBND xã Dương Hưu',33,5,4,6,125,N'CDH',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (324,N'UBND xã Giáo Liêm',33,5,4,6,126,N'XGL',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (325,N'UBND xã Hữu Sản',33,5,4,6,127,N'XHS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (326,N'UBND xã Lệ Viễn',33,5,4,6,128,N'XLV',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (327,N'UBND xã Long Sơn',33,5,4,6,129,N'XLS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (328,N'UBND xã Phúc Thắng',33,5,4,6,130,N'XPT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (329,N'UBND xã Quế Sơn',33,5,4,6,131,N'XQS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (330,N'UBND thị trấn An Châu',33,5,4,6,132,N'TTAC',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (331,N'UBND thị trấn Thanh Sơn',33,5,4,6,133,N'TTTS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (332,N'UBND xã Tuấn Đạo',33,5,4,6,134,N'XTĐ',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (333,N'UBND xã Tuấn Mậu',33,5,4,6,135,N'XTM',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (334,N'UBND xã Thạch Sơn',33,5,4,6,136,N'XTHS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (335,N'UBND xã Thanh Luân',33,5,4,6,137,N'XTL',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (336,N'UBND xã Vân Sơn',33,5,4,6,138,N'XVS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (337,N'UBND xã Vĩnh Khương',33,5,4,6,139,N'XVK',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (338,N'UBND xã Yên Định',33,5,4,6,140,N'XYĐ',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (339,N'Trung tâm phát triển quỹ đất Sơn Động',33,4,4,6,117,N'TTPTQĐ- SĐ',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (340,N'Phòng Dân tộc Sơn Động',33,4,4,6,117,N'DT-SĐ',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (341,N'Đài truyền thanh Sơn Động',33,4,4,6,117,N'ĐTTSĐ',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (342,N'Trung tâm Văn hóa, Thông tin và Thể thao Sơn Động',33,4,4,6,117,N'TTVHTT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (343,N'BQL dự án đầu tư xây dựng  Sơn Động',33,4,4,6,117,N'BQLDAĐTSĐ',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (344,N'Thanh tra huyện Tân Yên',34,4,4,7,141,N'TTTY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (345,N'Ban Tiếp dân huyện Tân Yên',34,4,4,7,141,N'BTDTY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (346,N'Phòng Tài nguyên và Môi trường Tân Yên',34,4,4,7,141,N'TY TNMT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (347,N'Phòng Giáo dục và Đào tạo Tân Yên',34,4,4,7,141,N'GDĐT-TY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (348,N'Phòng Lao động TBXH Tân Yên',34,4,4,7,141,N'LĐTB-TY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (349,N'Phòng Tài chính - Kế hoạch Tân Yên',34,4,4,7,141,N'TCKH-TY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (350,N'Phòng Kinh Tế Hạ Tầng Tân Yên',34,4,4,7,141,N'KT-TY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (351,N'Phòng Nội Vụ Tân Yên',34,4,4,7,141,N'NV-TY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (352,N'Phòng Tư Pháp Tân Yên',34,4,4,7,141,N'TP-TY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (353,N'Phòng Văn Hóa Thông tin Tân Yên',34,4,4,7,141,N'VH-TY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (354,N'Phòng Y Tế Tân Yên',34,4,4,7,141,N'YT-TY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (355,N'Phòng Dân tộc Tân Yên',34,4,4,7,141,N'PDT-TY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (356,N'UBND xã An Dương',34,5,4,7,141,N'XAD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (357,N'UBND thị trấn Cao Thượng',34,5,4,7,142,N'TTCT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (358,N'UBND xã Cao Thượng',34,5,4,7,143,N'XCT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (359,N'UBND xã Cao Xá',34,5,4,7,144,N'XCX',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (360,N'UBND xã Đại Hóa',34,5,4,7,145,N'XĐH',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (361,N'UBND xã Hợp Đức',34,5,4,7,146,N'XHĐ',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (362,N'UBND xã Lam Cốt',34,5,4,7,147,N'XLC',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (363,N'UBND xã Lan Giới',34,5,4,7,148,N'XLG',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (364,N'UBND xã Liên Chung',34,5,4,7,149,N'XLC',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (365,N'UBND xã Liên Sơn',34,5,4,7,150,N'XLS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (366,N'UBND xã Ngọc Châu',34,5,4,7,151,N'XNC',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (367,N'UBND xã Ngọc Lý',34,5,4,7,152,N'XNL',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (368,N'UBND xã Ngọc Thiện',34,5,4,7,153,N'XNT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (369,N'UBND xã Ngọc Vân',34,5,4,7,154,N'XNV',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (370,N'UBND thị trấn Nhã Nam',34,5,4,7,155,N'TTNN',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (371,N'UBND xã Nhã Nam',34,5,4,7,156,N'XNN',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (372,N'UBND xã Phúc Hòa',34,5,4,7,157,N'XPH',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (373,N'UBND xã Phúc Sơn',34,5,4,7,158,N'XPS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (374,N'UBND xã Quang Tiến',34,5,4,7,159,N'XQT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (375,N'UBND xã Quế Nham',34,5,4,7,160,N'XQN',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (376,N'UBND xã Song Vân',34,5,4,7,161,N'XSV',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (377,N'UBND xã Tân Trung',34,5,4,7,162,N'XTT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (378,N'UBND xã Việt Lập',34,5,4,7,163,N'XVL',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (379,N'UBND xã Việt Ngọc',34,5,4,7,164,N'XVN',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (380,N'Trung tâm phát triển quỹ đất Tân Yên',34,4,4,7,141,N'TTPTQĐTY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (381,N'Ban Quản lý dự án Đầu tư xây dựng Tân Yên',34,4,4,7,141,N'BQLDADTXTY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (382,N'Phòng Nông nghiệp và Phát triển Nông thôn Tân Yên',34,4,4,7,141,N'NNPTNT-TY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (383,N'Trung tâm Văn hóa, Thông tin và Thể thao Tân Yên',34,4,4,7,141,N'TTVHTT&TT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (384,N'Ban Quản lý các khu du lịch Tân Yên',34,4,4,7,141,N'BQLCKDL',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (385,N'Ban Quản lý chợ và Bến xe khách huyện Tân Yên',34,4,4,7,141,N'BQLC&BX',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (386,N'Ban Tiếp dân huyện Việt Yên',35,4,4,8,165,N'BTDVY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (387,N'Thanh tra huyện Việt Yên',35,4,4,8,165,N'TTVY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (388,N'Phòng Tài nguyên Môi trường Việt Yên',35,4,4,8,165,N'TNMT-VY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (389,N'Phòng Quản lý đô thị Việt Yên',35,4,4,8,165,N'QLĐT-VY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (390,N'Trung tâm phát triển quỹ đất Việt Yên',35,4,4,8,165,N'TTPT-VY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (391,N'Phòng Tài chính - Kế hoạch Việt Yên',35,4,4,8,165,N'TCKH-VY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (392,N'Phòng Lao động TBXH Việt Yên',35,4,4,8,165,N'LĐTBXH-VY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (393,N'Phòng Giáo dục và Đào tạo Việt Yên',35,4,4,8,165,N'GDĐT-VY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (394,N'Phòng Kinh Tế Hạ Tầng Việt Yên',35,4,4,8,165,N'KT-VY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (395,N'Phòng Nội Vụ Việt Yên',35,4,4,8,165,N'NV-VY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (396,N'Phòng Tư Pháp Việt Yên',35,4,4,8,165,N'TP-VY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (397,N'Phòng Y Tế Việt Yên',35,4,4,8,165,N'YT-VY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (398,N'Phòng Văn Hóa Việt Yên',35,4,4,8,165,N'VH-VY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (399,N'UBND thị trấn Bích Động',35,5,4,8,165,N'TTBĐ',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (400,N'UBND xã Bích Sơn',35,5,4,8,166,N'XBS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (401,N'UBND xã Hoàng Ninh',35,5,4,8,167,N'XHN',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (402,N'UBND xã Hồng Thái',35,5,4,8,168,N'XHT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (403,N'UBND xã Hương Mai',35,5,4,8,169,N'XHM',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (404,N'UBND xã Minh Đức',35,5,4,8,170,N'XMĐ',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (405,N'UBND thị trấn Nếnh',35,5,4,8,171,N'TTN',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (406,N'UBND xã Nghĩa Trung',35,5,4,8,172,N'XNT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (407,N'UBND xã Ninh Sơn',35,5,4,8,173,N'XNS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (408,N'UBND xã Quang Châu',35,5,4,8,174,N'XQC',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (409,N'UBND xã Quảng Minh',35,5,4,8,175,N'XQM',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (410,N'UBND xã Tăng Tiến',35,5,4,8,176,N'XTT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (411,N'UBND xã Thượng Lan',35,5,4,8,177,N'XTL',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (412,N'UBND xã Tiên Sơn',35,5,4,8,178,N'XTS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (413,N'UBND xã Trung Sơn',35,5,4,8,179,N'XTS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (414,N'UBND xã Tự Lạn',35,5,4,8,180,N'XTL',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (415,N'UBND xã Vân Hà',35,5,4,8,181,N'XVH',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (416,N'UBND xã Vân Trung',35,5,4,8,182,N'XVT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (417,N'UBND xã Việt Tiến',35,5,4,8,183,N'XVT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (418,N'Phòng Nông Nghiệp và Phát triển Nông thôn Việt Yên',35,4,4,8,165,N'PNNPTNTVY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (419,N'Đài Truyền thanh Việt Yên',35,4,4,8,165,N'ĐTTVY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (420,N'Thư viện Việt Yên',35,4,4,8,165,N'TVVY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (421,N'Trung tâm Văn hoá-TTTT Việt Yên',35,4,4,8,165,N'TTVHTTTT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (422,N'BQL dự án đầu tư xây dựng Việt Yên',35,4,4,8,165,N'BQLDADTXDVY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (423,N'Ban Tiếp dân huyện Yên Dũng',36,4,4,9,184,N'BTDYD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (424,N'Thanh tra huyện Yên Dũng',36,4,4,9,184,N'TTYD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (425,N'Phòng Tài nguyên Môi trường Yên Dũng',36,4,4,9,184,N'TNMT-YD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (426,N'Phòng Quản lý đô thị Yên Dũng',36,4,4,9,184,N'QLĐT-YD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (427,N'Trung tâm phát triển quỹ đất Yên Dũng',36,4,4,9,184,N'TTPT-YD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (428,N'Phòng Tài chính - Kế hoạch Yên Dũng',36,4,4,9,184,N'TCKH-YD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (429,N'Phòng Lao động TBXH Yên Dũng',36,4,4,9,184,N'LĐTBXH-YD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (430,N'Phòng Giáo dục và Đào tạo Yên Dũng',36,4,4,9,184,N'GDĐT-YD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (431,N'Phòng Kinh Tế Hạ Tầng Yên Dũng',36,4,4,9,184,N'KT-YD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (432,N'Phòng Nội Vụ Yên Dũng',36,4,4,9,184,N'NV-YD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (433,N'Phòng Tư Pháp Yên Dũng',36,4,4,9,184,N'TP-YD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (434,N'Phòng Y Tế Yên Dũng',36,4,4,9,184,N'YD-YD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (435,N'Phòng Văn Hóa Yên Dũng',36,4,4,9,184,N'VH-YD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (436,N'UBND xã Cảnh Thụy',36,5,4,9,184,N'XCT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (437,N'UBND xã Đồng Phúc',36,5,4,9,185,N'XĐP',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (438,N'UBND xã Đồng Việt',36,5,4,9,186,N'XĐV',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (439,N'UBND xã Đức Giang',36,5,4,9,187,N'XĐG',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (440,N'UBND xã Hương Gián',36,5,4,9,188,N'XHG',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (441,N'UBND xã Lãng Sơn',36,5,4,9,189,N'XLS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (442,N'UBND xã Lão Hộ',36,5,4,9,190,N'XLH',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (443,N'UBND xã Nội Hoàng',36,5,4,9,191,N'XNH',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (444,N'UBND xã Nhân Sơn',36,5,4,9,192,N'XNS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (445,N'UBND xã Quỳnh Sơn',36,5,4,9,193,N'XQS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (446,N'UBND xã Tân An',36,5,4,9,194,N'XTA',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (447,N'UBND xã Tân Liễu',36,5,4,9,195,N'XTL',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (448,N'UBND xã Tiến Dũng',36,5,4,9,196,N'XTD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (449,N'UBND xã Tiên Phong',36,5,4,9,197,N'XTP',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (450,N'UBND thị trấn Neo',36,5,4,9,198,N'TTN',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (451,N'UBND thị trấn Tân Dân',36,5,4,9,199,N'TTTD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (452,N'UBND xã Tư Mại',36,5,4,9,200,N'XTM',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (453,N'UBND xã Tri Yên',36,5,4,9,201,N'XTY',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (454,N'UBND xã Xuân Phú',36,5,4,9,202,N'XXP',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (455,N'UBND xã Yên Lư',36,5,4,9,203,N'XYL',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (456,N'Phòng Nông Nghiệp và Phát triển Nông thôn Yên Dũng',36,4,4,9,184,N'PNNPTNTYD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (457,N'Đài Truyền thanh Yên Dũng',36,4,4,9,184,N'ĐTTYD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (458,N'Thư viện Yên Dũng',36,4,4,9,184,N'TVYD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (459,N'Trung tâm Văn hoá-TTTT Yên Dũng',36,4,4,9,184,N'TTVHTTTT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (460,N'BQL dự án đầu tư xây dựng Yên Dũng',36,4,4,9,184,N'BQLDADTXDYD',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (461,N'Ban Tiếp dân huyện Yên Thế',37,4,4,10,204,N'BTDYT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (462,N'Thanh tra huyện Yên Thế',37,4,4,10,204,N'TTYT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (463,N'Phòng Tài nguyên Môi trường Yên Thế',37,4,4,10,204,N'TNMT-YT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (464,N'Phòng Quản lý đô thị Yên Thế',37,4,4,10,204,N'QLĐT-YT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (465,N'Trung tâm phát triển quỹ đất Yên Thế',37,4,4,10,204,N'TTPT-YT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (466,N'Phòng Tài chính - Kế hoạch Yên Thế',37,4,4,10,204,N'TCKH-YT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (467,N'Phòng Lao động TBXH Yên Thế',37,4,4,10,204,N'LĐTBXH-YT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (468,N'Phòng Giáo dục và Đào tạo Yên Thế',37,4,4,10,204,N'GDĐT-YT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (469,N'Phòng Kinh Tế Hạ Tầng Yên Thế',37,4,4,10,204,N'KT-YT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (470,N'Phòng Nội Vụ Yên Thế',37,4,4,10,204,N'NV-YT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (471,N'Phòng Tư Pháp Yên Thế',37,4,4,10,204,N'TP-YT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (472,N'Phòng Y Tế Yên Thế',37,4,4,10,204,N'YT-YT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (473,N'Phòng Văn Hóa Yên Thế',37,4,4,10,204,N'VH-YT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (474,N'UBND xã An Thượng',37,5,4,10,204,N'XAT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (475,N'UBND thị trấn Bố Hạ',37,5,4,10,205,N'TTBH',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (476,N'UBND xã Bố Hạ',37,5,4,10,206,N'XBH',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (477,N'UBND xã Canh Nậu',37,5,4,10,207,N'XCN',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (478,N'UBND thị trấn Cầu Gồ',37,5,4,10,208,N'TTCG',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (479,N'UBND xã Đông Sơn',37,5,4,10,209,N'XĐS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (480,N'UBND xã Đồng Hưu',37,5,4,10,210,N'XĐH',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (481,N'UBND xã Đồng Kỳ',37,5,4,10,211,N'XĐK',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (482,N'UBND xã Đồng Lạc',37,5,4,10,212,N'XĐL',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (483,N'UBND xã Đồng Tiến',37,5,4,10,213,N'XĐT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (484,N'UBND xã Đồng Vương',37,5,4,10,214,N'XĐV',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (485,N'UBND xã Hồng Kỳ',37,5,4,10,215,N'XHK',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (486,N'UBND xã Hương Vĩ',37,5,4,10,216,N'XHV',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (487,N'UBND thị trấn NT Yên Thế',37,5,4,10,217,N'TTNTYT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (488,N'UBND xã Phồn Xương',37,5,4,10,218,N'XPX',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (489,N'UBND xã Tam Hiệp',37,5,4,10,219,N'XTH',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (490,N'UBND xã Tam Tiến',37,5,4,10,220,N'XTT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (491,N'UBND xã Tân Hiệp',37,5,4,10,221,N'XTH',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (492,N'UBND xã Tân Sỏi',37,5,4,10,222,N'XTS',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (493,N'UBND xã Tiến Thắng',37,5,4,10,223,N'XTTH',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (494,N'UBND xã Xuân Lương',37,5,4,10,224,N'XXL',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (495,N'Phòng Nông Nghiệp và Phát triển Nông thôn Yên Thế',37,4,4,10,204,N'PNNPTNTYT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (496,N'Đài Truyền thanh Yên Thế',37,4,4,10,204,N'ĐTTYT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (497,N'Thư viện Yên Thế',37,4,4,10,204,N'TVYT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (498,N'Trung tâm Văn hoá-TTTT Yên Thế',37,4,4,10,204,N'TTVHTTTT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
+        INSERT DM_CoQuan (CoQuanID,TenCoQuan,CoQuanChaID,CapID,TinhID,HuyenID,XaID,MaCoQuan, CQCoHieuLuc,ThamQuyenID,CQCapUBND,CQCapThanhTra,CQThuocHeThongPM,QTCanBoTiepDan,QTVanThuTiepNhanDon,QTTiepCongDanVaXuLyDonPhucTap,QTGiaiQuyetPhucTap) VALUES (499,N'BQL dự án đầu tư xây dựng Yên Thế',37,4,4,10,204,N'BQLDADTXDYT',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 
-    --DM_CoQuan's Processing
+        SET IDENTITY_INSERT DM_CoQuan OFF;
+
+    -- GetAll procedure of DM_CoQuan
         GO
-        CREATE PROCEDURE DMCoQuan_GetAll
+        ALTER PROCEDURE DMCoQuan_GetAll
             @TenCoQuan NVARCHAR(50) = NULL -- Input variable for agency name
         AS
         BEGIN
             -- Use a CTE for recursive hierarchy
-            WITH RecursiveHierarchy AS (
+            WITH RecursiveCTE AS (
                 -- Anchor member: Start from the specified record(s) or root nodes
                 SELECT 
                     CoQuanID, 
@@ -449,18 +1034,15 @@
                     QTVanThuTiepNhanDon,
                     QTTiepCongDanvaXuLyDonPhucTap,
                     QTGiaiQuyetPhucTap,
-                    0 AS Level -- Root level starts at 0
+                    0 AS CapDo, -- Root level starts at 1
+                    CAST('/' + CONVERT(NVARCHAR(50), CoQuanID) AS NVARCHAR(50)) AS Hierarchy
                 FROM DM_CoQuan
                 WHERE 
-                    -- If a search term is provided, start from matching records
-                    (@TenCoQuan IS NOT NULL AND TenCoQuan LIKE '%' + @TenCoQuan + '%')
-                    OR 
-                    -- If no search term, start from root nodes (CoQuanChaID IS NULL)
-                    (@TenCoQuan IS NULL AND CoQuanChaID IS NULL)
+                    CoQuanChaID IS NULL     
+                              
+                 UNION ALL
 
-                UNION ALL
-
-                -- Recursive member: Find all children of the current node
+                -- Recursive member: Join the table with itself to find children
                 SELECT 
                     c.CoQuanID, 
                     c.TenCoQuan, 
@@ -479,16 +1061,111 @@
                     c.QTVanThuTiepNhanDon,
                     c.QTTiepCongDanvaXuLyDonPhucTap,
                     c.QTGiaiQuyetPhucTap,
-                    rh.Level + 1 -- Increment the level for each child node
-                FROM DM_CoQuan c
-                INNER JOIN RecursiveHierarchy rh ON c.CoQuanChaID = rh.CoQuanID
+                    cte.CapDo + 1 AS CapDo, 
+                     CAST(cte.Hierarchy + '/' + CONVERT(NVARCHAR(50), c.CoQuanID) AS NVARCHAR(50)) AS Hierarchy
+                FROM 
+                    DM_CoQuan c
+                INNER JOIN 
+                    RecursiveCTE cte ON c.CoQuanChaID = cte.CoQuanID
+            ),
+            -- CTE phụ để lọc các phần tử khớp với từ khóa tìm kiếm
+            FilteredCTE AS (
+                SELECT 
+                    cte.*
+                FROM 
+                    RecursiveCTE cte
+                WHERE 
+                    @TenCoQuan IS NULL
+                    OR LOWER(TenCoQuan) LIKE '%' + LOWER(@TenCoQuan) + '%'
+            ),
+            -- CTE phụ để xác định các phần tử cha và phần tử con của các phần tử cần thiết
+            AllParentsCTE AS (
+                SELECT 
+                    c.*
+                FROM 
+                    FilteredCTE fc
+                INNER JOIN 
+                    RecursiveCTE c ON c.CoQuanID = fc.CoQuanChaID
+                UNION ALL
+                SELECT 
+                    c.*
+                FROM 
+                    AllParentsCTE p
+                INNER JOIN 
+                    RecursiveCTE c ON c.CoQuanID = p.CoQuanChaID
+            ),
+            AllChildrenCTE AS (
+                SELECT 
+                    c.*
+                FROM 
+                    FilteredCTE fc
+                INNER JOIN 
+                    RecursiveCTE c ON c.CoQuanChaID = fc.CoQuanID
+                UNION ALL
+                SELECT 
+                    c.*
+                FROM 
+                    AllChildrenCTE p
+                INNER JOIN 
+                    RecursiveCTE c ON c.CoQuanChaID = p.CoQuanID
+            ),
+            -- Kết hợp tất cả các phần tử cần thiết và loại bỏ các bản ghi trùng lặp
+            CombinedCTE AS (
+                SELECT DISTINCT * FROM FilteredCTE
+                UNION
+                SELECT DISTINCT * FROM AllParentsCTE
+                UNION
+                SELECT DISTINCT * FROM AllChildrenCTE
             )
-            -- Final SELECT statement to display the hierarchy
+            -- Truy vấn phân cấp với phân trang và tính toán tổng số bản ghi
             SELECT 
-                CoQuanID, 
-                TenCoQuan, 
-                MaCoQuan, 
+                ccte.*                --,TotalRecords = (SELECT COUNT(*) FROM CombinedCTE)
+            FROM 
+                CombinedCTE ccte
+            ORDER BY 
+            CoQuanID, Hierarchy
+            --OFFSET (@PageNumber - 1) * @PageSize ROWS 
+            --FETCH NEXT @PageSize ROWS ONLY
+            OPTION (MAXRECURSION 0);
+        END;
+        GO
+
+    -- GetByID proceudure of DM_CoQuan
+        CREATE PROC DMCoQuan_GetByID
+            @CoQuanID INT
+        AS
+        BEGIN 
+        SELECT * FROM DM_CoQuan where CoQuanID = @CoQuanID
+        END
+        GO
+
+    -- Add Procedure of DM_CoQuan
+        CREATE PROCEDURE DMCoQuan_Add
+            @CoQuanID INT,
+            @CoQuanChaID INT,
+            @TenCoQuan NVARCHAR(100),
+            @MaCoQuan NVARCHAR(50),
+            @CapID INT,
+            @ThamQuyenID INT,
+            @TinhID INT,
+            @HuyenID INT,
+            @XaID INT,
+            @CQCoHieuLuc BIT,
+            @CQCapUBND BIT,
+            @CQCapThanhTra BIT,
+            @CQThuocHeThongPM BIT,
+            @QTCanBoTiepDan BIT,
+            @QTVanThuTiepNhanDon BIT,
+            @QTTiepCongDanVaXuLyDonPhucTap BIT,
+            @QTGiaiQuyetPhucTap BIT
+        AS
+        BEGIN
+            -- Insert a new record into DM_CoQuan table
+            INSERT INTO DM_CoQuan (
+                CoQuanID,
                 CoQuanChaID,
+                TenCoQuan,
+                MaCoQuan,
                 CapID,
                 ThamQuyenID,
                 TinhID,
@@ -500,13 +1177,84 @@
                 CQThuocHeThongPM,
                 QTCanBoTiepDan,
                 QTVanThuTiepNhanDon,
-                QTTiepCongDanvaXuLyDonPhucTap,
-                QTGiaiQuyetPhucTap,
-                Level -- Include the hierarchical level
-            FROM RecursiveHierarchy
-            ORDER BY Level, CoQuanID; -- Sort by level and ID for better structure visualization
-        END;
+                QTTiepCongDanVaXuLyDonPhucTap,
+                QTGiaiQuyetPhucTap
+            )
+            VALUES (
+                @CoQuanID,
+                @CoQuanChaID,
+                @TenCoQuan,
+                @MaCoQuan,
+                @CapID,
+                @ThamQuyenID,
+                @TinhID,
+                @HuyenID,
+                @XaID,
+                @CQCoHieuLuc,
+                @CQCapUBND,
+                @CQCapThanhTra,
+                @CQThuocHeThongPM,
+                @QTCanBoTiepDan,
+                @QTVanThuTiepNhanDon,
+                @QTTiepCongDanVaXuLyDonPhucTap,
+                @QTGiaiQuyetPhucTap
+            );
+        END
+        GO       
 
+    -- Update Procedure of DM_CoQuan
+        CREATE PROCEDURE DMCoQuan_Update
+            @CoQuanID INT,
+            @CoQuanChaID INT,
+            @TenCoQuan NVARCHAR(100),
+            @MaCoQuan NVARCHAR(50),
+            @CapID INT,
+            @ThamQuyenID INT,
+            @TinhID INT,
+            @HuyenID INT,
+            @XaID INT,
+            @CQCoHieuLuc BIT,
+            @CQCapUBND BIT,
+            @CQCapThanhTra BIT,
+            @CQThuocHeThongPM BIT,
+            @QTCanBoTiepDan BIT,
+            @QTVanThuTiepNhanDon BIT,
+            @QTTiepCongDanVaXuLyDonPhucTap BIT,
+            @QTGiaiQuyetPhucTap BIT
+        AS
+        BEGIN
+            -- Update the existing record in DM_CoQuan table based on the CoQuanID
+            UPDATE DM_CoQuan
+            SET 
+                CoQuanChaID = @CoQuanChaID,
+                TenCoQuan = @TenCoQuan,
+                MaCoQuan = @MaCoQuan,
+                CapID = @CapID,
+                ThamQuyenID = @ThamQuyenID,
+                TinhID = @TinhID,
+                HuyenID = @HuyenID,
+                XaID = @XaID,
+                CQCoHieuLuc = @CQCoHieuLuc,
+                CQCapUBND = @CQCapUBND,
+                CQCapThanhTra = @CQCapThanhTra,
+                CQThuocHeThongPM = @CQThuocHeThongPM,
+                QTCanBoTiepDan = @QTCanBoTiepDan,
+                QTVanThuTiepNhanDon = @QTVanThuTiepNhanDon,
+                QTTiepCongDanVaXuLyDonPhucTap = @QTTiepCongDanVaXuLyDonPhucTap,
+                QTGiaiQuyetPhucTap = @QTGiaiQuyetPhucTap
+            WHERE 
+                CoQuanID = @CoQuanID;
+        END
+        GO
+
+    -- Delete Procedure of DM_CoQuan
+        CREATE PROC DMCoQuan_Delete
+            @CoQuanID INT
+        AS
+        BEGIN 
+            delete from DM_CoQuan WHERE CoQuanID = @CoQuanID
+        END
+        GO
 
 --region Authorization Mangement System
     --region Stored procedures of Users
@@ -1865,7 +2613,7 @@
         INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (464,'SVVPDXL',N'Số vụ vi phạm đã xử lý',NULL,461,0,2);
         INSERT DM_ChiTieu (ChiTieuID,MaChiTieu,TenChiTieu,GhiChu,ChiTieuChaID,TrangThai,LoaiMauPhieuID) VALUES (465,'STXPVPDT',N'Số tiền xử phạt vi phạm đã thu (Triệu đồng)',NULL,461,0,2);
         SET IDENTITY_INSERT DM_ChiTieu OFF
-
+        GO
 
 
 
@@ -2797,9 +3545,9 @@ INSERT INTO HT_ChucNang (MoTa,TenChucNang )
 	('ManageCriteria', N'Quản lý tiêu chí'),
 	('ManageTarget', N'Quản lý chỉ tiêu'),
 	('ManageReportForm', N'Quản lý mẫu phiếu báo cáo'),
-	('ManageAuthorization', N'Quản lý ủy quyền');
+	('ManageAuthorization', N'Quản lý ủy quyền'),
+    ('ManageAgency', N'Quản lý cơ quan');
 GO
-
 -- Thêm nhóm
 INSERT INTO HT_NhomPhanQuyen (MoTa,TenNhomPhanQuyen)
 VALUES
@@ -2836,9 +3584,10 @@ VALUES
 (9,1,15),
 (9,2,7),
 (10,1,15),
-(10,2,0)
+(10,2,0),
+(11,1,15),
+(11,2,0)
 GO  
-
 
 
 --region Query
@@ -2934,7 +3683,11 @@ EXEC TC_Insert 'BODY_T', N'Tỉnh', 11,  1, 2;
 EXEC TC_Insert 'BODY_H', N'Huyện', 11,  1, 2;
 EXEC TC_Insert 'BODY_X', N'Xã', 11,  1, 2;
 
-
+SELECT * FROM HT_NguoiDung
+SELECT * FROM HT_ChucNang
+SELECT * FROM HT_NhomChucNang
+SELECT * FROM HT_NhomNguoiDung
+SELECT * FROM HT_ChucNang
 
 
 ALTER TABLE BC_ChiTietMauPhieu

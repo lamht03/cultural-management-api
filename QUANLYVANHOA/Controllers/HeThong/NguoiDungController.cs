@@ -1,11 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using QUANLYVANHOA.Core.Enums;
 using QUANLYVANHOA.Interfaces;
 using QUANLYVANHOA.Interfaces.HeThong;
 using QUANLYVANHOA.Models;
 using QUANLYVANHOA.Models.HeThong;
 using QUANLYVANHOA.Repositories;
 using System.Linq;
+using System.Security;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -26,7 +28,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             _permissionManagementRepository = userInGroupRepository;
         }
 
-        [CustomAuthorize(1, "Quản lý người dùng")]
+        [CustomAuthorize(Quyen.Xem /*| Quyen.Them |Quyen.Sua | Quyen.Xoa*/, "Quản lý người dùng")]
         [HttpGet("DanhSachNguoiDung")]
         public async Task<IActionResult> GetAll(string? userName, int pageNumber = 1, int pageSize = 20)
         {
@@ -79,7 +81,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [CustomAuthorize(1, "Quản lý người dùng")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý người dùng")]
         [HttpGet("TimKiemNguoiDungTheoID")]
         public async Task<IActionResult> GetByID(int userId)
         {
@@ -103,7 +105,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [CustomAuthorize(2, "Quản lý người dùng")]
+        [CustomAuthorize(Quyen.Them, "Quản lý người dùng")]
         [HttpPost("ThemTaiKhoanNguoiDung")]
         public async Task<IActionResult> Create([FromBody] NguoiDungInsertModel user)
         {
@@ -203,7 +205,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [CustomAuthorize(4, "Quản lý người dùng")]
+        [CustomAuthorize(Quyen.Sua, "Quản lý người dùng")]
         [HttpPost("CapNhatThongTinTaiKhoanNguoiDung")]
         public async Task<IActionResult> Update([FromBody] NguoiDungUpdateModel user)
         {
@@ -311,7 +313,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [CustomAuthorize(8, "Quản lý người dùng")]
+        [CustomAuthorize(Quyen.Xoa, "Quản lý người dùng")]
         [HttpPost("XoaTaiKhoanNguoiDung")]
         public async Task<IActionResult> Delete(int userId)
         {

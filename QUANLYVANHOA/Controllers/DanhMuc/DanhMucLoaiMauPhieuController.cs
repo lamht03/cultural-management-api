@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using QUANLYVANHOA.Models.DanhMuc;
 using QUANLYVANHOA.Interfaces.DanhMuc;
+using QUANLYVANHOA.Core.Enums;
 
 namespace QUANLYVANHOA.Controllers.DanhMuc
 {
@@ -20,7 +21,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _loaiMauPhieuRepository = loaiMauPhieuRepository;
         }
 
-        [CustomAuthorize(1, "Quản lý loại mẫu phiếu")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý loại mẫu phiếu")]
         [HttpGet("DanhSachLoaiMauPhieu")]
         public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
         {
@@ -76,7 +77,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpGet("TimKiemLoaiMauPhieuTheoID")]
-        [CustomAuthorize(1, "Quản lý loại mẫu phiếu")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý loại mẫu phiếu")]
         public async Task<IActionResult> GetByID(int id)
         {
             if (id <= 0)
@@ -92,7 +93,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("ThemMoiLoaiMauPhieu")]
-        [CustomAuthorize(2, "Quản lý loại mẫu phiếu")]
+        [CustomAuthorize(Quyen.Them, "Quản lý loại mẫu phiếu")]
         public async Task<IActionResult> Insert([FromBody] DanhMucLoaiMauPhieuModelInsert model)
         {
 
@@ -142,7 +143,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("CapNhapThongTinLoaiMauPhieu")]
-        [CustomAuthorize(4, "Quản lý loại mẫu phiếu")]
+        [CustomAuthorize(Quyen.Sua, "Quản lý loại mẫu phiếu")]
         public async Task<IActionResult> Update([FromBody] DanhMucLoaiMauPhieuModelUpdate model)
         {
             var existingLoaiMauPhieuName = await _loaiMauPhieuRepository.GetAll(model.TenLoaiMauPhieu, 1, 20);
@@ -183,7 +184,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("XoaThongTinLoaiMauPhieu")]
-        [CustomAuthorize(8, "Quản lý loại mẫu phiếu")]
+        [CustomAuthorize(Quyen.Xoa, "Quản lý loại mẫu phiếu")]
         public async Task<IActionResult> Delete(int id)
         {
             var existingLoaiMauPhieu = await _loaiMauPhieuRepository.GetByID(id);

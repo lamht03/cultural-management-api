@@ -5,13 +5,15 @@ using Newtonsoft.Json;
 using QUANLYVANHOA.Interfaces;
 using Microsoft.Data.SqlClient;
 using System.Security.Claims;
+using System.Data;
+using QUANLYVANHOA.Core.Enums;
 
 public class CustomAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
 {
-    private readonly int _requiredPermission;
+    private readonly Quyen _requiredPermission;
     private readonly string _requiredFunction;
 
-    public CustomAuthorizeAttribute(int permission, string functionName)
+    public CustomAuthorizeAttribute(Quyen permission, string functionName)
     {
         _requiredPermission = permission;
         _requiredFunction = functionName;
@@ -46,10 +48,10 @@ public class CustomAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
         }
 
         // Parse JSON từ claim thành dictionary
-        var permissions = JsonConvert.DeserializeObject<Dictionary<string, int>>(permissionsClaim.Value);
+        var permissions = JsonConvert.DeserializeObject<Dictionary<string, Quyen>>(permissionsClaim.Value);
 
         // Kiểm tra quyền của người dùng đối với chức năng yêu cầu
-        if (!permissions.ContainsKey(_requiredFunction) || (permissions[_requiredFunction] & _requiredPermission) != _requiredPermission)
+        if (!permissions.ContainsKey(_requiredFunction) || !permissions[_requiredFunction].HasFlag(_requiredPermission))
         {
             context.Result = new ForbidResult();
             return;
@@ -67,7 +69,7 @@ public class CustomAuthorizeAttribute : AuthorizeAttribute, IAuthorizationFilter
         {
             conn.Open();
             SqlCommand cmd = new SqlCommand("NhomChucNang_GetAllUserFunctionsAndPermissions", conn);
-            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+            cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@TenNguoiDung", userName);
 
             using (var reader = cmd.ExecuteReader())

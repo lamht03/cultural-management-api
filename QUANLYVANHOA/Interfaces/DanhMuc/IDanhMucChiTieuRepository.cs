@@ -10,7 +10,7 @@ namespace QUANLYVANHOA.Interfaces.DanhMuc
         Task<DanhMucChiTieu> GetByID(int id);
         Task<IEnumerable<DanhMucChiTieu>> GetByLoaiMauPhieuID(int loaiMauPhieuID);
         Task<int> Insert(DanhMucChiTieuInsertModel chiTieu);
-        Task<int> InsertChildren(DanhMucChiTieuInsertChidrenModel chiTieuModelInsertChidren);
+        //Task<int> InsertChildren(DanhMucChiTieuInsertChidrenModel chiTieuModelInsertChidren);
         Task<int> Update(DanhMucChiTieuUpdateModel chiTieu);
         Task<int> Delete(int id);
     }

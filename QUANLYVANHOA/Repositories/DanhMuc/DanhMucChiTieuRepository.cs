@@ -158,27 +158,27 @@ namespace QUANLYVANHOA.Repositories.DanhMuc
             }
         }
 
-        public async Task<int> InsertChildren(DanhMucChiTieuInsertChidrenModel chiTieuModelInsertChidren)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
+            //public async Task<int> InsertChildren(DanhMucChiTieuInsertChidrenModel chiTieuModelInsertChidren)
+            //{
+            //    using (var connection = new SqlConnection(_connectionString))
+            //    {
+            //        await connection.OpenAsync();
 
-                using (var command = new SqlCommand("CT_InsertChildren", connection))
-                {
-                    command.CommandType = CommandType.StoredProcedure;
+            //        using (var command = new SqlCommand("CT_InsertChildren", connection))
+            //        {
+            //            command.CommandType = CommandType.StoredProcedure;
 
-                    // Thêm tham số vào stored procedure
-                    command.Parameters.AddWithValue("@ChiTieuChaID", chiTieuModelInsertChidren.ChiTieuChaID);
-                    command.Parameters.AddWithValue("@TenChiTieu", chiTieuModelInsertChidren.TenChiTieu);
-                    command.Parameters.AddWithValue("@MaChiTieu", chiTieuModelInsertChidren.MaChiTieu);
-                    command.Parameters.AddWithValue("@GhiChu", chiTieuModelInsertChidren.GhiChu);
+            //            // Thêm tham số vào stored procedure
+            //            command.Parameters.AddWithValue("@ChiTieuChaID", chiTieuModelInsertChidren.ChiTieuChaID);
+            //            command.Parameters.AddWithValue("@TenChiTieu", chiTieuModelInsertChidren.TenChiTieu);
+            //            command.Parameters.AddWithValue("@MaChiTieu", chiTieuModelInsertChidren.MaChiTieu);
+            //            command.Parameters.AddWithValue("@GhiChu", chiTieuModelInsertChidren.GhiChu);
 
-                    // Thực thi stored procedure
-                    return await command.ExecuteNonQueryAsync();
-                }
-            }
-        }
+            //            // Thực thi stored procedure
+            //            return await command.ExecuteNonQueryAsync();
+            //        }
+            //    }
+            //}
 
 
         public async Task<int> Update(DanhMucChiTieuUpdateModel chiTieu)
@@ -215,25 +215,6 @@ namespace QUANLYVANHOA.Repositories.DanhMuc
                 }
             }
         }
-
-        //private List<DanhMucChiTieu> BuildHierarchy(List<DanhMucChiTieu> chiTieuList)
-        //{
-        //    var lookup = chiTieuList.ToLookup(c => c.ChiTieuChaID);
-        //    var rootItems = lookup[0].ToList();
-
-        //    // Để đảm bảo tất cả các cấp độ của cây đều được bao gồm
-        //    foreach (var item in chiTieuList)
-        //    {
-        //        var parent = chiTieuList.FirstOrDefault(c => c.ChiTieuID == item.ChiTieuChaID);
-        //        if (parent != null)
-        //        {
-        //            parent.Children.Add(item);
-        //        }
-        //    }
-
-        //    return rootItems;
-        //}
-
 
         private IEnumerable<DanhMucChiTieu> BuildHierarchy(List<DanhMucChiTieu> chiTieuList)
         {

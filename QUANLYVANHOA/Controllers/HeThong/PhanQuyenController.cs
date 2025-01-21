@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using QUANLYVANHOA.Core.Enums;
 using QUANLYVANHOA.Interfaces;
 using QUANLYVANHOA.Models.HeThong;
 using System.Diagnostics.Metrics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace QUANLYVANHOA.Controllers
+namespace QUANLYVANHOA.Controllers.HeThong
 {
     [Route("api/v1/PhanQuyen/")]
     [ApiController]
@@ -20,7 +21,7 @@ namespace QUANLYVANHOA.Controllers
 
         #region Controller of Function
         [HttpGet("DanhSachChucNang")]
-        [CustomAuthorize(1, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
         public async Task<IActionResult> GetAllFunction(string? functionName, int pageNumber = 1, int pageSize = 20)
         {
             if (!string.IsNullOrWhiteSpace(functionName))
@@ -73,7 +74,7 @@ namespace QUANLYVANHOA.Controllers
 
 
         [HttpGet("LayChucNangTheoID")]
-        [CustomAuthorize(1, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
         public async Task<IActionResult> GetFunctionByID(int functionId)
         {
             var function = await _permissionManagement.GetFunctionByID(functionId);
@@ -95,7 +96,7 @@ namespace QUANLYVANHOA.Controllers
             });
         }
 
-        [CustomAuthorize(2, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Them, "Quản lý ủy quyền")]
         [HttpPost("ThemMoiChucNang")]
         public async Task<IActionResult> CreateFunction([FromBody] ChucNangInsertModel function)
         {
@@ -152,7 +153,7 @@ namespace QUANLYVANHOA.Controllers
         }
 
         [HttpPost("CapNhatThongTinChucNang")]
-        [CustomAuthorize(4, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Sua, "Quản lý ủy quyền")]
         public async Task<IActionResult> UpdateFunction([FromBody] ChucNangUpdateModel function)
         {
             if (!string.IsNullOrWhiteSpace(function.TenChucNang))
@@ -219,7 +220,7 @@ namespace QUANLYVANHOA.Controllers
         }
 
         [HttpPost("XoaChucNang")]
-        [CustomAuthorize(8, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Xoa, "Quản lý ủy quyền")]
         public async Task<IActionResult> DeleteFunction(int functionId)
         {
             var existingFunction = await _permissionManagement.GetFunctionByID(functionId);
@@ -253,7 +254,7 @@ namespace QUANLYVANHOA.Controllers
 
         #region Controller of Group
         [HttpGet("DanhSachNhomPhanQuyen")]
-        [CustomAuthorize(1, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
         public async Task<IActionResult> GetAll(string? TenNhomPhanQuyen, int pageNumber = 1, int pageSize = 20)
         {
             if (!string.IsNullOrWhiteSpace(TenNhomPhanQuyen))
@@ -305,7 +306,7 @@ namespace QUANLYVANHOA.Controllers
         }
 
         [HttpGet("LayNhomPhanQuyenTheoID")]
-        [CustomAuthorize(1, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
         public async Task<IActionResult> GetGroupByID(int NhomPhanQuyenID)
         {
             var group = await _permissionManagement.GetGroupByID(NhomPhanQuyenID);
@@ -327,13 +328,13 @@ namespace QUANLYVANHOA.Controllers
             });
         }
 
-        [CustomAuthorize(2, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Them, "Quản lý ủy quyền")]
         [HttpPost("ThemMoiNhomPhanQuyen")]
         public async Task<IActionResult> CreateGroup([FromBody] NhomPhanQuyenInsertModel group)
         {
             if (!string.IsNullOrWhiteSpace(group.TenNhomPhanQuyen))
             {
-               group.TenNhomPhanQuyen = group.TenNhomPhanQuyen.Trim();
+                group.TenNhomPhanQuyen = group.TenNhomPhanQuyen.Trim();
             }
             var existingAuthorizationGroup = await _permissionManagement.GetAllFunction(group.TenNhomPhanQuyen, 1, 20);
             {
@@ -384,7 +385,7 @@ namespace QUANLYVANHOA.Controllers
         }
 
         [HttpPost("CapNhatNhomPhanQuyen")]
-        [CustomAuthorize(4, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Sua, "Quản lý ủy quyền")]
         public async Task<IActionResult> UpdateGroup([FromBody] NhomPhanQuyenUpdateModel group)
         {
             var existingGroup = await _permissionManagement.GetGroupByID(group.NhomPhanQuyenID);
@@ -438,7 +439,7 @@ namespace QUANLYVANHOA.Controllers
         }
 
         [HttpPost("XoaNhomPhanQuyen")]
-        [CustomAuthorize(8, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Xoa, "Quản lý ủy quyền")]
         public async Task<IActionResult> DeleteGroup(int NhomPhanQuyenID)
         {
             var existingGroup = await _permissionManagement.GetGroupByID(NhomPhanQuyenID);
@@ -471,28 +472,28 @@ namespace QUANLYVANHOA.Controllers
         #endregion
 
         #region Controller of FunctionInGroup
-        //[CustomAuthorize(1, "Quản lý ủy quyền")]
-        //[HttpGet("LayDanhSachChucNangTrongNhomPhanQuyenTheoNhomPhanQuyenID")]
-        //public async Task<IActionResult> GetAllFunctionInGroup(int nhomPhanQuyenID)
-        //{
-        //    var existingGroup = await _permissionManagement.GetGroupByID(nhomPhanQuyenID);
-        //    if (existingGroup == null)
-        //    {
-        //        return Ok(new Response
-        //        {
-        //            Status = 0,
-        //            Message = "Không tìm thấy ID nhóm phân quyền"
-        //        });
-        //    }
+        [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
+        [HttpGet("LayDanhSachChucNangTrongNhomPhanQuyenTheoNhomPhanQuyenID")]
+        public async Task<IActionResult> GetAllFunctionInGroup(int nhomPhanQuyenID)
+        {
+            var existingGroup = await _permissionManagement.GetGroupByID(nhomPhanQuyenID);
+            if (existingGroup == null)
+            {
+                return Ok(new Response
+                {
+                    Status = 0,
+                    Message = "Không tìm thấy ID nhóm phân quyền"
+                });
+            }
 
-        //    var functionInGroups = await _permissionManagement.GetAllFunctionsAndPermissionsInAuthorizationGroup(nhomPhanQuyenID);
-        //    if (!functionInGroups.Any())
-        //    {
-        //        return Ok(new { Status = 0, Message = "Không có chức năng nào trong nhóm phân quyền" });
-        //    }
+            var functionInGroups = await _permissionManagement.GetAllFunctionsAndPermissionsInAuthorizationGroup(nhomPhanQuyenID);
+            if (!functionInGroups.Any())
+            {
+                return Ok(new { Status = 0, Message = "Không có chức năng nào trong nhóm phân quyền" });
+            }
 
-        //    return Ok(new { Status = 1, Message = "Lấy danh sách chức năng trong nhóm phân quyền thành công", Data = functionInGroups });
-        //}
+            return Ok(new { Status = 1, Message = "Lấy danh sách chức năng trong nhóm phân quyền thành công", Data = functionInGroups });
+        }
 
 
         //[CustomAuthorize(1, "ManageAuthorization")]
@@ -511,7 +512,7 @@ namespace QUANLYVANHOA.Controllers
 
 
         [HttpPost("ThemChucNangVaoNhomPhanQuyen")]
-        [CustomAuthorize(2, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Them, "Quản lý ủy quyền")]
         public async Task<IActionResult> InsertFunctionInGroup([FromBody] NhomChucNangInsertModel model)
         {
             var existingFunction = await _permissionManagement.GetFunctionByID(model.ChucNangID);
@@ -551,7 +552,7 @@ namespace QUANLYVANHOA.Controllers
 
 
             var newFunctionInNhomPhanQuyenID = await _permissionManagement.AddFunctionToGroup(model);
-            return Ok( new { Status = 1, Message = "Thêm chức năng vào nhóm phân quyền thành công !" });
+            return Ok(new { Status = 1, Message = "Thêm chức năng vào nhóm phân quyền thành công !" });
         }
 
         //[HttpPost("CapNhatQuyenTruyCapChucNangTrongNhomPhanQuyen")]
@@ -569,7 +570,7 @@ namespace QUANLYVANHOA.Controllers
         //}
 
         [HttpPost("XoaChucNangKhoiNhomPhanQuyen")]
-        [CustomAuthorize(8, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Xoa, "Quản lý ủy quyền")]
         public async Task<IActionResult> DeleteFunctionInGroup(NhomChucNangDeleteModel model)
         {
             var existingFunctionInGroup = await _permissionManagement.GetFunctionInGroupByFunctionID(model.ChucNangID);
@@ -592,15 +593,16 @@ namespace QUANLYVANHOA.Controllers
 
         #region Controller of UserInGroup
         [HttpGet("LayDanhSachNguoiDungTrongNhomPhanQuyenTheoNhomPhanQuyenID")]
-        [CustomAuthorize(1, "Quản lý ủy quyền")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
         public async Task<IActionResult> GetAllUserInGroup(int nhomPhanQuyenID)
         {
             var existingGroup = await _permissionManagement.GetGroupByID(nhomPhanQuyenID);
             if (existingGroup == null)
             {
-                return Ok( new {
+                return Ok(new
+                {
                     Status = 1,
-                    Message= "Không tìm thấy nhóm phân quyền"
+                    Message = "Không tìm thấy nhóm phân quyền"
 
                 });
             }
@@ -639,8 +641,8 @@ namespace QUANLYVANHOA.Controllers
         //    return Ok(new { Status = 1, Message = "Get information successfully", Data = userInGroups });
         //}
 
-        [HttpPost("Thêm người dùng vào nhóm phân quyền")]
-        [CustomAuthorize(2, "Quản lý ủy quyền")]
+        [HttpPost("ThemNguoiDungVaoNhomPhanQuyen")]
+        [CustomAuthorize(Quyen.Them, "Quản lý ủy quyền")]
         public async Task<IActionResult> InsertUserInGroup([FromBody] ThemNguoiDungVaoNhomPhanQuyenModel model)
         {
             var existingUser = await _permissionManagement.GetFunctionByID(model.NguoiDungID);
@@ -667,7 +669,7 @@ namespace QUANLYVANHOA.Controllers
             if (exitingUserInGroup != null)
             {
                 return Ok(new { Status = 0, Message = "Đã có người dùng trong nhóm phân quyền" });
-            } 
+            }
 
             if (model.NguoiDungID <= 0 || model.NhomPhanQuyenID <= 0)
             {
@@ -675,7 +677,7 @@ namespace QUANLYVANHOA.Controllers
             }
 
             var newUserInNhomPhanQuyenID = await _permissionManagement.InsertUserInGroup(model);
-            return Ok( new { Status = 1, Message = "Thêm người dùng vào trong nhóm phân quyền thành công !" });
+            return Ok(new { Status = 1, Message = "Thêm người dùng vào trong nhóm phân quyền thành công !" });
         }
 
         //[HttpPost("UpdateUserInGroup")]
@@ -692,9 +694,9 @@ namespace QUANLYVANHOA.Controllers
         //    return Ok(new { Status = 1, Message = "Updated data successfully" });
         //}
 
-        [HttpPost("DeleteUserInGroup")]
-        [CustomAuthorize(8, "ManageAuthorization")]
-        public async Task<IActionResult> DeleteUserInGroup(XoaNguoiDungKhoiNhomPhanQuyenModel model)    
+        [HttpPost("XoaNguoiDungKhoiNhomPhanQuyen")]
+        [CustomAuthorize(Quyen.Xoa, "ManageAuthorization")]
+        public async Task<IActionResult> DeleteUserInGroup(XoaNguoiDungKhoiNhomPhanQuyenModel model)
         {
             var existingUserInGroup = await _permissionManagement.GetUserInGroupByUserID(model.NguoiDungID);
             if (existingUserInGroup == null)

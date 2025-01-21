@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using QUANLYVANHOA.Models.DanhMuc;
 using QUANLYVANHOA.Interfaces.DanhMuc;
+using QUANLYVANHOA.Core.Enums;
 
 namespace QUANLYVANHOA.Controllers.DanhMuc
 {
@@ -20,7 +21,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _donViTinhRepository = donViTinhRepository;
         }
 
-        [CustomAuthorize(1, "Quản lý đơn vị tính")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý đơn vị tính")]
         [HttpGet("DanhSachDonViTinh")]
         public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
         {
@@ -74,7 +75,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(1, "Quản lý đơn vị tính")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý đơn vị tính")]
         [HttpGet("TimKiemDonViTinhTheoID")]
         public async Task<IActionResult> GetByID(int id)
         {
@@ -86,7 +87,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Get information successfully", Data = donViTinh });
         }
 
-        [CustomAuthorize(2, "Quản lý đơn vị tính")]
+        [CustomAuthorize(Quyen.Them, "Quản lý đơn vị tính")]
         [HttpPost("ThemMoiDonViTinh")]
         public async Task<IActionResult> Insert([FromBody] DanhMucDonViTinhModelInsert model)
         {
@@ -134,8 +135,8 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Insertion failed" });
         }
 
-        [CustomAuthorize(4, "Quản lý đơn vị tính")]
-        [HttpPost("CapNhatDonViTinh")]
+        [CustomAuthorize(Quyen.Sua, "Quản lý đơn vị tính")] 
+        [HttpPost("CapNhatDonViTinh")] 
         public async Task<IActionResult> Update([FromBody] DanhMucDonViTinhModelUpdate model)
         {
             var existingTenDonViTinh = await _donViTinhRepository.GetAll(model.TenDonViTinh, 1, 20);
@@ -176,7 +177,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Update failed" });
         }
 
-        [CustomAuthorize(8, "Quản lý đơn vị tính")]
+        [CustomAuthorize(Quyen.Xoa, "Quản lý đơn vị tính")]
         [HttpPost("XoaDonViTinh")]
         public async Task<IActionResult> Delete(int id)
         {

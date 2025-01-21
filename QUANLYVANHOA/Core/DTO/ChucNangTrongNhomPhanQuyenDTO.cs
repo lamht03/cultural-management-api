@@ -19,5 +19,17 @@ namespace QUANLYVANHOA.Core.DTO
 
         [JsonPropertyName("Quyen")]
         public int Quyen { get; set; }
+
+        [JsonPropertyName("Xem")]
+        public bool Xem { get; set; }
+
+        [JsonPropertyName("Them")]
+        public bool Them { get; set; }
+
+        [JsonPropertyName("Sua")]
+        public bool Sua { get; set; }
+
+        [JsonPropertyName("Xoa")]
+        public bool Xoa { get; set; }
     }
 }

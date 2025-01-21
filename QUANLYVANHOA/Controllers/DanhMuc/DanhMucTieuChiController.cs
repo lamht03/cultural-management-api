@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using QUANLYVANHOA.Models.DanhMuc;
 using QUANLYVANHOA.Interfaces.DanhMuc;
+using QUANLYVANHOA.Core.Enums;
 
 namespace QUANLYVANHOA.Controllers.DanhMuc
 {
@@ -18,7 +19,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _tieuchirepository = tieuchirepository;
         }
 
-        [CustomAuthorize(1, "Quản lý tiêu chí")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý tiêu chí")]
         [HttpGet("DanhSachTieuChi")]
         public async Task<IActionResult> GetAll(string? name/*, int pageNumber = 1, int pageSize = 20*/)
         {
@@ -59,7 +60,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(1, "Quản lý tiêu chí")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý tiêu chí")]
         [HttpGet("TimKiemTieuChiTheoID")]
         public async Task<IActionResult> GetByID(int id)
         {
@@ -79,7 +80,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("ThemMoiTieuChi")]
-        [CustomAuthorize(2, "Quản lý tiêu chí")]
+        [CustomAuthorize(Quyen.Them, "Quản lý tiêu chí")]
         public async Task<IActionResult> Insert([FromBody] DanhMucTieuChiModelInsert tieuchi)
         {
             var existingTieuChi = await _tieuchirepository.GetAll(tieuchi.TenTieuChi);
@@ -122,7 +123,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("CapNhatTieuChi")]
-        [CustomAuthorize(4, "Quản lý tiêu chí")]
+        [CustomAuthorize(Quyen.Sua, "Quản lý tiêu chí")]
         public async Task<IActionResult> Update([FromBody] DanhMucTieuChiModelUpdate tieuchi)
         {
 
@@ -178,7 +179,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("XoaTieuChi")]
-        [CustomAuthorize(8, "Quản lý tiêu chí")]
+        [CustomAuthorize(Quyen.Xoa, "Quản lý tiêu chí")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)

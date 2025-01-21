@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using QUANLYVANHOA.Models.DanhMuc;
 using QUANLYVANHOA.Interfaces.DanhMuc;
+using QUANLYVANHOA.Core.Enums;
 
 namespace QUANLYVANHOA.Controllers.DanhMuc
 {
@@ -17,7 +18,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _kyBaoCaoRepository = kyBaoCaoRepository;
         }
 
-        [CustomAuthorize(1, "Quản lý kỳ báo cáo")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý kỳ báo cáo")]
         [HttpGet("DanhSachKyBaoCao")]
         public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
         {
@@ -58,7 +59,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(1, "Quản lý kỳ báo cáo")]
+        [CustomAuthorize(Quyen.Xem, "Quản lý kỳ báo cáo")]
         [HttpGet("TimKiemThongTinKyBaoCao")]
         public async Task<IActionResult> GetByID(int id)
         {
@@ -77,7 +78,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("ThemMoiKyBaoCao")]
-        [CustomAuthorize(2, "Quản lý kỳ báo cáo")]
+        [CustomAuthorize(Quyen.Them, "Quản lý kỳ báo cáo")]
         public async Task<IActionResult> Insert([FromBody] DanhMucKyBaoCaoModelInsert model)
         {
             var existingKyBaoCaoName = await _kyBaoCaoRepository.GetAll(model.TenKyBaoCao, 1, 20);
@@ -111,7 +112,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("CapNhatKyBaoCao")]
-        [CustomAuthorize(4, "Quản lý kỳ báo cáo")]
+        [CustomAuthorize(Quyen.Sua, "Quản lý kỳ báo cáo")]
         public async Task<IActionResult> Update(DanhMucKyBaoCaoModelUpdate kyBaoCao)
         {
             var existingKyBaoCaoName = await _kyBaoCaoRepository.GetAll(kyBaoCao.TenKyBaoCao, 1, 20);
@@ -141,7 +142,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("XoaKyBaoCao")]
-        [CustomAuthorize(8, "Quản lý kỳ báo cáo")]
+        [CustomAuthorize(Quyen.Xoa, "Quản lý kỳ báo cáo")]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)
