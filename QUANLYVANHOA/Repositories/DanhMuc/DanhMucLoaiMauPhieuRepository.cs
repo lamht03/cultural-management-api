@@ -16,7 +16,7 @@ namespace QUANLYVANHOA.Repositories.DanhMuc
             _connectionString = new Connection().GetConnectionString();
         }
 
-        public async Task<(IEnumerable<DanhMucLoaiMauPhieu>, int)> GetAll(string name, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<DanhMucLoaiMauPhieu>, int)> GetAll(string name,string? note ,int pageNumber, int pageSize)
         {
             var loaiMauPhieuList = new List<DanhMucLoaiMauPhieu>();
             int totalRecords = 0;
@@ -25,10 +25,11 @@ namespace QUANLYVANHOA.Repositories.DanhMuc
             {
                 await connection.OpenAsync();
 
-                using (var command = new SqlCommand("LMP_GetAll", connection))
+                using (var command = new SqlCommand("LMP_GetListPaging", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@TenLoaiMauPhieu", name ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@GhiChu",note ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@PageNumber", pageNumber);
                     command.Parameters.AddWithValue("@PageSize", pageSize);
 

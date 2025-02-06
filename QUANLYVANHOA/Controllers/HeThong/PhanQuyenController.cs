@@ -255,11 +255,11 @@ namespace QUANLYVANHOA.Controllers.HeThong
         #region Controller of Group
         [HttpGet("DanhSachNhomPhanQuyen")]
         [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
-        public async Task<IActionResult> GetAll(string? TenNhomPhanQuyen, int pageNumber = 1, int pageSize = 20)
+        public async Task<IActionResult> GetAll(string? tenNhomPhanQuyen,int? canBoID, int pageNumber = 1, int pageSize = 20)
         {
-            if (!string.IsNullOrWhiteSpace(TenNhomPhanQuyen))
+            if (!string.IsNullOrWhiteSpace(tenNhomPhanQuyen))
             {
-                TenNhomPhanQuyen = TenNhomPhanQuyen.Trim();
+                tenNhomPhanQuyen = tenNhomPhanQuyen.Trim();
             }
 
             if (pageNumber <= 0)
@@ -280,7 +280,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 });
             }
 
-            var (groups, totalRecords) = await _permissionManagement.GetAllGroup(TenNhomPhanQuyen, pageNumber, pageSize);
+            var (groups, totalRecords) = await _permissionManagement.GetAllGroup(tenNhomPhanQuyen, canBoID, pageNumber, pageSize);
             var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
 
             if (!groups.Any())

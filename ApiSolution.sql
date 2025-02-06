@@ -428,7 +428,7 @@
 
     -- GetAll Procedure of DM_Cap
         GO
-        create PROC DMCap_GetAll
+        CREATE PROC DMCap_GetAll
         AS
         BEGIN 
         SELECT * FROM DM_Cap
@@ -1385,58 +1385,41 @@
         );
         GO
         --Get All Group
-            CREATE PROCEDURE NhomPhanQuyen_GetListPaging
-                @TenNhomPhanQuyen NVARCHAR(50) = NULL, -- Updated to match the column size
-                @PageNumber INT = 1,
-                @PageSize INT = 20
+            ALTER  PROCEDURE NhomPhanQuyen_GetListPaging
+                @TenNhomPhanQuyen NVARCHAR(50) = NULL, -- Lọc theo tên nhóm phân quyền (tùy chọn)
+                @CanBoID int = null,    -- Lọc theo tên người dùng (tùy chọn)
+                @PageNumber INT = 1,  
+                @PageSize INT = 20  
             AS
             BEGIN
-                -- Calculate the total number of records matching the search criteria
+                -- Bước 1: Tính tổng số bản ghi thỏa mãn điều kiện tìm kiếm
                 DECLARE @TotalRecords INT;
-                SELECT @TotalRecords = COUNT(*)
-                FROM HT_NhomPhanQuyen sug
-                WHERE @TenNhomPhanQuyen IS NULL OR TenNhomPhanQuyen LIKE '%' + @TenNhomPhanQuyen + '%';
 
-                -- Return data for the current page
-                SELECT 
+                SELECT @TotalRecords = COUNT(DISTINCT sug.NhomPhanQuyenID)
+                FROM HT_NhomPhanQuyen sug
+                LEFT JOIN HT_NhomNguoiDung nnd ON sug.NhomPhanQuyenID = nnd.NhomPhanQuyenID
+                LEFT JOIN HT_NguoiDung nd ON nnd.NguoiDungID = nd.NguoiDungID
+                WHERE (@TenNhomPhanQuyen IS NULL OR sug.TenNhomPhanQuyen LIKE '%' + @TenNhomPhanQuyen + '%')
+                AND (@CanBoID IS NULL OR nd.NguoiDungID = @CanBoID);
+
+                -- Bước 2: Lấy danh sách nhóm phân quyền theo phân trang
+                SELECT DISTINCT  
                     sug.NhomPhanQuyenID,
                     sug.TenNhomPhanQuyen,
                     sug.MoTa  
                 FROM HT_NhomPhanQuyen sug
-                WHERE @TenNhomPhanQuyen IS NULL OR TenNhomPhanQuyen LIKE '%' + @TenNhomPhanQuyen + '%'
-                ORDER BY sug.NhomPhanQuyenID  -- Can be adjusted based on sorting requirements
+                LEFT JOIN HT_NhomNguoiDung nnd ON sug.NhomPhanQuyenID = nnd.NhomPhanQuyenID
+                LEFT JOIN HT_NguoiDung nd ON nnd.NguoiDungID = nd.NguoiDungID
+                WHERE (@TenNhomPhanQuyen IS NULL OR sug.TenNhomPhanQuyen LIKE '%' + @TenNhomPhanQuyen + '%')
+                AND (@CanBoID IS NULL OR nd.NguoiDungID =  @CanBoID)
+                ORDER BY sug.NhomPhanQuyenID
                 OFFSET (@PageNumber - 1) * @PageSize ROWS
                 FETCH NEXT @PageSize ROWS ONLY;
 
-                -- Return the total number of records
+                -- Bước 3: Trả về tổng số bản ghi để hỗ trợ frontend hiển thị phân trang
                 SELECT @TotalRecords AS TotalRecords;
-            END
+            END;
             GO
-        --Get Group By ID
-                CREATE PROC NhomPhanQuyen_GetByID
-                    @NhomPhanQuyenID INT 
-                AS 
-                BEGIN
-                    SELECT * FROM HT_NhomPhanQuyen sg WHERE  sg.NhomPhanQuyenID = @NhomPhanQuyenID
-                END
-                GO
-
-                CREATE PROC NhomChucNang_GetAllFunctionsAndPermissionsInAuthorizationGroup
-                    @NhomPhanQuyenID int
-                AS
-                BEGIN
-                    SELECT a.ChucNangID, a.TenChucNang,b.NhomPhanQuyenID, c.TenNhomPhanQuyen,b.Quyen FROM HT_ChucNang a 
-                    JOIN HT_NhomChucNang b on a.ChucNangID = b.ChucNangID 
-                    JOIN HT_NhomPhanQuyen c on b.NhomPhanQuyenID = c.NhomPhanQuyenID where c.NhomPhanQuyenID = @NhomPhanQuyenID
-                END
-                GO
-                CREATE PROC NhomPhanQuyen_GetAllUsersInAuthorizationGroup
-                    @NhomPhanQuyenID INT
-                AS
-                BEGIN
-                    SELECT a.NguoiDungID, a.TenNguoiDung,a.TenDayDu,b.NhomPhanQuyenID, c.TenNhomPhanQuyen From HT_NguoiDung a  JOIN HT_NhomNguoiDung b  on a.NguoiDungID = b.NguoiDungID JOIN HT_NhomPhanQuyen c on b.NhomPhanQuyenID = c.NhomPhanQuyenID where c.NhomPhanQuyenID = @NhomPhanQuyenID
-                END
-                GO
         --Create Group 
             CREATE PROCEDURE NhomPhanQuyen_Create
                 @TenNhomPhanQuyen NVARCHAR(50),
@@ -2194,16 +2177,11 @@
         GhiChu NVARCHAR(300),
         Loai INT DEFAULT 3
     );
-    GO 
+    GO ;
 
-    ALTER TABLE DM_ChiTieu
-    ADD CONSTRAINT FK_DM_ChiTieu_DM_LoaiMauPhieu
-    FOREIGN KEY (LoaiMauPhieuID) REFERENCES DM_LoaiMauPhieu(LoaiMauPhieuID)
-    ON DELETE CASCADE;
-    GO
-
-    CREATE PROC LMP_GetAll
+    CREATE PROC LMP_GetListPaging
     @TenLoaiMauPhieu NVARCHAR(100) = NULL,
+    @GhiChu NVARCHAR(20) = NULL,
     @PageNumber INT = 1,
     @PageSize INT = 20
     AS
@@ -2212,7 +2190,7 @@
         DECLARE @TotalRecords INT;
         SELECT @TotalRecords = COUNT(*)
         FROM DM_LoaiMauPhieu
-        WHERE @TenLoaiMauPhieu IS NULL OR TenLoaiMauPhieu LIKE '%' + @TenLoaiMauPhieu + '%';
+        WHERE @TenLoaiMauPhieu IS NULL OR TenLoaiMauPhieu LIKE '%' + @TenLoaiMauPhieu + '%' AND @GhiChu IS NULL OR GhiChu LIKE '%' + @GhiChu + '%'
 
         -- Trả về dữ liệu cho trang hiện tại
         SELECT 
@@ -2284,6 +2262,7 @@
         TrangThai BIT DEFAULT 0,                 
         LoaiMauPhieuID INT NOT NULL,                 
         FOREIGN KEY (ChiTieuChaID) REFERENCES DM_ChiTieu(ChiTieuID)
+        FOREIGN KEY (LoaiMauPhieuID) REFERENCES DM_LoaiMauPhieu(LoaiMauPhieuID)
     );  
     GO 
     
@@ -3216,294 +3195,6 @@ VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 009-TDTT SỐ LIỆU CƠ BẢN VỀ T
 INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
 VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 010-TTR SỐ LIỆU CƠ BẢN VỀ THANH TRA', '010-TTR', 0, '', 3);
 GO
---region Insert Category ChiTieu
---region Root Level ChiTieus
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT001', N'DI TÍCH', NULL, 1);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT002', N'Số lượng thư viện', NULL, 2);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES
-('CT003', N'Nhân lực thư viện', NULL, 3);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT004', N'Bảo tàng', NULL, 4);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT005', N'Số lượng xin cấp xin phép triển lãm', NULL, 5);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT006', N'Số lượng họa sĩ, nhà điêu khắc, nghệ sĩ nhiếp ảnh', NULL, 6);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT007', N'Gia Đình', NULL, 7);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT008', N'Bạo lực gia đình', NULL, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT009', N'Các biện pháp phòng, chống bạo lực gia', NULL, 9);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT0010', N'Số vận động viên cấp cao', NULL, 10);
-
-
---region Childen level 1
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_1', N'Tổng số Di tích xếp hạng cấp tỉnh:', 1, 1);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_2', N'Tổng số Di tích xếp hạng quốc gia:', 1, 1);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_3', N'Tổng số Di tích quốc gia đặc biệt được xếp hạng:', 1, 1);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT2_1', N'Tổng số thư viện công cộng hiện có', 2, 2);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT2_2', N'Số thư viện công cộng thành lập trong năm', 2, 2);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT2_3', N'Số thư viện công cộng cấp huyện trực thuộc UBND', 2, 2);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT2_4', N'Số thư viện tư nhân có phục vụ cộng đồng', 2, 2);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT2_5', N'Số thư viện cộng đồng', 2, 2);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES
-('CT3_1', N'Số lượng người làm công tác thư viện hiện có Số thư viện công cộng thành lập trong năm', 3, 3);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES
-('CT3_2', N'Chất lượng nguồn nhân lực:', 3, 3);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT4_1', N'Tổng số bảo tàng trực thuộc:', 4, 4);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT4_2', N'Tổng số hiện vật có trong từng bảo tàng:', 4, 4);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT4_3', N'Tổng số sưu tập hiện vật trong từng bảo tàng', 4, 4);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT4_4', N'Tổng số khách tham quan trong năm của từng bảo tàng:', 4, 4);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT4_5', N'Tổng thu từ phí tham quan trong năm của từng bảo tàng (nếu có):', 4, 4);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT4_6', N'Tổng số trưng bày chuyên đề của từng bảo tàng:', 4, 4);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT5_1', N'Triển lãm mỹ thuật', 5, 5),
-('CT5_2', N'Triển lãm nhiếp ảnh', 5, 5),
-('CT5_3', N'Các Triển lãm không vì mục đích thương mại', 5, 5),
-('CT5_4', N'Số lượng giấy phép/ văn bản phê duyệt nội dung tác phẩm mỹ thuật, nhiếp ảnh xuất, nhập khẩu', 5, 5);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT6_1', N'Mỹ thuật', 6, 6),
-('CT6_2', N'Nhiếp ảnh', 6, 6);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT7_1', N'Tổng số hộ gia đình', 7, 7);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_1', N'Tổng số hộ có bạo lực gia đình', 8, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_2', N'Tổng số vụ bạo lực gia đình', 8, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_3', N'Hình thức bạo lực', 8, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_4', N'Người gây bạo lực gia đình và biện pháp xử lý', 8, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_5', N'Biện pháp xử lý', 8, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_6', N'Nạn nhân bị bạo lực gia đình và biện pháp hỗ trợ', 8, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT9_1', N'Mô hình phòng, chống bạo lực gia đình', 9, 9);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT9_2', N'Mô hình hoạt động độc lập', 9, 9);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT10_1', N'Cấp kiện tướng', 10, 10);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT10_2', N'Cấp 1', 10, 10);
-
-
---region children level 2
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_1_1', N'Di tích lịch sử:', 11, 1);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_1_2', N'Di tích kiến trúc nghệ thuật:', 11, 1);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_1_3', N'Di tích khảo cổ:', 11, 1);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_1_4', N'Danh lam thắng cảnh:', 11, 1);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_1_5', N'Số Di tích cấp tỉnh được xếp hạng trong năm:', 11, 1);
-
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_2_1', N'Di tích lịch sử:', 12, 1);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_2_2', N'Di tích kiến trúc nghệ thuật:', 12, 1);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_2_3', N'Di tích khảo cổ:', 12, 1);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_2_4', N'Danh lam thắng cảnh:', 12, 1);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_2_5', N'Số Di tích quốc gia được xếp hạng trong năm:', 12, 1);
-
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT1_3_1', N'Số Di tích quốc gia đặc biệt được xếp hạng trong', 13, 1);
-
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES
-('CT3_2_1', N'Về trình độ học vấn:', 20, 3);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES
-('CT3_2_2', N'Về chuyên môn ngành thư viện', 20, 3);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES
-('CT3_2_3', N'Số lượt cán bộ được đào tạo, tập huấn trong năm', 20, 3);
-
-
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT4_2_1', N'Số hiện vật bảo tàng mới được sưu tầm trong năm (của từng bảo tàng):', 22, 4);
-
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT4_3_1', N'Số sưu tập hiện vật được hình thành trong năm của từng bảo tàng:', 23, 4);
-
--- Insert các "thằng cháu" của Triển lãm mỹ thuật
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT5_1_1', N'Trong nước', 27, 5),
-('CT5_1_2', N'Ra nước ngoài', 27, 5);
-
--- Insert các "thằng cháu" của Triển lãm nhiếp ảnh
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT5_2_1', N'Trong nước', 28, 5),
-('CT5_2_2', N'Ra nước ngoài', 28, 5);
-
--- Insert các "thằng cháu" của Các Triển lãm không vì mục đích thương mại
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT5_3_1', N'Trong nước', 29, 5),
-('CT5_3_2', N'Ra nước ngoài', 29, 5);
-
--- Insert các "thằng cháu" của Mỹ thuật
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT6_1_1', N'Họa sĩ Hội Mỹ thuật địa phương', 31, 6),
-('CT6_1_2', N'Nhà điêu khắc Hội Mỹ thuật địa phương', 31, 6);
-
--- Insert các "thằng cháu" của Nhiếp ảnh
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT6_2_1', N'Hội viên hội nhiếp ảnh địa phương', 32, 6);
-
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT7_1_1', N'Số hộ gia đình chỉ có cha hoặc mẹ sống chung với con', 33, 7);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT7_1_2', N'Số hộ gia đình 1 thế hệ (vợ, chồng)', 33, 7);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT7_1_3', N'Số hộ gia đình 2 thế hệ', 33, 7);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT7_1_4', N'Số hộ gia đình 3 thế hệ trở lên', 33, 7);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT7_1_5', N'Số hộ gia đình khác', 33, 7);
-
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_3_1', N'Tinh thần', 36, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_3_2', N'Thân thể', 36, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_3_3', N'Tình dục', 36, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_3_4', N'Kinh tế', 36, 8);
-
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_4_1', N'Giới tính', 37, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_4_2', N'Độ tuổi', 37, 8);
-
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_5_1', N'Góp ý, phê bình trong cộng đồng dân cư', 38, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_5_2', N'Áp dụng biện pháp cấm tiếp xúc', 38, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_5_3', N'Áp dụng các biện pháp giáo dục', 38, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_5_4', N'Xử phạt vi phạm hành chính', 38, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_5_5', N'Xử lý hình sự (phạt tù)', 38, 8);
-
-
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_6_1', N'Giới tính', 39, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_6_2', N'Độ tuổi', 39, 8);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT8_6_3', N'Biện pháp hỗ trợ', 39, 8);
-
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT9_2_1', N'Số Câu lạc bộ gia đình phát triển bền vững', 41, 9);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT9_2_2', N'Số Nhóm phòng, chống bạo lực gia đình', 41, 9);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT9_2_3', N'Số địa chỉ tin cậy ở cộng đồng', 41, 9);
-INSERT INTO DM_ChiTieu (MaChiTieu, TenChiTieu, ChiTieuChaID, LoaiMauPhieuID)
-VALUES 
-('CT9_2_4', N'Số đường dây nóng', 41, 9);
 
 
 GO

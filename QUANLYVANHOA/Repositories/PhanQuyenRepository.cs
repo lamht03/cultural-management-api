@@ -170,7 +170,6 @@ namespace QUANLYVANHOA.Repositories
             return userInGroupList;
         }
 
-
         public async Task<IEnumerable<ChucNangTrongNhomPhanQuyenDTO>> GetAllFunctionsAndPermissionsInAuthorizationGroup(int nhomPhanQuyenID)
         {
             var functionInGroupList = new List<ChucNangTrongNhomPhanQuyenDTO>();
@@ -208,7 +207,7 @@ namespace QUANLYVANHOA.Repositories
             return functionInGroupList;
         }
 
-        public async Task<(IEnumerable<NhomPhanQuyen>, int)> GetAllGroup(string? TenNhomPhanQuyen, int pageNumber, int pageSize)
+        public async Task<(IEnumerable<NhomPhanQuyen>, int)> GetAllGroup(string? tenNhomPhanQuyen, int? CanBoId, int pageNumber, int pageSize)
         {
             var groupList = new List<NhomPhanQuyen>();
             int totalRecords = 0;
@@ -220,7 +219,8 @@ namespace QUANLYVANHOA.Repositories
                 using (var command = new SqlCommand("NhomPhanQuyen_GetListPaging", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@TenNhomPhanQuyen", TenNhomPhanQuyen ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@TenNhomPhanQuyen", tenNhomPhanQuyen ?? (object)DBNull.Value);
+                    command.Parameters.AddWithValue("@CanBoID", CanBoId ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@PageNumber", pageNumber);
                     command.Parameters.AddWithValue("@PageSize", pageSize);
 
@@ -470,7 +470,7 @@ namespace QUANLYVANHOA.Repositories
             {
                 await connection.OpenAsync();
 
-                using (var command = new SqlCommand("NhomNguoiDung_GetUserInGroupByUserID", connection))
+                using (var command = new SqlCommand("NhomNguoiDung_GetUserInAuthorizationGroupByUserID", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@NguoiDungID", NguoiDungID);

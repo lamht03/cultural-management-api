@@ -1,4 +1,5 @@
-﻿using QUANLYVANHOA.Core.DTO;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using QUANLYVANHOA.Core.DTO;
 using QUANLYVANHOA.Models.HeThong;
 
 namespace QUANLYVANHOA.Interfaces
@@ -16,7 +17,7 @@ namespace QUANLYVANHOA.Interfaces
         //Group Interface Repository
         Task<IEnumerable<NguoiDungTrongNhomPhanQuyenDTO>> GetAllUsersInAuthorizationGroup(int nhomPhanQuyenID);
         Task<IEnumerable<ChucNangTrongNhomPhanQuyenDTO>> GetAllFunctionsAndPermissionsInAuthorizationGroup(int groupID);
-        Task<(IEnumerable<NhomPhanQuyen>, int)> GetAllGroup(string? groupName, int pageNumber, int pageSize);
+        Task<(IEnumerable<NhomPhanQuyen>, int)> GetAllGroup(string? groupName,int? officerId, int pageNumber, int pageSize);
         Task<NhomPhanQuyen> GetGroupByID(int groupID);
         Task<int> CreateGroup(NhomPhanQuyenInsertModel group);
         Task<int> UpdateGroup(NhomPhanQuyenUpdateModel group);

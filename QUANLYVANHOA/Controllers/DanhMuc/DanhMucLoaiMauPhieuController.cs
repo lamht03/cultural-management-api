@@ -23,7 +23,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
 
         [CustomAuthorize(Quyen.Xem, "Quản lý loại mẫu phiếu")]
         [HttpGet("DanhSachLoaiMauPhieu")]
-        public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
+        public async Task<IActionResult> GetAll(string? name,string? note ,int pageNumber = 1, int pageSize = 20)
         {
             if (!string.IsNullOrWhiteSpace(name))
             {
@@ -49,7 +49,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
                 });
             }
 
-            var result = await _loaiMauPhieuRepository.GetAll(name, pageNumber, pageSize);
+            var result = await _loaiMauPhieuRepository.GetAll(name, note, pageNumber, pageSize);
             var loaiMauPhieuList = result.Item1;
             var totalRecords = result.Item2;
             var totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
@@ -97,7 +97,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         public async Task<IActionResult> Insert([FromBody] DanhMucLoaiMauPhieuModelInsert model)
         {
 
-            var existingLoaiMauPhieu = await _loaiMauPhieuRepository.GetAll(model.TenLoaiMauPhieu, 1, 20);
+            var existingLoaiMauPhieu = await _loaiMauPhieuRepository.GetAll(model.TenLoaiMauPhieu,null, 1, 20);
             if (existingLoaiMauPhieu.Item1.Any())
             {
                 return BadRequest(new { Status = 0, Message = "TenLoaiMauPhieu already exists" });
@@ -146,7 +146,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         [CustomAuthorize(Quyen.Sua, "Quản lý loại mẫu phiếu")]
         public async Task<IActionResult> Update([FromBody] DanhMucLoaiMauPhieuModelUpdate model)
         {
-            var existingLoaiMauPhieuName = await _loaiMauPhieuRepository.GetAll(model.TenLoaiMauPhieu, 1, 20);
+            var existingLoaiMauPhieuName = await _loaiMauPhieuRepository.GetAll(model.TenLoaiMauPhieu,null, 1, 20);
             if (existingLoaiMauPhieuName.Item1.Any())
             {
                 return BadRequest(new { Status = 0, Message = "TenLoaiMauPhieu already exists" });

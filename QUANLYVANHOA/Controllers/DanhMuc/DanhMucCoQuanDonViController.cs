@@ -119,7 +119,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
                 var existingCoQuanCha = await _coQuanRepository.DanhMucCoQuanGetByID(model.CoQuanChaID.Value);
                 if (existingCoQuanCha == null || model.CoQuanChaID <= 0)
                 {
-                    return BadRequest(new { Status = 0, Message = "Cơ quan cha ID không tồn tại trong cơ sở dữ liệu danh mục chỉ tiêu !" });
+                    return BadRequest(new { Status = 0, Message = "Cơ quan cha ID không tồn tại trong cơ sở dữ liệu danh mục Cơ Quan !" });
                 }
             }
 
