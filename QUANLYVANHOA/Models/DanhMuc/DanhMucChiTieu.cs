@@ -44,6 +44,10 @@ namespace QUANLYVANHOA.Models.DanhMuc
         [JsonPropertyName("LoaiMauPhieuID")]
         public int LoaiMauPhieuID { get; set; }
 
+        [JsonPropertyName("TenChiTieuCha")]
+        public string TenChiTieuCha { get; set; }
+
+
     }
 
     public class DanhMucChiTieuInsertChidrenModel
@@ -80,5 +84,8 @@ namespace QUANLYVANHOA.Models.DanhMuc
 
         [JsonPropertyName("GhiChu")]
         public string? GhiChu { get; set; }
+
+        [JsonPropertyName("TenChiTieuCha")]
+        public string TenChiTieuCha { get; set; }
     }
 }

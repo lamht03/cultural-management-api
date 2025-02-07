@@ -488,7 +488,7 @@
     (
         CoQuanID INT PRIMARY KEY IDENTITY(1,1),
         TenCoQuan NVARCHAR(100),
-        MaCoQuan VARCHAR(25),
+        MaCoQuan NVARCHAR(25),
         CoQuanChaID int,
         CONSTRAINT FK_DMCoQuan_DMCoQuan FOREIGN KEY (CoQuanChaID) REFERENCES DM_CoQuan(CoQuanID),
         CapID INT,
@@ -2179,7 +2179,7 @@
     );
     GO ;
 
-    CREATE PROC LMP_GetListPaging
+    ALTER PROC LMP_GetListPaging
     @TenLoaiMauPhieu NVARCHAR(100) = NULL,
     @GhiChu NVARCHAR(20) = NULL,
     @PageNumber INT = 1,
@@ -2190,7 +2190,8 @@
         DECLARE @TotalRecords INT;
         SELECT @TotalRecords = COUNT(*)
         FROM DM_LoaiMauPhieu
-        WHERE @TenLoaiMauPhieu IS NULL OR TenLoaiMauPhieu LIKE '%' + @TenLoaiMauPhieu + '%' AND @GhiChu IS NULL OR GhiChu LIKE '%' + @GhiChu + '%'
+        WHERE (@TenLoaiMauPhieu IS NULL OR TenLoaiMauPhieu LIKE '%' + @TenLoaiMauPhieu + '%') 
+        AND (@GhiChu IS NULL OR GhiChu LIKE '%' + @GhiChu + '%')
 
         -- Trả về dữ liệu cho trang hiện tại
         SELECT 
@@ -2202,7 +2203,8 @@
             GhiChu,
             Loai
         FROM DM_LoaiMauPhieu
-        WHERE @TenLoaiMauPhieu IS NULL OR TenLoaiMauPhieu LIKE '%' + @TenLoaiMauPhieu + '%'
+        WHERE (@TenLoaiMauPhieu IS NULL OR TenLoaiMauPhieu LIKE '%' + @TenLoaiMauPhieu + '%')
+        AND (@GhiChu IS NULL OR GhiChu LIKE '%' + @GhiChu + '%')
         ORDER BY LoaiMauPhieuID
         OFFSET (@PageNumber - 1) * @PageSize ROWS
         FETCH NEXT @PageSize ROWS ONLY;

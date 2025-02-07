@@ -162,6 +162,7 @@ namespace QUANLYVANHOA.Repositories.DanhMuc
                     command.Parameters.AddWithValue("@ThamQuyenID", model.ThamQuyenID);
                     command.Parameters.AddWithValue("@TinhID", model.TinhID);
                     command.Parameters.AddWithValue("@HuyenID", model.HuyenID);
+                    command.Parameters.AddWithValue("@XaID", model.XaID);
                     command.Parameters.AddWithValue("@CQCoHieuLuc", model.CQCoHieuLuc ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@CQCapUBND", model.CQCapUBND ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@CQCapThanhTra", model.CQCapThanhTra ?? (object)DBNull.Value);
@@ -384,7 +385,7 @@ namespace QUANLYVANHOA.Repositories.DanhMuc
             DanhMucXa danhMucXa = null;
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand("DMXa_GetByID"))
+                using (var command = new SqlCommand("DMXa_GetByID",connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@XaID", id);
@@ -445,7 +446,7 @@ namespace QUANLYVANHOA.Repositories.DanhMuc
             DanhMucCap danhMucCap = null;
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand("DMCap_GetByID"))
+                using (var command = new SqlCommand("DMCap_GetByID",connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@CapID", id);
