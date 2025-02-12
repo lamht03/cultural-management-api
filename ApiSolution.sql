@@ -1,4 +1,7 @@
 ﻿--Handles Database
+    USE [master];
+    ALTER AUTHORIZATION ON DATABASE::DB_QuanLyVanHoa_Test TO [sa];
+
     ALTER DATABASE DB_QuanLyVanHoa
     SET SINGLE_USER
     WITH ROLLBACK IMMEDIATE;
@@ -1139,9 +1142,9 @@
         END
         GO
 
+
     -- Add Procedure of DM_CoQuan
-        CREATE PROCEDURE DMCoQuan_Add
-            @CoQuanID INT,
+        ALTER PROCEDURE DMCoQuan_Add
             @CoQuanChaID INT,
             @TenCoQuan NVARCHAR(100),
             @MaCoQuan NVARCHAR(50),
@@ -1162,7 +1165,6 @@
         BEGIN
             -- Insert a new record into DM_CoQuan table
             INSERT INTO DM_CoQuan (
-                CoQuanID,
                 CoQuanChaID,
                 TenCoQuan,
                 MaCoQuan,
@@ -1181,7 +1183,6 @@
                 QTGiaiQuyetPhucTap
             )
             VALUES (
-                @CoQuanID,
                 @CoQuanChaID,
                 @TenCoQuan,
                 @MaCoQuan,
@@ -1255,6 +1256,10 @@
             delete from DM_CoQuan WHERE CoQuanID = @CoQuanID
         END
         GO
+
+
+
+
 
 --region Authorization Mangement System
     --region Stored procedures of Users
@@ -1455,7 +1460,6 @@
                 WHERE NhomPhanQuyenID = @NhomPhanQuyenID;
             END
             GO
-
     --region Stored procedures of Function
         CREATE TABLE HT_ChucNang (
             ChucNangID INT PRIMARY KEY IDENTITY(1,1),
@@ -1585,70 +1589,70 @@
         );
         GO
 
-    CREATE PROC NhomChucNang_GetUserFunctionAccess
-    @NhomPhanQuyenID INT
-    AS
-    BEGIN
-        SELECT a.TenChucNang,a.[MoTa],b.NhomPhanQuyenID, c.TenNhomPhanQuyen,b.Quyen FROM HT_ChucNang a 
-        JOIN HT_NhomChucNang b on a.ChucNangID = b.ChucNangID 
-        JOIN HT_NhomPhanQuyen c on b.NhomPhanQuyenID = c.NhomPhanQuyenID 
-        where c.NhomPhanQuyenID = @NhomPhanQuyenID
-    END
-    GO
-    CREATE PROCEDURE NhomChucNang_AddFunctionToAuthorizationGroup
-        @ChucNangID INT,
-        @NhomPhanQuyenID INT,
-        @Quyen INT
-    AS
-    BEGIN
-        INSERT INTO HT_NhomChucNang (ChucNangID, NhomPhanQuyenID, Quyen)
-        VALUES (@ChucNangID, @NhomPhanQuyenID, @Quyen);
-    END;
-    GO
-
-    CREATE PROCEDURE NhomChucNang_UpdateFunctionalAccessPermissions
-        @ChucNangID INT,
-        @NhomPhanQuyenID INT,
-        @Quyen INT
-    AS
-    BEGIN
-        UPDATE HT_NhomChucNang
-        SET Quyen = @Quyen
-        WHERE ChucNangID = @ChucNangID AND NhomPhanQuyenID = @NhomPhanQuyenID;
-    END;
-    GO	
-
-    CREATE PROCEDURE NhomChucNang_DeleteFunctionInAuthorizationGroup
-        @ChucNangID INT,
+        CREATE PROC NhomChucNang_GetUserFunctionAccess
         @NhomPhanQuyenID INT
-    AS
-    BEGIN
-        DELETE FROM HT_NhomChucNang
-        WHERE ChucNangID = @ChucNangID and NhomPhanQuyenID = @NhomPhanQuyenID;
-    END
-    GO	
+        AS
+        BEGIN
+            SELECT a.TenChucNang,a.[MoTa],b.NhomPhanQuyenID, c.TenNhomPhanQuyen,b.Quyen FROM HT_ChucNang a 
+            JOIN HT_NhomChucNang b on a.ChucNangID = b.ChucNangID 
+            JOIN HT_NhomPhanQuyen c on b.NhomPhanQuyenID = c.NhomPhanQuyenID 
+            where c.NhomPhanQuyenID = @NhomPhanQuyenID
+        END
+        GO
+        CREATE PROCEDURE NhomChucNang_AddFunctionToAuthorizationGroup
+            @ChucNangID INT,
+            @NhomPhanQuyenID INT,
+            @Quyen INT
+        AS
+        BEGIN
+            INSERT INTO HT_NhomChucNang (ChucNangID, NhomPhanQuyenID, Quyen)
+            VALUES (@ChucNangID, @NhomPhanQuyenID, @Quyen);
+        END;
+        GO
 
-    CREATE PROCEDURE NhomChucNang_GetAllUserFunctionsAndPermissions
-        @TenNguoiDung NVARCHAR(50)
-    AS
-    BEGIN
-        SELECT f.TenChucNang, fg.Quyen
-        FROM HT_NhomChucNang fg
-        INNER JOIN HT_ChucNang f ON fg.ChucNangID = f.ChucNangID
-        INNER JOIN HT_NhomNguoiDung ug ON fg.NhomPhanQuyenID = ug.NhomPhanQuyenID
-        INNER JOIN HT_NguoiDung u ON ug.NguoiDungID = u.NguoiDungID
-        WHERE u.TenNguoiDung = @TenNguoiDung
-    END
-    GO	
+        CREATE PROCEDURE NhomChucNang_UpdateFunctionalAccessPermissions
+            @ChucNangID INT,
+            @NhomPhanQuyenID INT,
+            @Quyen INT
+        AS
+        BEGIN
+            UPDATE HT_NhomChucNang
+            SET Quyen = @Quyen
+            WHERE ChucNangID = @ChucNangID AND NhomPhanQuyenID = @NhomPhanQuyenID;
+        END;
+        GO	
 
-    /*Procedure for checking input data*/
-    CREATE PROC NhomChucNang_GetFunctionInGroupByFunctionID
-        @ChucNangID int
-    AS
-    BEGIN
-        SELECT * FROM HT_NhomChucNang WHERE ChucNangID = @ChucNangID
-    END
-    GO
+        CREATE PROCEDURE NhomChucNang_DeleteFunctionInAuthorizationGroup
+            @ChucNangID INT,
+            @NhomPhanQuyenID INT
+        AS
+        BEGIN
+            DELETE FROM HT_NhomChucNang
+            WHERE ChucNangID = @ChucNangID and NhomPhanQuyenID = @NhomPhanQuyenID;
+        END
+        GO	
+
+        CREATE PROCEDURE NhomChucNang_GetAllUserFunctionsAndPermissions
+            @TenNguoiDung NVARCHAR(50)
+        AS
+        BEGIN
+            SELECT f.TenChucNang, fg.Quyen
+            FROM HT_NhomChucNang fg
+            INNER JOIN HT_ChucNang f ON fg.ChucNangID = f.ChucNangID
+            INNER JOIN HT_NhomNguoiDung ug ON fg.NhomPhanQuyenID = ug.NhomPhanQuyenID
+            INNER JOIN HT_NguoiDung u ON ug.NguoiDungID = u.NguoiDungID
+            WHERE u.TenNguoiDung = @TenNguoiDung
+        END
+        GO	
+
+        /*Procedure for checking input data*/
+        CREATE PROC NhomChucNang_GetFunctionInGroupByFunctionID
+            @ChucNangID int
+        AS
+        BEGIN
+            SELECT * FROM HT_NhomChucNang WHERE ChucNangID = @ChucNangID
+        END
+        GO
     --region Stored procedures of RefreshToken
         CREATE TABLE HT_PhienDangNhap
         (
@@ -1727,368 +1731,366 @@
         GO
 
 --region Category Mangement System
---region Stored procedures of DonViTinh
-    CREATE TABLE DM_DonViTinh
-    (
-        DonViTinhID INT PRIMARY KEY IDENTITY (1,1),
-        TenDonViTinh NVARCHAR (100),
-        MaDonViTinh NVARCHAR (100),
-        TrangThai BIT,
-        GhiChu NVARCHAR(300),
-    );
-    GO
+    --region Stored procedures of DonViTinh
+        CREATE TABLE DM_DonViTinh
+        (
+            DonViTinhID INT PRIMARY KEY IDENTITY (1,1),
+            TenDonViTinh NVARCHAR (100),
+            MaDonViTinh NVARCHAR (100),
+            TrangThai BIT,
+            GhiChu NVARCHAR(300),
+        );
+        GO
 
-    CREATE PROC DVT_GetAll
-    @TenDonViTinh NVARCHAR(100) = NULL,
-    @PageNumber INT = 1,
-    @PageSize INT = 20
-    AS
-    BEGIN
-        -- Tính tổng số bản ghi phù hợp với điều kiện tìm kiếm
-        DECLARE @TotalRecords INT;
-        SELECT @TotalRecords = COUNT(*)
-        FROM DM_DonViTinh
-        WHERE @TenDonViTinh IS NULL OR TenDonViTinh LIKE '%' + @TenDonViTinh + '%';
-
-        -- Trả về dữ liệu cho trang hiện tại
-        SELECT 
-            DonViTinhID,
-            TenDonViTinh,
-            MaDonViTinh,
-            TrangThai,
-            GhiChu
-        FROM DM_DonViTinh
-        WHERE @TenDonViTinh IS NULL OR TenDonViTinh LIKE '%' + @TenDonViTinh + '%'
-        ORDER BY DonViTinhID
-        OFFSET (@PageNumber - 1) * @PageSize ROWS
-        FETCH NEXT @PageSize ROWS ONLY;
-
-        -- Trả về tổng số bản ghi
-        SELECT @TotalRecords AS TotalRecords;
-    END
-    GO
-
-    CREATE PROC DVT_GetByID
-        @DonViTinhID INT
-    AS	
-    BEGIN
-        SELECT*FROM DM_DonViTinh WHERE DonViTinhID=@DonViTinhID;
-    END
-    GO
-
-    CREATE PROC DVT_Insert
-        @TenDonViTinh NVARCHAR(100),
-        @MaDonViTinh NVARCHAR(100),
-        @TrangThai BIT,
-        @GhiChu NVARCHAR(100)
-    AS
-    BEGIN
-        INSERT INTO DM_DonViTinh (TenDonViTinh,MaDonViTinh,TrangThai,GhiChu) VALUES (@TenDonViTinh,@MaDonViTinh,@TrangThai,@GhiChu);
-    END
-    GO
-
-    CREATE PROC DVT_Update
-        @DonViTinhID INT,
-        @TenDonViTinh NVARCHAR(100),
-        @MaDonViTinh NVARCHAR(100),
-        @TrangThai BIT,
-        @GhiChu NVARCHAR(100)
-    AS
-    BEGIN
-        UPDATE DM_DonViTinh
-        SET TenDonViTinh = @TenDonViTinh, MaDonViTinh = @MaDonViTinh, TrangThai = @TrangThai, GhiChu = @GhiChu WHERE DonViTinhID = @DonViTinhID;
-    END
-    GO	
-
-    CREATE PROC DVT_Delete
-        @DonViTinhID INT
-    AS
-    BEGIN 
-        DELETE FROM DM_DonViTinh WHERE DonViTinhID = @DonViTinhID;
-    END
-    GO
-
-
---region Stored procedures LoaiDiTich
-    CREATE TABLE DM_LoaiDiTich(
-        LoaiDiTichID INT PRIMARY KEY IDENTITY(1,1),
-        LoaiDiTichChaID INT DEFAULT 0,
-        TenLoaiDiTich NVARCHAR(100),
-        MaLoaiDiTich NVARCHAR(100) DEFAULT '',
-        TrangThai BIT DEFAULT 0,
-        GhiChu NVARCHAR(300),
-        Loai INT DEFAULT 4
-    );
-    GO
-
-    CREATE PROC LDT_GetAll
-    @TenLoaiDiTich NVARCHAR(100) = NULL,
-    @PageNumber INT = 1,
-    @PageSize INT = 20
-    AS
-    BEGIN
-        -- Tính tổng số bản ghi phù hợp với điều kiện tìm kiếm
-        DECLARE @TotalRecords INT;
-        SELECT @TotalRecords = COUNT(*)
-        FROM DM_LoaiDiTich
-        WHERE @TenLoaiDiTich IS NULL OR TenLoaiDiTich LIKE '%' + @TenLoaiDiTich + '%';
-
-        -- Trả về dữ liệu cho trang hiện tại
-        SELECT 
-            *
-        FROM DM_LoaiDiTich
-        WHERE @TenLoaiDiTich IS NULL OR TenLoaiDiTich LIKE '%' + @TenLoaiDiTich + '%'
-        ORDER BY LoaiDiTichID
-        OFFSET (@PageNumber - 1) * @PageSize ROWS
-        FETCH NEXT @PageSize ROWS ONLY;
-
-        -- Trả về tổng số bản ghi
-        SELECT @TotalRecords AS TotalRecords;
-    END
-    GO
-
-
-    CREATE PROC LDT_GetByID
-        @LoaiDiTichID INT
-    AS	
-    BEGIN
-        SELECT*FROM DM_LoaiDiTich WHERE LoaiDiTichID=@LoaiDiTichID;
-    END
-    GO
-
-    CREATE PROC LDT_Insert
-        @TenLoaiDiTich NVARCHAR(100),
-        @GhiChu NVARCHAR(100)
-    AS
-    BEGIN
-        INSERT INTO DM_LoaiDiTich (TenLoaiDiTich,GhiChu) VALUES (@TenLoaiDiTich,@GhiChu);
-    END
-    GO
-
-    CREATE PROC LDT_Update
-        @LoaiDiTichID INT,
-        @TenLoaiDiTich NVARCHAR(100),
-        @GhiChu NVARCHAR(100)
-    AS
-    BEGIN
-        UPDATE DM_LoaiDiTich
-        SET TenLoaiDiTich = @TenLoaiDiTich, GhiChu = @GhiChu WHERE LoaiDiTichID = @LoaiDiTichID;
-    END
-    GO	
-
-    CREATE PROC LDT_Delete
-        @LoaiDiTichID INT
-    AS
-    BEGIN 
-        DELETE FROM DM_LoaiDiTich WHERE LoaiDiTichID = @LoaiDiTichID;
-    END
-    GO
-
-
---region Stored procedures of DiTichXepHang
-    CREATE TABLE DM_DiTichXepHang (
-        DiTichXepHangID INT IDENTITY(1,1),
-        DiTichXepHangChaID INT DEFAULT 0,
-        TenDiTich NVARCHAR(100),
-        MaDiTich NVARCHAR(100)  DEFAULT '',
-        TrangThai BIT  DEFAULT 0,
-        GhiChu NVARCHAR(300),
-        Loai INT DEFAULT 0
-    );
-    GO
-
-    CREATE PROC DTXH_GetAll
-        @TenDiTich NVARCHAR(100) = NULL,
+        CREATE PROC DVT_GetAll
+        @TenDonViTinh NVARCHAR(100) = NULL,
         @PageNumber INT = 1,
         @PageSize INT = 20
-    AS
-    BEGIN
-        -- Tính tổng số bản ghi phù hợp với điều kiện tìm kiếm
-        DECLARE @TotalRecords INT;
-        SELECT @TotalRecords = COUNT(*)
-        FROM DM_DITICHXEPHANG
-        WHERE @TenDiTich IS NULL OR TenDiTich LIKE '%' + @TenDiTich + '%';
+        AS
+        BEGIN
+            -- Tính tổng số bản ghi phù hợp với điều kiện tìm kiếm
+            DECLARE @TotalRecords INT;
+            SELECT @TotalRecords = COUNT(*)
+            FROM DM_DonViTinh
+            WHERE @TenDonViTinh IS NULL OR TenDonViTinh LIKE '%' + @TenDonViTinh + '%';
 
-        -- Trả về dữ liệu cho trang hiện tại
-        SELECT 
-            DiTichXepHangID,
-            DiTichXepHangChaID,
-            TenDiTich,
-            MaDiTich,
-            TrangThai,
-            GhiChu,
-            Loai
-        FROM DM_DITICHXEPHANG
-        WHERE @TenDiTich IS NULL OR TenDiTich LIKE '%' + @TenDiTich + '%'
-        ORDER BY GhiChu
-        OFFSET (@PageNumber - 1) * @PageSize ROWS
-        FETCH NEXT @PageSize ROWS ONLY;
+            -- Trả về dữ liệu cho trang hiện tại
+            SELECT 
+                DonViTinhID,
+                TenDonViTinh,
+                MaDonViTinh,
+                TrangThai,
+                GhiChu
+            FROM DM_DonViTinh
+            WHERE @TenDonViTinh IS NULL OR TenDonViTinh LIKE '%' + @TenDonViTinh + '%'
+            ORDER BY DonViTinhID
+            OFFSET (@PageNumber - 1) * @PageSize ROWS
+            FETCH NEXT @PageSize ROWS ONLY;
 
-        -- Trả về tổng số bản ghi
-        SELECT @TotalRecords AS TotalRecords;
-    END
-    GO
+            -- Trả về tổng số bản ghi
+            SELECT @TotalRecords AS TotalRecords;
+        END
+        GO
 
-    create PROC DTXH_GetByID
-        @DiTichXepHangID INT
-    AS	
-    BEGIN
-        SELECT 
-            DiTichXepHangID,
-            DiTichXepHangChaID,
-            TenDiTich,
-            MaDiTich,
-            TrangThai,
-            GhiChu,
-            Loai
-        FROM DM_DITICHXEPHANG
-        WHERE DiTichXepHangID = @DiTichXepHangID;
-    END
-    GO	
+        CREATE PROC DVT_GetByID
+            @DonViTinhID INT
+        AS	
+        BEGIN
+            SELECT*FROM DM_DonViTinh WHERE DonViTinhID=@DonViTinhID;
+        END
+        GO
 
-    CREATE PROC DTXH_Insert
-        @TenDiTich NVARCHAR(100),
-        @GhiChu NVARCHAR(100)
-    AS
-    BEGIN
-        INSERT INTO DM_DITICHXEPHANG (TenDiTich, GhiChu) 
-        VALUES (@TenDiTich, @GhiChu);
-    END
-    GO
+        CREATE PROC DVT_Insert
+            @TenDonViTinh NVARCHAR(100),
+            @MaDonViTinh NVARCHAR(100),
+            @TrangThai BIT,
+            @GhiChu NVARCHAR(100)
+        AS
+        BEGIN
+            INSERT INTO DM_DonViTinh (TenDonViTinh,MaDonViTinh,TrangThai,GhiChu) VALUES (@TenDonViTinh,@MaDonViTinh,@TrangThai,@GhiChu);
+        END
+        GO
 
-    CREATE PROC DTXH_Update
-        @DiTichXepHangID INT,
-        @TenDiTich NVARCHAR(100),
-        @GhiChu NVARCHAR(100)
-    AS
-    BEGIN
-        UPDATE DM_DITICHXEPHANG
-        SET 
-            TenDiTich = @TenDiTich,
-            GhiChu = @GhiChu
-        WHERE DiTichXepHangID = @DiTichXepHangID;
-    END
-    GO
+        CREATE PROC DVT_Update
+            @DonViTinhID INT,
+            @TenDonViTinh NVARCHAR(100),
+            @MaDonViTinh NVARCHAR(100),
+            @TrangThai BIT,
+            @GhiChu NVARCHAR(100)
+        AS
+        BEGIN
+            UPDATE DM_DonViTinh
+            SET TenDonViTinh = @TenDonViTinh, MaDonViTinh = @MaDonViTinh, TrangThai = @TrangThai, GhiChu = @GhiChu WHERE DonViTinhID = @DonViTinhID;
+        END
+        GO	
 
-    create PROC DTXH_Delete
-        @DiTichXepHangID INT
-    AS
-    BEGIN 
-        DELETE FROM DM_DITICHXEPHANG 
-        WHERE DiTichXepHangID = @DiTichXepHangID;
-    END
-    GO
+        CREATE PROC DVT_Delete
+            @DonViTinhID INT
+        AS
+        BEGIN 
+            DELETE FROM DM_DonViTinh WHERE DonViTinhID = @DonViTinhID;
+        END
+        GO
 
 
---region Stored procedures of DM_KyBaoCao
-    CREATE TABLE DM_KyBaoCao (
-        KyBaoCaoID INT IDENTITY(1,1) PRIMARY KEY,
-        KyBaoCaoChaID INT DEFAULT 0,
-        TenKyBaoCao NVARCHAR(100) NOT NULL,
-        MaKyBaoCao NVARCHAR(100) DEFAULT '',
-        TrangThai BIT NOT NULL,
-        GhiChu NVARCHAR(300),
-        LoaiKyBaoCao INT DEFAULT 2
-    ); 
-    GO 
+    --region Stored procedures LoaiDiTich
+        CREATE TABLE DM_LoaiDiTich(
+            LoaiDiTichID INT PRIMARY KEY IDENTITY(1,1),
+            LoaiDiTichChaID INT DEFAULT 0,
+            TenLoaiDiTich NVARCHAR(100),
+            MaLoaiDiTich NVARCHAR(100) DEFAULT '',
+            TrangThai BIT DEFAULT 0,
+            GhiChu NVARCHAR(300),
+            Loai INT DEFAULT 4
+        );
+        GO
 
-    create PROCEDURE KBC_GetAll
-        @TenKyBaoCao NVARCHAR(100) = NULL,
+        CREATE PROC LDT_GetAll
+        @TenLoaiDiTich NVARCHAR(100) = NULL,
         @PageNumber INT = 1,
         @PageSize INT = 20
-    AS
-    BEGIN
-        SET NOCOUNT ON;
+        AS
+        BEGIN
+            -- Tính tổng số bản ghi phù hợp với điều kiện tìm kiếm
+            DECLARE @TotalRecords INT;
+            SELECT @TotalRecords = COUNT(*)
+            FROM DM_LoaiDiTich
+            WHERE @TenLoaiDiTich IS NULL OR TenLoaiDiTich LIKE '%' + @TenLoaiDiTich + '%';
 
-        -- Tính tổng số bản ghi phù hợp với điều kiện tìm kiếm (không phân biệt chữ hoa, chữ thường)
-        DECLARE @TotalRecords INT;
-        SELECT @TotalRecords = COUNT(*)
-        FROM DM_KyBaoCao dkbc
-        WHERE @TenKyBaoCao IS NULL OR LOWER(TenKyBaoCao) LIKE '%' + LOWER(@TenKyBaoCao) + '%';
+            -- Trả về dữ liệu cho trang hiện tại
+            SELECT 
+                *
+            FROM DM_LoaiDiTich
+            WHERE @TenLoaiDiTich IS NULL OR TenLoaiDiTich LIKE '%' + @TenLoaiDiTich + '%'
+            ORDER BY LoaiDiTichID
+            OFFSET (@PageNumber - 1) * @PageSize ROWS
+            FETCH NEXT @PageSize ROWS ONLY;
 
-        -- Trả về dữ liệu cho trang hiện tại
-        SELECT 
-            KyBaoCaoID,
-            KyBaoCaoChaID,
-            TenKyBaoCao,
-            TrangThai,
-            GhiChu,
-            LoaiKyBaoCao
-        FROM DM_KyBaoCao
-        WHERE @TenKyBaoCao IS NULL OR LOWER(TenKyBaoCao) LIKE '%' + LOWER(@TenKyBaoCao) + '%'
-        ORDER BY KyBaoCaoID
-        OFFSET (@PageNumber - 1) * @PageSize ROWS
-        FETCH NEXT @PageSize ROWS ONLY;
-
-        -- Trả về tổng số bản ghi
-        SELECT @TotalRecords AS TotalRecords;
-    END;
-    GO	
-
-    create PROC KBC_GetByID
-        @KyBaoCaoID INT
-    AS
-    BEGIN
-        SELECT * FROM DM_KyBaoCao dkbc  WHERE dkbc.KyBaoCaoID = @KyBaoCaoID 
-    END
-    GO
-
-    create PROCEDURE KBC_Insert
-        @TenKyBaoCao NVARCHAR(100),
-        @TrangThai BIT,
-        @GhiChu NVARCHAR(100) 
-    AS
-    BEGIN
-        SET NOCOUNT ON;
-
-        INSERT INTO DM_KyBaoCao (TenKyBaoCao, TrangThai, GhiChu)
-        VALUES (@TenKyBaoCao, @TrangThai, @GhiChu);
-
-        -- Trả về ID của bản ghi vừa tạo
-        SELECT SCOPE_IDENTITY() AS KyBaoCaoID;
-    END;
-    GO	
-
-    create PROCEDURE KBC_Update
-        @KyBaoCaoID INT,
-        @TenKyBaoCao NVARCHAR(100),
-        @TrangThai BIT,
-        @GhiChu NVARCHAR(100)
-    AS
-    BEGIN
-        SET NOCOUNT ON;
-
-        UPDATE DM_KyBaoCao
-        SET 
-            TenKyBaoCao = @TenKyBaoCao,
-            TrangThai = @TrangThai,
-            GhiChu = @GhiChu
-        WHERE 
-            KyBaoCaoID = @KyBaoCaoID;
-
-        -- Trả về số bản ghi đã được cập nhật
-        SELECT @@ROWCOUNT AS RowsAffected;
-    END;
-    GO
-
-    create PROCEDURE KBC_Delete
-        @KyBaoCaoID INT
-    AS
-    BEGIN
-        SET NOCOUNT ON;
-
-        DELETE FROM DM_KyBaoCao
-        WHERE KyBaoCaoID = @KyBaoCaoID;
-
-        -- Trả về số bản ghi đã bị xóa
-        SELECT @@ROWCOUNT AS RowsAffected;
-    END;
-    GO	
+            -- Trả về tổng số bản ghi
+            SELECT @TotalRecords AS TotalRecords;
+        END
+        GO
 
 
+        CREATE PROC LDT_GetByID
+            @LoaiDiTichID INT
+        AS	
+        BEGIN
+            SELECT*FROM DM_LoaiDiTich WHERE LoaiDiTichID=@LoaiDiTichID;
+        END
+        GO
 
+        CREATE PROC LDT_Insert
+            @TenLoaiDiTich NVARCHAR(100),
+            @GhiChu NVARCHAR(100)
+        AS
+        BEGIN
+            INSERT INTO DM_LoaiDiTich (TenLoaiDiTich,GhiChu) VALUES (@TenLoaiDiTich,@GhiChu);
+        END
+        GO
+
+        CREATE PROC LDT_Update
+            @LoaiDiTichID INT,
+            @TenLoaiDiTich NVARCHAR(100),
+            @GhiChu NVARCHAR(100)
+        AS
+        BEGIN
+            UPDATE DM_LoaiDiTich
+            SET TenLoaiDiTich = @TenLoaiDiTich, GhiChu = @GhiChu WHERE LoaiDiTichID = @LoaiDiTichID;
+        END
+        GO	
+
+        CREATE PROC LDT_Delete
+            @LoaiDiTichID INT
+        AS
+        BEGIN 
+            DELETE FROM DM_LoaiDiTich WHERE LoaiDiTichID = @LoaiDiTichID;
+        END
+        GO
+
+
+    --region Stored procedures of DiTichXepHang
+        CREATE TABLE DM_DiTichXepHang (
+            DiTichXepHangID INT IDENTITY(1,1),
+            DiTichXepHangChaID INT DEFAULT 0,
+            TenDiTich NVARCHAR(100),
+            MaDiTich NVARCHAR(100)  DEFAULT '',
+            TrangThai BIT  DEFAULT 0,
+            GhiChu NVARCHAR(300),
+            Loai INT DEFAULT 0
+        );
+        GO
+
+        CREATE PROC DTXH_GetAll
+            @TenDiTich NVARCHAR(100) = NULL,
+            @PageNumber INT = 1,
+            @PageSize INT = 20
+        AS
+        BEGIN
+            -- Tính tổng số bản ghi phù hợp với điều kiện tìm kiếm
+            DECLARE @TotalRecords INT;
+            SELECT @TotalRecords = COUNT(*)
+            FROM DM_DITICHXEPHANG
+            WHERE @TenDiTich IS NULL OR TenDiTich LIKE '%' + @TenDiTich + '%';
+
+            -- Trả về dữ liệu cho trang hiện tại
+            SELECT 
+                DiTichXepHangID,
+                DiTichXepHangChaID,
+                TenDiTich,
+                MaDiTich,
+                TrangThai,
+                GhiChu,
+                Loai
+            FROM DM_DITICHXEPHANG
+            WHERE @TenDiTich IS NULL OR TenDiTich LIKE '%' + @TenDiTich + '%'
+            ORDER BY GhiChu
+            OFFSET (@PageNumber - 1) * @PageSize ROWS
+            FETCH NEXT @PageSize ROWS ONLY;
+
+            -- Trả về tổng số bản ghi
+            SELECT @TotalRecords AS TotalRecords;
+        END
+        GO
+
+        create PROC DTXH_GetByID
+            @DiTichXepHangID INT
+        AS	
+        BEGIN
+            SELECT 
+                DiTichXepHangID,
+                DiTichXepHangChaID,
+                TenDiTich,
+                MaDiTich,
+                TrangThai,
+                GhiChu,
+                Loai
+            FROM DM_DITICHXEPHANG
+            WHERE DiTichXepHangID = @DiTichXepHangID;
+        END
+        GO	
+
+        CREATE PROC DTXH_Insert
+            @TenDiTich NVARCHAR(100),
+            @GhiChu NVARCHAR(100)
+        AS
+        BEGIN
+            INSERT INTO DM_DITICHXEPHANG (TenDiTich, GhiChu) 
+            VALUES (@TenDiTich, @GhiChu);
+        END
+        GO
+
+        CREATE PROC DTXH_Update
+            @DiTichXepHangID INT,
+            @TenDiTich NVARCHAR(100),
+            @GhiChu NVARCHAR(100)
+        AS
+        BEGIN
+            UPDATE DM_DITICHXEPHANG
+            SET 
+                TenDiTich = @TenDiTich,
+                GhiChu = @GhiChu
+            WHERE DiTichXepHangID = @DiTichXepHangID;
+        END
+        GO
+
+        create PROC DTXH_Delete
+            @DiTichXepHangID INT
+        AS
+        BEGIN 
+            DELETE FROM DM_DITICHXEPHANG 
+            WHERE DiTichXepHangID = @DiTichXepHangID;
+        END
+        GO
+
+
+    --region Stored procedures of DM_KyBaoCao
+        CREATE TABLE DM_KyBaoCao (
+            KyBaoCaoID INT IDENTITY(1,1) PRIMARY KEY,
+            KyBaoCaoChaID INT DEFAULT 0,
+            TenKyBaoCao NVARCHAR(100) NOT NULL,
+            MaKyBaoCao NVARCHAR(100) DEFAULT '',
+            TrangThai BIT NOT NULL,
+            GhiChu NVARCHAR(300),
+            LoaiKyBaoCao INT DEFAULT 2
+        ); 
+        GO 
+
+        create PROCEDURE KBC_GetAll
+            @TenKyBaoCao NVARCHAR(100) = NULL,
+            @PageNumber INT = 1,
+            @PageSize INT = 20
+        AS
+        BEGIN
+            SET NOCOUNT ON;
+
+            -- Tính tổng số bản ghi phù hợp với điều kiện tìm kiếm (không phân biệt chữ hoa, chữ thường)
+            DECLARE @TotalRecords INT;
+            SELECT @TotalRecords = COUNT(*)
+            FROM DM_KyBaoCao dkbc
+            WHERE @TenKyBaoCao IS NULL OR LOWER(TenKyBaoCao) LIKE '%' + LOWER(@TenKyBaoCao) + '%';
+
+            -- Trả về dữ liệu cho trang hiện tại
+            SELECT 
+                KyBaoCaoID,
+                KyBaoCaoChaID,
+                TenKyBaoCao,
+                TrangThai,
+                GhiChu,
+                LoaiKyBaoCao
+            FROM DM_KyBaoCao
+            WHERE @TenKyBaoCao IS NULL OR LOWER(TenKyBaoCao) LIKE '%' + LOWER(@TenKyBaoCao) + '%'
+            ORDER BY KyBaoCaoID
+            OFFSET (@PageNumber - 1) * @PageSize ROWS
+            FETCH NEXT @PageSize ROWS ONLY;
+
+            -- Trả về tổng số bản ghi
+            SELECT @TotalRecords AS TotalRecords;
+        END;
+        GO	
+
+        create PROC KBC_GetByID
+            @KyBaoCaoID INT
+        AS
+        BEGIN
+            SELECT * FROM DM_KyBaoCao dkbc  WHERE dkbc.KyBaoCaoID = @KyBaoCaoID 
+        END
+        GO
+
+        create PROCEDURE KBC_Insert
+            @TenKyBaoCao NVARCHAR(100),
+            @TrangThai BIT,
+            @GhiChu NVARCHAR(100) 
+        AS
+        BEGIN
+            SET NOCOUNT ON;
+
+            INSERT INTO DM_KyBaoCao (TenKyBaoCao, TrangThai, GhiChu)
+            VALUES (@TenKyBaoCao, @TrangThai, @GhiChu);
+
+            -- Trả về ID của bản ghi vừa tạo
+            SELECT SCOPE_IDENTITY() AS KyBaoCaoID;
+        END;
+        GO	
+
+        create PROCEDURE KBC_Update
+            @KyBaoCaoID INT,
+            @TenKyBaoCao NVARCHAR(100),
+            @TrangThai BIT,
+            @GhiChu NVARCHAR(100)
+        AS
+        BEGIN
+            SET NOCOUNT ON;
+
+            UPDATE DM_KyBaoCao
+            SET 
+                TenKyBaoCao = @TenKyBaoCao,
+                TrangThai = @TrangThai,
+                GhiChu = @GhiChu
+            WHERE 
+                KyBaoCaoID = @KyBaoCaoID;
+
+            -- Trả về số bản ghi đã được cập nhật
+            SELECT @@ROWCOUNT AS RowsAffected;
+        END;
+        GO
+
+        create PROCEDURE KBC_Delete
+            @KyBaoCaoID INT
+        AS
+        BEGIN
+            SET NOCOUNT ON;
+
+            DELETE FROM DM_KyBaoCao
+            WHERE KyBaoCaoID = @KyBaoCaoID;
+
+            -- Trả về số bản ghi đã bị xóa
+            SELECT @@ROWCOUNT AS RowsAffected;
+        END;
+        GO	
 
 --region Comprehensive Management Of Report Templates
+
 --region Stored Procedure of Report Form Management
     CREATE TABLE BC_MauPhieu(
         MauPhieuID INT PRIMARY KEY IDENTITY (1,1),
@@ -2100,7 +2102,7 @@
     )
     GO
 
--- GetAll MauPhieu
+    -- GetAll MauPhieu
     CREATE PROC MP_GetAll
         @TenMauPhieu NVARCHAR(100) = Null,
         @PageNumber INT = 1,
@@ -2164,7 +2166,6 @@
         DELETE FROM BC_MauPhieu  WHERE MauPhieuID = @MauPhieuID
     END
     GO	
-	
 
 --region Stored procedures of DM_LoaiMauPieu
     CREATE TABLE DM_LoaiMauPhieu
@@ -2251,8 +2252,6 @@
         DELETE FROM DM_LoaiMauPhieu WHERE LoaiMauPhieuID = @LoaiMauPhieuID;
     END
     GO
-
-
 
 --region Stored procedures of ChiTieu
     CREATE TABLE DM_ChiTieu (
@@ -2873,7 +2872,6 @@
         END;
         GO
 
-
 --region Stored procedures of DM_TieuChi
     CREATE TABLE DM_TieuChi (
         TieuChiID INT PRIMARY KEY IDENTITY(1,1),
@@ -2889,7 +2887,7 @@
     );
     GO 
 
--- Procedure to retrieve all criteria with paging and hierarchical data
+    -- Procedure to retrieve all criteria with paging and hierarchical data
     CREATE PROCEDURE TC_GetAll
         @TenTieuChi NVARCHAR(100) = NULL
         --,@PageNumber INT = 1,
@@ -3020,268 +3018,285 @@
     END;
     GO
 
-CREATE PROC TC_GetByID
-	@TieuChiID INT
-AS
-BEGIN
-	SELECT *FROM DM_TieuChi  WHERE TieuChiID = @TieuChiID;
-END
-GO
-
-CREATE PROC TC_Insert
-	@MaTieuChi NVARCHAR(100),
-    @TenTieuChi NVARCHAR(100),
-    @TieuChiChaID INT = NULL,
-    @KieuDuLieuCot INT = NULL,
-    @LoaiTieuChi INT = NULL
-AS
-BEGIN
-    DECLARE @CapDo INT;
-
-    -- Kiểm tra nếu TieuChiChaID là NULL thì đối tượng là gốc, CapDo sẽ là 1
-    IF @TieuChiChaID IS NULL
+    CREATE PROC TC_GetByID
+        @TieuChiID INT
+    AS
     BEGIN
-        SET @CapDo = 1;
+        SELECT *FROM DM_TieuChi  WHERE TieuChiID = @TieuChiID;
     END
-    ELSE
-    BEGIN
-        -- Lấy CapDo của TieuChiCha và tăng lên 1 để xác định cấp độ của tiêu chí hiện tại
-        SELECT @CapDo = CapDo + 1 
-        FROM DM_TieuChi 
-        WHERE TieuChiID = @TieuChiChaID;
+    GO
 
-        -- Nếu không tìm thấy TieuChiChaID thì báo lỗi
-        IF @CapDo IS NULL
+    CREATE PROC TC_Insert
+        @MaTieuChi NVARCHAR(100),
+        @TenTieuChi NVARCHAR(100),
+        @TieuChiChaID INT = NULL,
+        @KieuDuLieuCot INT = NULL,
+        @LoaiTieuChi INT = NULL
+    AS
+    BEGIN
+        DECLARE @CapDo INT;
+
+        -- Kiểm tra nếu TieuChiChaID là NULL thì đối tượng là gốc, CapDo sẽ là 1
+        IF @TieuChiChaID IS NULL
         BEGIN
-            RAISERROR('Không tìm thấy Tiêu Chí Cha với ID đã cung cấp.', 16, 1);
-            RETURN;
+            SET @CapDo = 1;
         END
-    END
+        ELSE
+        BEGIN
+            -- Lấy CapDo của TieuChiCha và tăng lên 1 để xác định cấp độ của tiêu chí hiện tại
+            SELECT @CapDo = CapDo + 1 
+            FROM DM_TieuChi 
+            WHERE TieuChiID = @TieuChiChaID;
 
-    -- Thêm tiêu chí mới vào bảng DM_TieuChi
-    INSERT INTO DM_TieuChi (MaTieuChi, TenTieuChi, TieuChiChaID, KieuDuLieuCot, LoaiTieuChi, CapDo)
-    VALUES (@MaTieuChi, @TenTieuChi, @TieuChiChaID, @KieuDuLieuCot, @LoaiTieuChi, @CapDo);
-END;
-GO
+            -- Nếu không tìm thấy TieuChiChaID thì báo lỗi
+            IF @CapDo IS NULL
+            BEGIN
+                RAISERROR('Không tìm thấy Tiêu Chí Cha với ID đã cung cấp.', 16, 1);
+                RETURN;
+            END
+        END
 
-CREATE PROCEDURE TC_Update
-    @TieuChiID INT,
-    @MaTieuChi NVARCHAR(100),
-    @TenTieuChi NVARCHAR(100),
-    @TieuChiChaID INT = NULL,
-    @GhiChu NVARCHAR(100) = NULL,
-    @KieuDuLieuCot INT = NULL,
-    @LoaiTieuChi INT = NULL
-AS
-BEGIN
-    UPDATE DM_TieuChi
-    SET 
-        MaTieuChi = @MaTieuChi,
-        TenTieuChi = @TenTieuChi,
-        TieuChiChaID = @TieuChiChaID,
-        GhiChu = @GhiChu,
-        KieuDuLieuCot = @KieuDuLieuCot,
-        LoaiTieuChi = @LoaiTieuChi
-    WHERE TieuChiID = @TieuChiID;
-END;
-GO
-CREATE PROCEDURE TC_Delete
-    @TieuChiID INT
-AS
-BEGIN
-    -- Check if the element has children
-    IF EXISTS (
-        SELECT 1
-        FROM DM_TieuChi
-        WHERE TieuChiChaID = @TieuChiID
-    )
+        -- Thêm tiêu chí mới vào bảng DM_TieuChi
+        INSERT INTO DM_TieuChi (MaTieuChi, TenTieuChi, TieuChiChaID, KieuDuLieuCot, LoaiTieuChi, CapDo)
+        VALUES (@MaTieuChi, @TenTieuChi, @TieuChiChaID, @KieuDuLieuCot, @LoaiTieuChi, @CapDo);
+    END;
+    GO
+
+    CREATE PROCEDURE TC_Update
+        @TieuChiID INT,
+        @MaTieuChi NVARCHAR(100),
+        @TenTieuChi NVARCHAR(100),
+        @TieuChiChaID INT = NULL,
+        @GhiChu NVARCHAR(100) = NULL,
+        @KieuDuLieuCot INT = NULL,
+        @LoaiTieuChi INT = NULL
+    AS
     BEGIN
-        -- Delete children recursively
-        WITH RecursiveCTE AS (
-            SELECT 
-                TieuChiID,
-                TieuChiChaID
-            FROM 
-                DM_TieuChi
-            WHERE 
-                TieuChiChaID = @TieuChiID
-
-            UNION ALL
-
-            SELECT 
-                c.TieuChiID,
-                c.TieuChiChaID
-            FROM 
-                DM_TieuChi c
-            INNER JOIN 
-                RecursiveCTE p ON c.TieuChiChaID = p.TieuChiID
+        UPDATE DM_TieuChi
+        SET 
+            MaTieuChi = @MaTieuChi,
+            TenTieuChi = @TenTieuChi,
+            TieuChiChaID = @TieuChiChaID,
+            GhiChu = @GhiChu,
+            KieuDuLieuCot = @KieuDuLieuCot,
+            LoaiTieuChi = @LoaiTieuChi
+        WHERE TieuChiID = @TieuChiID;
+    END;
+    GO
+    CREATE PROCEDURE TC_Delete
+        @TieuChiID INT
+    AS
+    BEGIN
+        -- Check if the element has children
+        IF EXISTS (
+            SELECT 1
+            FROM DM_TieuChi
+            WHERE TieuChiChaID = @TieuChiID
         )
+        BEGIN
+            -- Delete children recursively
+            WITH RecursiveCTE AS (
+                SELECT 
+                    TieuChiID,
+                    TieuChiChaID
+                FROM 
+                    DM_TieuChi
+                WHERE 
+                    TieuChiChaID = @TieuChiID
+
+                UNION ALL
+
+                SELECT 
+                    c.TieuChiID,
+                    c.TieuChiChaID
+                FROM 
+                    DM_TieuChi c
+                INNER JOIN 
+                    RecursiveCTE p ON c.TieuChiChaID = p.TieuChiID
+            )
+            DELETE FROM DM_TieuChi
+            WHERE TieuChiID IN (SELECT TieuChiID FROM RecursiveCTE);
+        END
+
+        -- Delete the parent element
         DELETE FROM DM_TieuChi
-        WHERE TieuChiID IN (SELECT TieuChiID FROM RecursiveCTE);
-    END
-
-    -- Delete the parent element
-    DELETE FROM DM_TieuChi
-    WHERE TieuChiID = @TieuChiID;
-END;
-GO
-
-
-
-
-
-
+        WHERE TieuChiID = @TieuChiID;
+    END;
+    GO
 
 --region Insert Table
---region Insert records into Categories
-INSERT INTO DM_DITICHXEPHANG ( TenDiTich,GhiChu ) VALUES
-( N'Di Tích Quốc Gia','3' ),
-( N'Di Tích Quốc Gia Đặc Biệt','2' ),
-( N'Di Tích Cấp Tỉnh','1' )
-GO
-INSERT INTO DM_DonViTinh (TenDonViTinh, MaDonViTinh, TrangThai, GhiChu)
-VALUES (N'Kilogram', N'KG', 1, N'Đơn vị đo khối lượng'),
-(N'Hộp', N'HOP', 1, N'Đơn vị đo đếm đóng gói'),
-(N'Mét', N'M', 1, N'Đơn vị đo chiều dài'),
-(N'Lit', N'L', 1, N'Đơn vị đo thể tích'),
-(N'Cái', N'CAI', 1, N'Đơn vị đếm số lượng');
-GO
-INSERT INTO DM_TieuChi (MaTieuChi, TenTieuChi, TieuChiChaID, KieuDuLieuCot, LoaiTieuChi)
-VALUES
-('TOP_QHTN', N'Quốc hiệu tiêu ngữ', NULL, 3, 1),
-('TOP_DVCQ', N'Đơn vị chủ quản', NULL, 3, 1),
-('TOP_DVTHBC', N'Đơn vị thực hiện báo cáo',NULL, 3, 1),
-('TOP_TDBC', N'Tiêu đê báo cáo', NULL, 3, 1),
-('TOP_PHANNGAYTHANG', N'Phần ngày tháng', NULL, 3, 1),
-('TOP_DVT', N'Đơn vị tính', NULL, 3, 1),
-('TOP_PHULUC', N'Phụ lục', NULL, 3, 1),
-('BODY_STT', N'STT', NULL, 3, 2),
-('BODY_ND', N'Nội dung', NULL, 3, 2),
-('BODY_GHICHU', N'Ghi chú', NULL, 3, 2),
-('BODY_THANGNAM', N'Tháng/năm', NULL, 3, 2),
-('BOT_LUUNHAN', N'Lưu nhận', NULL, 3, 3),
-('BOT_PHANNGAYTHANG', N'Phần ngày tháng', NULL, 3, 3),
-('BOT_CHUCDANH', N'Chức danh', NULL, 3, 3),
-('BOT_NGUOIKY', N'Người ký', NULL, 3, 3),
-('BODY_T', N'Tỉnh', 11, 3, 2),
-('BODY_H', N'Huyện', 11, 3, 2),
-('BODY_X', N'Xã', 11, 3, 2);
-GO
-INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
-VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 001-DSVH DỮ LIỆU CƠ BẢN VỀ DI SẢN VĂN HÓA', '001-DSVH', 0, '', 3);
+    --region Insert records into Categories
+    INSERT INTO DM_DITICHXEPHANG ( TenDiTich,GhiChu ) VALUES
+    ( N'Di Tích Quốc Gia','3' ),
+    ( N'Di Tích Quốc Gia Đặc Biệt','2' ),
+    ( N'Di Tích Cấp Tỉnh','1' )
+    GO
+    INSERT INTO DM_DonViTinh (TenDonViTinh, MaDonViTinh, TrangThai, GhiChu)
+    VALUES (N'Kilogram', N'KG', 1, N'Đơn vị đo khối lượng'),
+    (N'Hộp', N'HOP', 1, N'Đơn vị đo đếm đóng gói'),
+    (N'Mét', N'M', 1, N'Đơn vị đo chiều dài'),
+    (N'Lit', N'L', 1, N'Đơn vị đo thể tích'),
+    (N'Cái', N'CAI', 1, N'Đơn vị đếm số lượng');
+    GO
+    INSERT INTO DM_TieuChi (MaTieuChi, TenTieuChi, TieuChiChaID, KieuDuLieuCot, LoaiTieuChi)
+    VALUES
+    ('TOP_QHTN', N'Quốc hiệu tiêu ngữ', NULL, 3, 1),
+    ('TOP_DVCQ', N'Đơn vị chủ quản', NULL, 3, 1),
+    ('TOP_DVTHBC', N'Đơn vị thực hiện báo cáo',NULL, 3, 1),
+    ('TOP_TDBC', N'Tiêu đê báo cáo', NULL, 3, 1),
+    ('TOP_PHANNGAYTHANG', N'Phần ngày tháng', NULL, 3, 1),
+    ('TOP_DVT', N'Đơn vị tính', NULL, 3, 1),
+    ('TOP_PHULUC', N'Phụ lục', NULL, 3, 1),
+    ('BODY_STT', N'STT', NULL, 3, 2),
+    ('BODY_ND', N'Nội dung', NULL, 3, 2),
+    ('BODY_GHICHU', N'Ghi chú', NULL, 3, 2),
+    ('BODY_THANGNAM', N'Tháng/năm', NULL, 3, 2),
+    ('BOT_LUUNHAN', N'Lưu nhận', NULL, 3, 3),
+    ('BOT_PHANNGAYTHANG', N'Phần ngày tháng', NULL, 3, 3),
+    ('BOT_CHUCDANH', N'Chức danh', NULL, 3, 3),
+    ('BOT_NGUOIKY', N'Người ký', NULL, 3, 3),
+    ('BODY_T', N'Tỉnh', 11, 3, 2),
+    ('BODY_H', N'Huyện', 11, 3, 2),
+    ('BODY_X', N'Xã', 11, 3, 2);
+    GO
 
-INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
-VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 002-VHCS SỐ LIỆU CƠ BẢN VỀ VĂN HÓA CƠ SỞ', '002-VHCS', 0, '', 3);
+    -- Các tiêu chí gốc (CapDo = 1)
+    EXEC TC_Insert 'TOP_QHTN', N'Quốc hiệu tiêu ngữ', NULL, 3, 1;
+    EXEC TC_Insert 'TOP_DVCQ', N'Đơn vị chủ quản', NULL, 3, 1;
+    EXEC TC_Insert 'TOP_DVTHBC', N'Đơn vị thực hiện báo cáo', NULL, 3, 1;
+    EXEC TC_Insert 'TOP_TDBC', N'Tiêu đê báo cáo', NULL, 3, 1;
+    EXEC TC_Insert 'TOP_PHANNGAYTHANG', N'Phần ngày tháng', NULL, 3, 1;
+    EXEC TC_Insert 'TOP_DVT', N'Đơn vị tính', NULL, 3, 1;
+    EXEC TC_Insert 'TOP_PHULUC', N'Phụ lục', NULL, 3, 1;
+    EXEC TC_Insert 'BODY_STT', N'STT', NULL, 1, 2;
+    EXEC TC_Insert 'BODY_ND', N'Nội dung', NULL, 3, 2;
+    EXEC TC_Insert 'BODY_GHICHU', N'Ghi chú', NULL, 3, 2;
+    EXEC TC_Insert 'BODY_THANGNAM', N'Tháng/năm', NULL, 3, 2;
+    EXEC TC_Insert 'BOT_LUUNHAN', N'Lưu nhận', NULL, 3, 3;
+    EXEC TC_Insert 'BOT_PHANNGAYTHANG', N'Phần ngày tháng', NULL, 3, 3;
+    EXEC TC_Insert 'BOT_CHUCDANH', N'Chức danh', NULL, 3, 3;
+    EXEC TC_Insert 'BOT_NGUOIKY', N'Người ký', NULL, 3, 3;
 
-INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
-VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 003-VHDT SỐ LIỆU CƠ BẢN VỀ VĂN HÓA DÂN TỘC', '003-VHDT', 0, '', 3);
-
-INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
-VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 004-TV SỐ LIỆU CƠ BẢN VỀ THƯ VIỆN', '004-TV', 0, '', 3);
-
-INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
-VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 005-ĐA SỐ LIỆU CƠ BẢN VỀ ĐIỆN ẢNH', '005-ĐA', 0, '', 3);
-
-INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
-VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 006-NTBD SỐ LIỆU CƠ BẢN VỀ NGHỆ THUẬT BIỂU DIỄN', '006-NTBD', 0, '', 3);
-
-INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
-VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 007-MTNTAL SỐ LIỆU CƠ BẢN VỀ MỸ THUẬT, NHIẾP ẢNH VÀ TRIỂN LÃM', '007-MTNTAL', 0, '', 3);
-
-INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
-VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 008-GĐ SỐ LIỆU CƠ BẢN VỀ GIA ĐÌNH', '008-GĐ', 0, '', 3);
-
-INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
-VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 009-TDTT SỐ LIỆU CƠ BẢN VỀ THỂ DỤC, THỂ THAO', '009-TDTT', 0, '', 3);
-
-INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
-VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 010-TTR SỐ LIỆU CƠ BẢN VỀ THANH TRA', '010-TTR', 0, '', 3);
-GO
+    -- Các tiêu chí con của BODY_ND (CapDo = 2 vì có TieuChiChaID là 11)
+    EXEC TC_Insert 'BODY_T', N'Tỉnh', 11,  1, 2;
+    EXEC TC_Insert 'BODY_H', N'Huyện', 11,  1, 2;
+    EXEC TC_Insert 'BODY_X', N'Xã', 11,  1, 2;
 
 
-GO
-INSERT INTO DM_LoaiDiTich (TenLoaiDiTich, GhiChu)
-VALUES (N'Di tích kiến trúc nghệ thuật', '1'),
-(N'Di tích lịch sử cách mạng', '2'),
-(N'Di tich lịch sử văn hóa', '3')
-GO
-INSERT INTO DM_KyBaoCao (TenKyBaoCao, TrangThai, GhiChu, LoaiKyBaoCao)
-VALUES 
-(N'Kỳ báo cáo tháng 1', 1, N'1', 1),
-(N'Kỳ báo cáo tháng 2', 1, N'2', 1),
-(N'Kỳ báo cáo tháng 3', 1, N'3', 2),
-(N'Kỳ báo cáo quý 1', 1, N'1,2,3', 1),
-(N'Kỳ báo cáo quý 2', 1, N'4,5,6', 1),
-(N'Kỳ báo cáo quý 3', 1, N'7,8,9', 2),
-(N'Kỳ báo cáo quý 4', 1, N'10,11,12', 2),
-(N'Kỳ báo cáo năm 2023', 1, N'2023', 3),
-(N'Kỳ báo cáo năm 2024', 0, N'2024', 3),
-(N'Kỳ báo cáo dự án X', 1, N'Báo cáo tiến độ dự án X', 4);
+    INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
+    VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 001-DSVH DỮ LIỆU CƠ BẢN VỀ DI SẢN VĂN HÓA', '001-DSVH', 0, '', 3);
+
+    INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
+    VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 002-VHCS SỐ LIỆU CƠ BẢN VỀ VĂN HÓA CƠ SỞ', '002-VHCS', 0, '', 3);
+
+    INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
+    VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 003-VHDT SỐ LIỆU CƠ BẢN VỀ VĂN HÓA DÂN TỘC', '003-VHDT', 0, '', 3);
+
+    INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
+    VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 004-TV SỐ LIỆU CƠ BẢN VỀ THƯ VIỆN', '004-TV', 0, '', 3);
+
+    INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
+    VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 005-ĐA SỐ LIỆU CƠ BẢN VỀ ĐIỆN ẢNH', '005-ĐA', 0, '', 3);
+
+    INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
+    VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 006-NTBD SỐ LIỆU CƠ BẢN VỀ NGHỆ THUẬT BIỂU DIỄN', '006-NTBD', 0, '', 3);
+
+    INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
+    VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 007-MTNTAL SỐ LIỆU CƠ BẢN VỀ MỸ THUẬT, NHIẾP ẢNH VÀ TRIỂN LÃM', '007-MTNTAL', 0, '', 3);
+
+    INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
+    VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 008-GĐ SỐ LIỆU CƠ BẢN VỀ GIA ĐÌNH', '008-GĐ', 0, '', 3);
+
+    INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
+    VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 009-TDTT SỐ LIỆU CƠ BẢN VỀ THỂ DỤC, THỂ THAO', '009-TDTT', 0, '', 3);
+
+    INSERT INTO DM_LoaiMauPhieu (LoaiMauPhieuChaID, TenLoaiMauPhieu, MaLoaiMauPhieu, TrangThai, GhiChu, Loai)
+    VALUES (0, N'BIỂU MẪU SỐ LIỆU SỐ 010-TTR SỐ LIỆU CƠ BẢN VỀ THANH TRA', '010-TTR', 0, '', 3);
+    GO
 
 
---region Insert records into  Authorization Management
--- Thêm người dùng
-INSERT INTO HT_NguoiDung (TenNguoiDung, Email, MatKhau  , TrangThai, GhiChu)
-VALUES
-('admin', 'admin@example.com', 'admin', 1, 'Admin user'),
-('user1', 'user1@example.com', 'user1', 1, 'Regular user');
-GO	
-
---Thêm chức năng
-INSERT INTO HT_ChucNang (MoTa,TenChucNang )
-	VALUES ('ManageUsers', N'Quản lý người dùng'),
-	('ManageMonumentRanking', N'Quản lý di tích xếp hạng'),
-	('ManageUnitofMeasure', N'Quản lý đơn vị tính'),
-	('ManageReportingPeriod', N'Quản lý kỳ báo cáo'),
-	('ManageTypeofMonument', N'Quản lý loại di tích'),
-	('ManageFormType', N'Quản lý mẫu phiếu'),
-	('ManageCriteria', N'Quản lý tiêu chí'),
-	('ManageTarget', N'Quản lý chỉ tiêu'),
-	('ManageReportForm', N'Quản lý mẫu phiếu báo cáo'),
-	('ManageAuthorization', N'Quản lý ủy quyền'),
-    ('ManageAgency', N'Quản lý cơ quan');
-GO
--- Thêm nhóm
-INSERT INTO HT_NhomPhanQuyen (MoTa,TenNhomPhanQuyen)
-VALUES
-('AdminGroup', N'Nhóm quản trị'),
-('UserGroup', N'Nhóm người dùng');
-GO
--- Thêm người dùng vào nhóm
-INSERT INTO HT_NhomNguoiDung (NguoiDungID, NhomPhanQuyenID)
-VALUES
-(1, 1),  -- admin vào AdminGroup
-(2, 2);  -- user1 vào UserGroup
-GO	
+    GO
+    INSERT INTO DM_LoaiDiTich (TenLoaiDiTich, GhiChu)
+    VALUES (N'Di tích kiến trúc nghệ thuật', '1'),
+    (N'Di tích lịch sử cách mạng', '2'),
+    (N'Di tich lịch sử văn hóa', '3')
+    GO
+    INSERT INTO DM_KyBaoCao (TenKyBaoCao, TrangThai, GhiChu, LoaiKyBaoCao)
+    VALUES 
+    (N'Kỳ báo cáo tháng 1', 1, N'1', 1),
+    (N'Kỳ báo cáo tháng 2', 1, N'2', 1),
+    (N'Kỳ báo cáo tháng 3', 1, N'3', 2),
+    (N'Kỳ báo cáo quý 1', 1, N'1,2,3', 1),
+    (N'Kỳ báo cáo quý 2', 1, N'4,5,6', 1),
+    (N'Kỳ báo cáo quý 3', 1, N'7,8,9', 2),
+    (N'Kỳ báo cáo quý 4', 1, N'10,11,12', 2),
+    (N'Kỳ báo cáo năm 2023', 1, N'2023', 3),
+    (N'Kỳ báo cáo năm 2024', 0, N'2024', 3),
+    (N'Kỳ báo cáo dự án X', 1, N'Báo cáo tiến độ dự án X', 4);
 
 
--- Thêm chức năng vào nhóm và phân quyền
-INSERT INTO HT_NhomChucNang (ChucNangID, NhomPhanQuyenID, Quyen)
-VALUES
-(1, 1, 15),
-(1, 2, 0),
-(2, 1, 15),
-(2, 2, 7),
-(3, 1, 15),
-(3, 2, 7),
-(4, 1, 15),
-(4, 2, 7),
-(5, 1, 15),
-(5, 2, 7),
-(6, 1, 15),
-(6, 2, 7),
-(7, 1, 15),
-(7, 2, 7),
-(8, 1, 15),
-(8, 2, 7),
-(9,1,15),
-(9,2,7),
-(10,1,15),
-(10,2,0),
-(11,1,15),
-(11,2,0)
-GO  
+    --region Insert records into  Authorization Management
+    -- Thêm người dùng
+    INSERT INTO HT_NguoiDung (TenNguoiDung, Email, MatKhau  , TrangThai, GhiChu)
+    VALUES
+    ('admin', 'admin@example.com', 'admin', 1, 'Admin user'),
+    ('user1', 'user1@example.com', 'user1', 1, 'Regular user');
+    GO	
 
+    --Thêm chức năng
+    INSERT INTO HT_ChucNang (MoTa,TenChucNang )
+        VALUES ('ManageUsers', N'Quản lý người dùng'),
+        ('ManageMonumentRanking', N'Quản lý di tích xếp hạng'),
+        ('ManageUnitofMeasure', N'Quản lý đơn vị tính'),
+        ('ManageReportingPeriod', N'Quản lý kỳ báo cáo'),
+        ('ManageTypeofMonument', N'Quản lý loại di tích'),
+        ('ManageFormType', N'Quản lý mẫu phiếu'),
+        ('ManageCriteria', N'Quản lý tiêu chí'),
+        ('ManageTarget', N'Quản lý chỉ tiêu'),
+        ('ManageReportForm', N'Quản lý mẫu phiếu báo cáo'),
+        ('ManageAuthorization', N'Quản lý ủy quyền'),
+        ('ManageAgency', N'Quản lý cơ quan');
+    GO
+    -- Thêm nhóm
+    INSERT INTO HT_NhomPhanQuyen (MoTa,TenNhomPhanQuyen)
+    VALUES
+    ('AdminGroup', N'Nhóm quản trị'),
+    ('UserGroup', N'Nhóm người dùng');
+    GO
+    -- Thêm người dùng vào nhóm
+    INSERT INTO HT_NhomNguoiDung (NguoiDungID, NhomPhanQuyenID)
+    VALUES
+    (1, 1),  -- admin vào AdminGroup
+    (2, 2);  -- user1 vào UserGroup
+    GO	
+
+
+    -- Thêm chức năng vào nhóm và phân quyền
+    INSERT INTO HT_NhomChucNang (ChucNangID, NhomPhanQuyenID, Quyen)
+    VALUES
+    (1, 1, 15),
+    (1, 2, 0),
+    (2, 1, 15),
+    (2, 2, 7),
+    (3, 1, 15),
+    (3, 2, 7),
+    (4, 1, 15),
+    (4, 2, 7),
+    (5, 1, 15),
+    (5, 2, 7),
+    (6, 1, 15),
+    (6, 2, 7),
+    (7, 1, 15),
+    (7, 2, 7),
+    (8, 1, 15),
+    (8, 2, 7),
+    (9,1,15),
+    (9,2,7),
+    (10,1,15),
+    (10,2,0),
+    (11,1,15),
+    (11,2,0)
+    GO  
 
 --region Query
 	DELETE FROM Sys_User;
@@ -3313,16 +3328,6 @@ GO
 	DELETE FROM Sys_User WHERE UserID = 38
 
 	-- Reset giá trị IDENTITY về giá trị mặc định (1)
-GO
-
-
-
-
-SELECT * FROM HT_ChucNang
-SELECT * FROM Sys_FunctionInGroup sfig
-SELECT * FROM Sys_UserInGroup suig
-SELECT * FROM Sys_User su
-SELECT * FROM Sys_Group sg
 
 
 SELECT * FROM DM_KyBaoCao dkbc
@@ -3335,59 +3340,11 @@ SELECT * FROM DM_LoaiMauPhieu
 SELECT * FROM DM_TieuChi dtc
 SELECT * FROM DM_ChiTieu dtc
 
-UPDATE Sys_User
-SET Password = 'user1' WHERE UserID = 2
-
-UPDATE Sys_FunctionInGroup 
-SET  Permission = 15 WHERE FunctionInNhomPhanQuyenID = 1
-
-UPDATE Sys_Function 
-SET FunctionName = 'ManageMonumentRanking'  WHERE FunctionID = 2
-
-
-EXEC TC_Delete @TieuChiID = 1
-EXEC CT_GetAll @TenChiTieu = ''
-EXEC TC_GetAll @TenTieuChi = ''
-EXEC FIG_GetUserPermissions @UserName = 'admin', @FunctionName = 'ManageTargets' 
-EXEC UMS_GetByRefreshToken @RefreshToken = ''
-SELECT * FROM	Sys_User su
-EXEC CT_Delete @ChiTieuID = 2
-EXEC CT_Delete 113
-
--- Các tiêu chí gốc (CapDo = 1)
-EXEC TC_Insert 'TOP_QHTN', N'Quốc hiệu tiêu ngữ', NULL, 3, 1;
-EXEC TC_Insert 'TOP_DVCQ', N'Đơn vị chủ quản', NULL, 3, 1;
-EXEC TC_Insert 'TOP_DVTHBC', N'Đơn vị thực hiện báo cáo', NULL, 3, 1;
-EXEC TC_Insert 'TOP_TDBC', N'Tiêu đê báo cáo', NULL, 3, 1;
-EXEC TC_Insert 'TOP_PHANNGAYTHANG', N'Phần ngày tháng', NULL, 3, 1;
-EXEC TC_Insert 'TOP_DVT', N'Đơn vị tính', NULL, 3, 1;
-EXEC TC_Insert 'TOP_PHULUC', N'Phụ lục', NULL, 3, 1;
-EXEC TC_Insert 'BODY_STT', N'STT', NULL, 1, 2;
-EXEC TC_Insert 'BODY_ND', N'Nội dung', NULL, 3, 2;
-EXEC TC_Insert 'BODY_GHICHU', N'Ghi chú', NULL, 3, 2;
-EXEC TC_Insert 'BODY_THANGNAM', N'Tháng/năm', NULL, 3, 2;
-EXEC TC_Insert 'BOT_LUUNHAN', N'Lưu nhận', NULL, 3, 3;
-EXEC TC_Insert 'BOT_PHANNGAYTHANG', N'Phần ngày tháng', NULL, 3, 3;
-EXEC TC_Insert 'BOT_CHUCDANH', N'Chức danh', NULL, 3, 3;
-EXEC TC_Insert 'BOT_NGUOIKY', N'Người ký', NULL, 3, 3;
-
--- Các tiêu chí con của BODY_ND (CapDo = 2 vì có TieuChiChaID là 11)
-EXEC TC_Insert 'BODY_T', N'Tỉnh', 11,  1, 2;
-EXEC TC_Insert 'BODY_H', N'Huyện', 11,  1, 2;
-EXEC TC_Insert 'BODY_X', N'Xã', 11,  1, 2;
 
 SELECT * FROM HT_NguoiDung
 SELECT * FROM HT_ChucNang
 SELECT * FROM HT_NhomChucNang
 SELECT * FROM HT_NhomNguoiDung
 SELECT * FROM HT_ChucNang
-
-
-ALTER TABLE BC_ChiTietMauPhieu
-ADD TieuChiIDs NVARCHAR(MAX);
-
-
-ALTER TABLE BC_ChiTietMauPhieu
-DROP COLUMN TieuChiID;
 
 

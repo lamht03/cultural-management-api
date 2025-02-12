@@ -195,6 +195,7 @@ namespace QUANLYVANHOA.Repositories.DanhMuc
                     command.Parameters.AddWithValue("@ThamQuyenID", model.ThamQuyenID);
                     command.Parameters.AddWithValue("@TinhID", model.TinhID);
                     command.Parameters.AddWithValue("@HuyenID", model.HuyenID);
+                    command.Parameters.AddWithValue("@XaID", model.XaID);
                     command.Parameters.AddWithValue("@CQCoHieuLuc", model.CQCoHieuLuc ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@CQCapUBND", model.CQCapUBND ?? (object)DBNull.Value);
                     command.Parameters.AddWithValue("@CQCapThanhTra", model.CQCapThanhTra ?? (object)DBNull.Value);

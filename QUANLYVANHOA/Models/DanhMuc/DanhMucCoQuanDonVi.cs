@@ -113,6 +113,9 @@ namespace QUANLYVANHOA.Models.DanhMuc
 
         [JsonPropertyName("QTGiaiQuyetPhucTap")]
         public bool? QTGiaiQuyetPhucTap { get; set; }
+
+        [JsonPropertyName("TenCoQuanCha")]
+        public string? TenCoQuanCha { get; set; }
     }
 
 
@@ -169,6 +172,10 @@ namespace QUANLYVANHOA.Models.DanhMuc
 
         [JsonPropertyName("QTGiaiQuyetPhucTap")]
         public bool? QTGiaiQuyetPhucTap { get; set; }
+
+        [JsonPropertyName("TenCoQuanCha")]
+        public string? TenCoQuanCha { get; set; }
+
     }
 
 

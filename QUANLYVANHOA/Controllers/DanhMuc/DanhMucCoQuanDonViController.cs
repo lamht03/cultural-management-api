@@ -86,7 +86,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
 
-        [CustomAuthorize(Quyen.Sua, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(Quyen.Them, "Quản lý cơ quan đơn vị")]
         [HttpPost("ThemMoiCoQuan")]
         public async Task<IActionResult> DanhMucCoQuanAdd([FromBody] DanhMucCoQuanInsertModel model)
         {
@@ -175,8 +175,9 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
                 model.TenCoQuan = model.TenCoQuan.Trim();
             }
 
+
             var existingCoQuan2 = await _coQuanRepository.DanhMucCoQuanGetAll(model.TenCoQuan);
-            if (existingCoQuan2.Item1.Any())
+            if (existingCoQuan2.Item1.Any() && model.CoQuanID != existingCoQuan2.Item1.First().CoQuanID)
             {
                 return BadRequest(new { Status = 0, Message = "Tên cơ quan đã tồn tại !" });
             }
