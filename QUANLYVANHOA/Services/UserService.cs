@@ -37,7 +37,33 @@ public class UserService : IUserService
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, userName),
-                new Claim(ClaimTypes.Role, user.Email),
+                new Claim(ClaimTypes.Role, user.GhiChu ?? "Can I call you baby ! Can you be my friend ! Can you be my lover up until the very end ! Let me show you love ! Don't pretend ! Stick by my side even when the world is givin'in, YEAH\n" +
+                "____                | LÂM NO LOVE |                               ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥\n" +
+                "|  |\n" +
+                "|  |                     //\\           ______             ______        ♥♥     ♥♥      \n" +
+                "|  |                   // __ \\         |  \\\\           ///|  |       ♥♥♥♥   ♥♥♥♥     \n" +
+                "|  |                 //  /  \\ \\       |  |\\\\         /// |  |      ♥♥♥♥♥♥ ♥♥♥♥♥♥    \n" +
+                "|  |                    / __ \\         |  | \\\\       ///  |  |       ♥♥♥♥♥♥♥♥♥♥♥     \n" +
+                "|  |                   / / \\ \\        |  |  \\\\     ///   |  |        ♥♥♥♥♥♥♥♥♥      \n" +
+                "|  |                  / /___\\ \\       |  |   \\\\   ///    |  |         ♥♥♥♥♥♥♥       \n" +
+                "|  |___________      / /     \\ \\      |  |    \\\\ ///     |  |           ♥♥♥         \n" +
+                "|_____________/     /_/       \\_\\     |__|     \\\\//      |__|            ♥          \n"),
+
+                //new Claim(ClaimTypes.Role, user.GhiChu ?? "Can I call you baby ! Can you be my friend ! Can you be my lover up until the very end ! Let me show you love ! Don't pretend ! Stick by my side even when the world is givin'in, YEAH\n" +
+                //"____                | LÂM NO LOVE |                               ♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥♥\n" +
+                //"|  |\n" +
+                //"|  |                    //  \\           ______          ______       ♥♥     ♥♥\n" +
+                //"|  |                   // __ \\         |  \\\\           ///|  |      ♥♥♥♥   ♥♥♥♥\n" +
+                //"|  |                  // /  \\ \\        |  |\\\\         /// |  |     ♥♥♥♥♥♥ ♥♥♥♥♥♥\n" +
+                //"|  |                    / __ \\         |  | \\\\       ///  |  |      ♥♥♥♥♥♥♥♥♥♥♥\n" +
+                //"|  |                   / /  \\ \\        |  |  \\\\     ///   |  |       ♥♥♥♥♥♥♥♥♥\n" +
+                //"|  |                  / /____\\ \\       |  |   \\\\   ///    |  |        ♥♥♥♥♥♥♥\n" +
+                //"|  |___________      / /      \\ \\      |  |    \\\\ ///     |  |          ♥♥♥\n" +
+                //"|_____________/     /_/        \\_\\     |__|     \\\\//      |__|           ♥\n"),
+
+
+                new Claim("CanBoID", JsonConvert.SerializeObject(user.CanBoID)),
+                new Claim("MatKhau", JsonConvert.SerializeObject("IfYouWantToConnectYouNeedToBecomeAProfessionalProgrammer")),
                 new Claim("FunctionsAndPermissions", JsonConvert.SerializeObject(permissions)) // Lưu các quyền của từng chức năng vào JWT
             }),
             Expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpiryMinutes"])),
@@ -88,7 +114,7 @@ public class UserService : IUserService
             Subject = new ClaimsIdentity(new[]
             {
             new Claim(ClaimTypes.Name, user.TenNguoiDung),
-            new Claim(ClaimTypes.Role, user.Email),
+            new Claim(ClaimTypes.Role, user.GhiChu),
             new Claim("Access Permissions", JsonConvert.SerializeObject(permissions)) // Quyền của người dùng
         }),
             Expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpiryMinutes"])),

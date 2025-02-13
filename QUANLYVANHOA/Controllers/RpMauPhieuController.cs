@@ -22,7 +22,7 @@ namespace QUANLYVANHOA.Models
             _mauPhieuRepository = mauPhieuRepository;
             _loaiMauPhieuRepository = loaiMauPhieuRepository;
         }
-        [CustomAuthorize(Quyen.Xem, "Quản lý mẫu phiếu báo cáo")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyMauPhieuBaoCao)]
         [HttpGet("List")]
         public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
         {
@@ -82,7 +82,7 @@ namespace QUANLYVANHOA.Models
             }
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý mẫu phiếu báo cáo")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyMauPhieuBaoCao)]
         [HttpGet("FindByID")]
         public async Task<IActionResult> GetByID(int id)
         {
@@ -107,7 +107,7 @@ namespace QUANLYVANHOA.Models
             }
         }
 
-        [CustomAuthorize(Quyen.Them, "Quản lý mẫu phiếu báo cáo")]
+        [CustomAuthorize(QuyenEnums.Them, ChucNangEnums.QuanLyMauPhieuBaoCao)]
         [HttpPost("Insert")]
         public async Task<IActionResult> Insert([FromBody] RpMauPhieuInsertModel model)
         {
@@ -188,7 +188,7 @@ namespace QUANLYVANHOA.Models
             }
         }
 
-        [CustomAuthorize(Quyen.Sua, "Quản lý mẫu phiếu báo cáo")]
+        [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyMauPhieuBaoCao)]
         [HttpPost("Update")]
         public async Task<IActionResult> Update([FromBody] RpMauPhieuUpdateModel model)
         {
@@ -275,7 +275,7 @@ namespace QUANLYVANHOA.Models
             }
         }
 
-        [CustomAuthorize(Quyen.Xoa, "Quản lý mẫu phiếu báo cáo")]
+        [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyMauPhieuBaoCao)]
         [HttpPost("Delete")]
         public async Task<IActionResult> Delete(int id)
         {

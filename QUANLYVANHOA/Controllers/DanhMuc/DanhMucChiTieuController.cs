@@ -22,7 +22,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _loaiMauPhieuRepository = loaiMauPhieuRepository;
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý chỉ tiêu")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyChiTieu)]
         [HttpGet("DanhSachChiTieu")]
         public async Task<IActionResult> GetAll(string? name/*, int pageNumber = 1, int pageSize = 100*/)
         {
@@ -63,7 +63,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý chỉ tiêu")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyChiTieu)]
         [HttpGet("TimChiTieuTheoID")]
         public async Task<IActionResult> GetByID(int id)
         {
@@ -82,7 +82,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpGet("TimChiTieuTheoLoaiMauPhieuID")]
-        [CustomAuthorize(Quyen.Xem, "Quản lý chỉ tiêu")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyChiTieu)]
         public async Task<IActionResult> GetByLoaiMauPhieuID(int loaiMauPhieuID)
         {
             if (loaiMauPhieuID <= 0)
@@ -108,7 +108,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             }
         }
 
-        [CustomAuthorize(Quyen.Them, "Quản lý chỉ tiêu")]
+        [CustomAuthorize(QuyenEnums.Them, ChucNangEnums.QuanLyChiTieu)]
         [HttpPost("ThemMoiChiTieu")]
         public async Task<IActionResult> Insert([FromBody] DanhMucChiTieuInsertModel chiTieu)
         {
@@ -165,7 +165,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         //[HttpPost("ThemChiTieuCon")]
-        //[CustomAuthorize(Quyen.Them, "Quản lý chỉ tiêu")]
+        //[CustomAuthorize(Quyen.Them, ChucNangEnums.QuanLyChiTieu)]
         //public async Task<IActionResult> InsertChiTieuCon([FromBody] DanhMucChiTieuInsertChidrenModel chiTieuModelInsertChidren)
         //{
         //    var existingChiTieu = await _chiTieuRepository.GetAll(chiTieuModelInsertChidren.TenChiTieu);
@@ -214,7 +214,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         //}
 
 
-        [CustomAuthorize(Quyen.Sua, "Quản lý chỉ tiêu")]
+        [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyChiTieu)]
         [HttpPost("CapNhatThongTinChiTieu")]
         public async Task<IActionResult> Update(DanhMucChiTieuUpdateModel chiTieu)
         {
@@ -275,7 +275,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Cập nhật dữ liệu thành công !" });
         }
 
-        [CustomAuthorize(Quyen.Xoa, "Quản lý chỉ tiêu")]
+        [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyChiTieu)]
         [HttpPost("XoaChiTieu")]
         public async Task<IActionResult> Delete(int id)
         {

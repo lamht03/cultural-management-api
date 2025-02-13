@@ -1,7 +1,7 @@
 ﻿namespace QUANLYVANHOA.Core.Enums
 {
     [Flags]
-    public enum Quyen
+    public enum QuyenEnums
     {
         Xem = 1,  // 0001 - View access
         Them = 2,  // 0010 - Add permission

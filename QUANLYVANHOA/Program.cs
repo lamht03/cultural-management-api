@@ -8,7 +8,6 @@ using QUANLYVANHOA.Repositories.HeThong;
 using QUANLYVANHOA.Utilities;
 using System.Text;
 using System.Text.Json;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();

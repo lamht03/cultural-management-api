@@ -1,11 +1,11 @@
-﻿using QUANLYVANHOA.Interfaces;
-using QUANLYVANHOA.Models.HeThong;
+﻿using QUANLYVANHOA.Models.HeThong;
 using System.Data;
 using Microsoft.Data.SqlClient;
 using QUANLYVANHOA.Core.DTO;
 using QUANLYVANHOA.Core.Enums;
+using QUANLYVANHOA.Interfaces.HeThong;
 
-namespace QUANLYVANHOA.Repositories
+namespace QUANLYVANHOA.Repositories.HeThong
 {
     public class PhanQuyenRepository : IPhanQuyenRepository
     {
@@ -158,7 +158,6 @@ namespace QUANLYVANHOA.Repositories
                             {
                                 NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
                                 TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
-                                TenDayDu = !reader.IsDBNull(reader.GetOrdinal("TenDayDu")) ? reader.GetString(reader.GetOrdinal("TenDayDu")) : null,
                                 NhomPhanQuyenID = reader.GetInt32(reader.GetOrdinal("NhomPhanQuyenID")),
                                 TenNhomPhanQuyen = reader.GetString(reader.GetOrdinal("TenNhomPhanQuyen"))
                             });
@@ -194,10 +193,10 @@ namespace QUANLYVANHOA.Repositories
                                 NhomPhanQuyenID = reader.GetInt32(reader.GetOrdinal("NhomPhanQuyenID")),
                                 TenNhomPhanQuyen = reader.GetString(reader.GetOrdinal("TenNhomPhanQuyen")),
                                 Quyen = reader.GetInt32(reader.GetOrdinal("Quyen")),
-                                Xem = (reader.GetInt32(reader.GetOrdinal("Quyen")) & (int)Quyen.Xem) == (int)Quyen.Xem,
-                                Them = (reader.GetInt32(reader.GetOrdinal("Quyen")) & (int)Quyen.Them) == (int)Quyen.Them,
-                                Sua = (reader.GetInt32(reader.GetOrdinal("Quyen")) & (int)Quyen.Sua) == (int)Quyen.Sua,
-                                Xoa = (reader.GetInt32(reader.GetOrdinal("Quyen")) & (int)Quyen.Xoa) == (int)Quyen.Xoa,
+                                Xem = (reader.GetInt32(reader.GetOrdinal("Quyen")) & (int)QuyenEnums.Xem) == (int)QuyenEnums.Xem,
+                                Them = (reader.GetInt32(reader.GetOrdinal("Quyen")) & (int)QuyenEnums.Them) == (int)QuyenEnums.Them,
+                                Sua = (reader.GetInt32(reader.GetOrdinal("Quyen")) & (int)QuyenEnums.Sua) == (int)QuyenEnums.Sua,
+                                Xoa = (reader.GetInt32(reader.GetOrdinal("Quyen")) & (int)QuyenEnums.Xoa) == (int)QuyenEnums.Xoa,
                             });
                         }
                     }
@@ -483,7 +482,7 @@ namespace QUANLYVANHOA.Repositories
                             {
                                 NhomNguoiDungID = reader.GetInt32(reader.GetOrdinal("NhomNguoiDungID")),
                                 NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
-                                NhomPhanQuyen = reader.GetInt32(reader.GetOrdinal("NhomPhanQuyenID"))
+                                NhomPhanQuyenID = reader.GetInt32(reader.GetOrdinal("NhomPhanQuyenID"))
                             });
                         }
                     }

@@ -8,13 +8,12 @@ namespace QUANLYVANHOA.Interfaces.HeThong
     {
         Task<(IEnumerable<NguoiDung>, int)> LayDanhSachPhanTrang(string? userName, int pageNumber, int pageSize);
         Task<NguoiDung> LayTheoID(int userId);
-        Task<NguoiDung> LayTheoEmail(string email);
 
-        Task<int> TaoNguoiDungMoi(NguoiDungInsertModel user);
-        Task<int> SuaThongTinNguoiDung(NguoiDungUpdateModel user);
+        //Task<int> TaoNguoiDungMoi(NguoiDungInsertModel user);
+        //Task<int> SuaThongTinNguoiDung(NguoiDungUpdateModel user);
         Task<int> XoaThongTinNguoiDung(int userId);
         Task<NguoiDung> DangNhap(string userName, string password);
-        Task<int> DangKyTaiKhoan(RegisterModel model);
+        //Task<int> DangKyTaiKhoan(RegisterModel model);
 
         Task TaoPhienDangNhap(int userId, string refreshToken, DateTime expiryDate);
         Task<PhienDangNhap> LayPhienDangNhapTheoRefreshToken(string refreshToken);

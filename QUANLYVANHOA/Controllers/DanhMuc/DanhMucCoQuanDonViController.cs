@@ -20,7 +20,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _coQuanRepository = coQuanRepository;
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpGet("DanhSachCoQuan")]
         public async Task<IActionResult> GetAll(string? name/*, int pageNumber = 1, int pageSize = 100*/)
         {
@@ -62,7 +62,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpGet("TimCoQuanTheoID")]
         public async Task<IActionResult> DanhMucCoQuanGetByID (int id)
         {
@@ -86,7 +86,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
 
-        [CustomAuthorize(Quyen.Them, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Them, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpPost("ThemMoiCoQuan")]
         public async Task<IActionResult> DanhMucCoQuanAdd([FromBody] DanhMucCoQuanInsertModel model)
         {
@@ -160,7 +160,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
 
 
 
-        [CustomAuthorize(Quyen.Sua, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpPost("CapNhatDuLieuCoQuan")]
         public async Task<IActionResult> DanhMucCoQuanUpdate([FromBody] DanhMucCoQuanUpdateModel model)
         {
@@ -246,7 +246,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
 
-        [CustomAuthorize(Quyen.Xoa, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpPost("XoaDanhMucCoQuan")]
         public async Task<IActionResult> DanhMucCoQuanDelete(int id)
         {
@@ -265,7 +265,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Xóa dữ liệu thành công !" });
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpGet("DanhSachTinh")]
         public async Task<IActionResult> DMTinhGetAll(/*string? name*//*, int pageNumber = 1, int pageSize = 100*/)
         {
@@ -307,7 +307,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpGet("TimTinhTheoID")]
         public async Task<IActionResult> DanhMucTinhGetByID(int id)
         {
@@ -331,7 +331,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpGet("DanhSachHuyenTheoTinhID")]
         public async Task<IActionResult> DMHuyenGetByTinhID(int tinhId/*string? name*//*, int pageNumber = 1, int pageSize = 100*/)
         {
@@ -373,7 +373,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpGet("TimHuyenTheoID")]
         public async Task<IActionResult> DanhMucHuyenGetByID(int id)
         {
@@ -396,7 +396,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
 
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpGet("DanhSachXaTheoHuyenID")]
         public async Task<IActionResult> DMXaGetByHuyenID(int id/*string? name*//*, int pageNumber = 1, int pageSize = 100*/)
         {
@@ -438,7 +438,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpGet("TimXaTheoID")]
         public async Task<IActionResult> DanhMucXaGetByID(int id)
         {
@@ -461,7 +461,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
 
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpGet("DanhSachCap")]
         public async Task<IActionResult> DMCapGetAll(/*string? name*//*, int pageNumber = 1, int pageSize = 100*/)
         {
@@ -503,7 +503,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpGet("TimDanhMucCapTheoID")]
         public async Task<IActionResult> DanhMucCapGetByID(int id)
         {
@@ -526,7 +526,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
 
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpGet("DanhSachThamQuyen")]
         public async Task<IActionResult> DMThamQuyenGetAll(/*string? name*//*, int pageNumber = 1, int pageSize = 100*/)
         {
@@ -568,7 +568,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý cơ quan đơn vị")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyCoQuanDonVi)]
         [HttpGet("TimDanhMucThamQuyenTheoID")]
         public async Task<IActionResult> DanhMucThamQuyenGetByID(int id)
         {

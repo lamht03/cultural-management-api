@@ -1,6 +1,6 @@
 ﻿using QUANLYVANHOA.Interfaces;
 using Newtonsoft.Json;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Data;
 using QUANLYVANHOA.Models;
 

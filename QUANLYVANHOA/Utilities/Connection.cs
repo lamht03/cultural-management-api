@@ -4,7 +4,7 @@ using System.Net;
 
 public class Connection
 {
-    private const string DatabaseName = "DB_QuanLyVanHoa";
+    private const string DatabaseName = "DB_QuanLyVanHoa_DEV";
     private const string UserId = "The Debuggers";
     private const string Password = "ifyouwanttoconnectyouneedtobecomeaprofessionalprogrammer";
     private const string ServerName = "DESKTOP-8I9KRD3";

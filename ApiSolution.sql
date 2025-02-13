@@ -5,7 +5,7 @@
     ALTER DATABASE DB_QuanLyVanHoa
     SET SINGLE_USER
     WITH ROLLBACK IMMEDIATE;
-
+    ALTER DATABASE DB_QuanLyVanHoa SET MULTI_USER;
     DROP DATABASE DB_QuanLyVanHoa 
 
 
@@ -1142,7 +1142,6 @@
         END
         GO
 
-
     -- Add Procedure of DM_CoQuan
         ALTER PROCEDURE DMCoQuan_Add
             @CoQuanChaID INT,
@@ -1257,24 +1256,354 @@
         END
         GO
 
-
-
-
-
 --region Authorization Mangement System
+    --region Stored procedure of Officers
+        CREATE TABLE HT_CanBo 
+        (
+            CanBoID int PRIMARY KEY IDENTITY(1,1),
+            TenCanBo NVARCHAR(100),
+            NgaySinh DATETIME,
+            GioiTinh int,
+            DiaChi NVARCHAR(100),
+            Email NVARCHAR(100),
+            DienThoai NVARCHAR(15),
+            TrangThai INT,
+            CoQuanID INT,
+            CONSTRAINT FK_CanBo_CoQuan FOREIGN KEY (CoQuanID) REFERENCES DM_CoQuan (CoQuanID)
+        )
+
+        -- Add records to CanBo Table
+            SET IDENTITY_INSERT DM_CanBo ON;
+            INSERT INTO DM_CanBo (CanBoID, TenCanBo, NgaySinh, GioiTinh, DiaChi, Email, DienThoai, TrangThai, CoQuanID) 
+            VALUES 
+            (1, N'Administrator', '1980-01-01', 1, N'Hà Nội', 'admin@example.com', '0901000001', 1, 1),
+            (2, N'Phạm Minh Huy', '1985-03-15', 1, N'Hồ Chí Minh', 'phamminhhuy@example.com', '0901000002', 1, 1),
+            (3, N'Lê Thị Hoa', '1990-07-20', 0, N'Đà Nẵng', 'lethithoa@example.com', '0901000003', 1, 1),
+            (4, N'Nguyễn Quang Dũng', '1988-11-05', 1, N'Hà Nội', 'nguyenquangduong@example.com', '0901000004', 1, 1),
+            (5, N'Trần Thị Mai', '1992-02-28', 0, N'Hải Phòng', 'tranthimai@example.com', '0901000005', 1, 1),
+            (6, N'Đỗ Văn Tuấn', '1987-09-10', 1, N'Bắc Ninh', 'dovantuan@example.com', '0901000006', 1, 1),
+            (7, N'Vũ Thị Lan', '1993-12-17', 0, N'Quảng Nam', 'vuthilan@example.com', '0901000007', 1, 1),
+            (8, N'Bùi Hồng Nhung', '1991-06-25', 0, N'Vĩnh Phúc', 'buihongnhung@example.com', '0901000008', 1, 1),
+            (9, N'Hồ Quang Minh', '1989-04-30', 1, N'Bình Dương', 'hoquangminh@example.com', '0901000009', 1, 1),
+            (10, N'Phạm Thị Ngọc', '1994-08-12', 0, N'Đà Nẵng', 'phamthingoc@example.com', '0901000010', 1, 1);
+            SET IDENTITY_INSERT DM_CanBo OFF;
+
+        --GetListPaging of CanBo
+            -- GO                                                                                                              
+            -- CREATE PROC DMCanBo_GetListPaging                                                               
+            --     @TenCanBoOrTenTaiKhoan nvarchar(100) = null,                                                                                
+            --     @CoQuanID INT = null,
+            --     @PageNumber INT = 1,
+            --     @PageSize INT = 20
+            -- AS
+            -- BEGIN
+            --     DECLARE @TotalRecords INT;
+            --     SELECT @TotalRecords  = COUNT(DISTINCT a.CanBoID)
+            --     FROM DM_CanBo a 
+            --     LEFT JOIN HT_NguoiDung b ON a.CanBoID = b.CanBoID
+            --     where (@TenCanBoOrTenTaiKhoan IS NULL OR a.TenCanBo LIKE '%' + @TenCanBoOrTenTaiKhoan + '%') 
+            --     or (b.TenNguoiDung LIKE '%' + @TenCanBoOrTenTaiKhoan + '%')
+
+            --     SELECT DISTINCT
+            --     c.*, d.TenNguoiDung
+            --     FROM DM_CanBo c
+            --     LEFT JOIN HT_NguoiDung d on c.CanBoID = d.CanBoID
+            --     where (@TenCanBoOrTenTaiKhoan IS NULL OR c.TenCanBo LIKE '%' + @TenCanBoOrTenTaiKhoan + '%') 
+            --     or (d.TenNguoiDung LIKE '%' + @TenCanBoOrTenTaiKhoan + '%')
+            --     ORDER by c.CanBoID
+            --     OFFSET (@PageNumber - 1) * @PageSize ROWS
+            --     FETCH NEXT @PageSize ROWS ONLY;
+
+            --     SELECT @TotalRecords as TotalRecords;
+            --     END
+            -- GO
+            GO 
+            ALTER PROC v1_HeThong_CanBo_GetListPaging
+                @TenCanBoOrTenNguoiDung NVARCHAR(100) = NULL,
+                @CoQuanID INT = NULL,
+                @PageNumber INT = 1,
+                @PageSize INT = 20
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                -- ✅ Precompute DanhSachNhomPhanQuyenID
+                WITH NhomPhanQuyen_CTE AS (
+                    SELECT 
+                        nd.NguoiDungID,
+                        STRING_AGG(CAST(nd.NhomPhanQuyenID AS NVARCHAR(MAX)), ',') AS DanhSachNhomPhanQuyenID
+                    FROM HT_NhomNguoiDung nd
+                    GROUP BY nd.NguoiDungID
+                ),
+                -- ✅ Use ROW_NUMBER() for better performance
+                PaginatedResults AS (
+                    SELECT 
+                        c.CanBoID,
+                        c.TenCanBo,
+                        c.NgaySinh,
+                        c.GioiTinh,
+                        c.DiaChi,
+                        c.Email,
+                        c.DienThoai,
+                        c.TrangThai,
+                        c.CoQuanID,
+                        d.NguoiDungID,
+                        d.TenNguoiDung,
+                        COUNT(*) OVER() AS TotalRecords,
+                        ROW_NUMBER() OVER (ORDER BY c.CanBoID) AS RowNum
+                    FROM HT_CanBo c
+                    LEFT JOIN HT_NguoiDung d ON c.CanBoID = d.CanBoID
+                    WHERE 
+                        (@CoQuanID IS NULL OR c.CoQuanID = @CoQuanID)
+                        AND 
+                        (@TenCanBoOrTenNguoiDung IS NULL 
+                        OR c.TenCanBo LIKE '%' + @TenCanBoOrTenNguoiDung + '%'
+                        OR d.TenNguoiDung LIKE '%' + @TenCanBoOrTenNguoiDung + '%')
+                )
+                
+                -- ✅ Select only paginated results
+                SELECT 
+                    p.*,
+                    np.DanhSachNhomPhanQuyenID
+                FROM PaginatedResults p
+                LEFT JOIN NhomPhanQuyen_CTE np ON p.NguoiDungID = np.NguoiDungID
+                WHERE p.RowNum BETWEEN (@PageNumber - 1) * @PageSize + 1 AND @PageNumber * @PageSize;
+            END;
+            GO
+        
+        --GetByID of CanBo
+            GO
+            create PROC v1_HeThong_CanBo_GetByID
+                @CanBoID INT
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                -- ✅ Precompute DanhSachNhomPhanQuyenID
+                WITH NhomPhanQuyen_CTE AS (
+                    SELECT 
+                        nd.NguoiDungID,
+                        STRING_AGG(CAST(nd.NhomPhanQuyenID AS NVARCHAR(MAX)), ',') AS DanhSachNhomPhanQuyenID
+                    FROM HT_NhomNguoiDung nd
+                    GROUP BY nd.NguoiDungID
+                )
+
+                -- ✅ Get CanBo details with user and role group information
+                SELECT 
+                    c.CanBoID,
+                    c.TenCanBo,
+                    c.NgaySinh,
+                    c.GioiTinh,
+                    c.DiaChi,
+                    c.Email,
+                    c.DienThoai,
+                    c.TrangThai,
+                    c.CoQuanID,
+                    d.NguoiDungID,
+                    d.TenNguoiDung,
+                    np.DanhSachNhomPhanQuyenID
+                FROM HT_CanBo c
+                LEFT JOIN HT_NguoiDung d ON c.CanBoID = d.CanBoID
+                LEFT JOIN NhomPhanQuyen_CTE np ON d.NguoiDungID = np.NguoiDungID
+                WHERE c.CanBoID = @CanBoID;
+            END;
+            GO
+
+        --GetByEmail of CanBo
+            GO
+            ALTER PROC v1_HeThong_CanBo_GetByEmail
+                @Email NVARCHAR (200)
+            AS
+            BEGIN
+                SELECT * FROM HT_CanBo WHERE Email = @Email
+            END
+            go
+        
+        --GetByName of CanBo
+            CREATE PROC v1_HeThong_CanBo_GetByName
+                @TenCanBo nvarchar (100)
+            as
+            BEGIN
+                SELECT * FROM HT_CanBo WHERE TenCanBo = @TenCanBo
+            ENd 
+            go  
+
+        --Add new Officer to HT_CanBo table                                  
+            ALTER PROCEDURE v1_HeThong_CanBo_Add
+                @TenCanBo NVARCHAR(255),
+                @CoQuanID INT,
+                @TenNguoiDung NVARCHAR(255),
+                @MatKhau NVARCHAR(255) = NULL, -- Optional
+                @NgaySinh DATE = NULL, 
+                @GioiTinh NVARCHAR(10) = NULL, 
+                @DiaChi NVARCHAR(255) = NULL, 
+                @Email NVARCHAR(255) = NULL, 
+                @DienThoai NVARCHAR(50) = NULL, 
+                @TrangThai INT = NULL,
+                @DanhSachNhomPhanQuyenID NVARCHAR(MAX) = NULL -- Optional list of permission groups
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                DECLARE @CanBoID INT, @NguoiDungID INT;
+
+                -- Step 1: Insert into HT_CanBo
+                INSERT INTO HT_CanBo (TenCanBo, NgaySinh, GioiTinh, DiaChi, Email, DienThoai, TrangThai, CoQuanID)
+                VALUES (@TenCanBo, @NgaySinh, @GioiTinh, @DiaChi, @Email, @DienThoai, @TrangThai, @CoQuanID);
+                
+                SET @CanBoID = SCOPE_IDENTITY(); -- Get the newly inserted CanBoID
+
+                -- Step 2: Insert into HT_NguoiDung
+                INSERT INTO HT_NguoiDung (TenNguoiDung, MatKhau, CanBoID)
+                VALUES (@TenNguoiDung, @MatKhau, @CanBoID);
+                
+                SET @NguoiDungID = SCOPE_IDENTITY(); -- Get the newly inserted NguoiDungID
+
+                -- Step 3: Insert into HT_NhomNguoiDung if permissions are provided
+                IF @DanhSachNhomPhanQuyenID IS NOT NULL
+                BEGIN
+                    DECLARE @XML XML = '<IDs><ID>' + REPLACE(@DanhSachNhomPhanQuyenID, ',', '</ID><ID>') + '</ID></IDs>';
+
+                    INSERT INTO HT_NhomNguoiDung (NguoiDungID, NhomPhanQuyenID)
+                    SELECT @NguoiDungID, T.ID
+                    FROM (SELECT x.value('.', 'INT') AS ID FROM @XML.nodes('/IDs/ID') AS T(x)) AS T;
+                END
+            END;
+
+        --Update Officer in HT_CanBo table
+            ALTER PROCEDURE v1_HeThong_CanBo_Update
+                @CanBoID INT,
+                @TenCanBo NVARCHAR(255),
+                @NgaySinh DATE = NULL, 
+                @GioiTinh NVARCHAR(10) = NULL, 
+                @DiaChi NVARCHAR(255) = NULL, 
+                @Email NVARCHAR(255), -- BẮT BUỘC
+                @DienThoai NVARCHAR(50) = NULL, 
+                @TrangThai INT,
+                @CoQuanID INT, -- BẮT BUỘC
+                @TenNguoiDung NVARCHAR(255) = NULL,
+                @MatKhau NVARCHAR(255) = NULL, -- Optional
+                @DanhSachNhomPhanQuyenID NVARCHAR(MAX) = NULL -- Optional list of permission groups
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                DECLARE @NguoiDungID INT;
+
+                -- Kiểm tra bắt buộc: Nếu @Email hoặc @CoQuanID NULL thì không thực hiện
+                IF @Email IS NULL OR @CoQuanID IS NULL
+                BEGIN
+                    RETURN;
+                END;
+
+                -- Lấy NguoiDungID từ CanBoID để đảm bảo đúng liên kết
+                SELECT @NguoiDungID = NguoiDungID FROM HT_NguoiDung WHERE CanBoID = @CanBoID;
+
+                -- Nếu không tìm thấy tài khoản người dùng, thoát
+                IF @NguoiDungID IS NULL
+                BEGIN
+                    RETURN;
+                END
+
+                -- Cập nhật thông tin bảng HT_CanBo
+                UPDATE HT_CanBo
+                SET 
+                    TenCanBo = ISNULL(@TenCanBo, TenCanBo),
+                    NgaySinh = ISNULL(@NgaySinh, NgaySinh),
+                    GioiTinh = ISNULL(@GioiTinh, GioiTinh),
+                    DiaChi = ISNULL(@DiaChi, DiaChi),
+                    Email = @Email, -- LUÔN CẬP NHẬT
+                    DienThoai = ISNULL(@DienThoai, DienThoai),
+                    TrangThai = ISNULL(@TrangThai, TrangThai),
+                    CoQuanID = @CoQuanID -- LUÔN CẬP NHẬT
+                WHERE CanBoID = @CanBoID;
+
+                -- Cập nhật thông tin bảng HT_NguoiDung
+                UPDATE HT_NguoiDung
+                SET 
+                    TenNguoiDung = ISNULL(@TenNguoiDung, TenNguoiDung),
+                    MatKhau = ISNULL(@MatKhau, MatKhau)
+                WHERE NguoiDungID = @NguoiDungID;
+
+                -- Xử lý cập nhật nhóm phân quyền
+                IF @DanhSachNhomPhanQuyenID IS NOT NULL
+                BEGIN
+                    -- Xóa toàn bộ nhóm phân quyền hiện tại của người dùng
+                    DELETE FROM HT_NhomNguoiDung WHERE NguoiDungID = @NguoiDungID;
+
+                    -- Nếu danh sách không rỗng thì thêm nhóm mới
+                    IF LEN(@DanhSachNhomPhanQuyenID) > 0
+                    BEGIN
+                        DECLARE @XML XML = '<IDs><ID>' + REPLACE(@DanhSachNhomPhanQuyenID, ',', '</ID><ID>') + '</ID></IDs>';
+
+                        INSERT INTO HT_NhomNguoiDung (NguoiDungID, NhomPhanQuyenID)
+                        SELECT @NguoiDungID, T.ID
+                        FROM (SELECT x.value('.', 'INT') AS ID FROM @XML.nodes('/IDs/ID') AS T(x)) AS T;
+                    END
+                END
+            END;
+
+
+        --region Delete procedure of HT_CanBo table
+            CREATE PROCEDURE v1_HeThong_CanBo_Delete
+                @CanBoID INT
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                -- Lấy NguoiDungID từ CanBoID
+                DECLARE @NguoiDungID INT;
+                SELECT @NguoiDungID = NguoiDungID FROM HT_NguoiDung WHERE CanBoID = @CanBoID;
+
+                -- Nếu có tài khoản NguoiDung, xóa các dữ liệu liên quan
+                IF @NguoiDungID IS NOT NULL
+                BEGIN
+                    -- Xóa lịch sử đăng nhập trong HT_PhienDangNhap
+                    DELETE FROM HT_PhienDangNhap WHERE NguoiDungID = @NguoiDungID;
+
+                    -- Xóa nhóm người dùng trong HT_NhomNguoiDung
+                    DELETE FROM HT_NhomNguoiDung WHERE NguoiDungID = @NguoiDungID;
+
+                    -- Xóa tài khoản người dùng trong HT_NguoiDung
+                    DELETE FROM HT_NguoiDung WHERE NguoiDungID = @NguoiDungID;
+                END
+
+                -- Cuối cùng, xóa cán bộ trong HT_CanBo
+                DELETE FROM HT_CanBo WHERE CanBoID = @CanBoID;
+            END;
+
+
     --region Stored procedures of Users
         CREATE TABLE HT_NguoiDung (	
             NguoiDungID INT PRIMARY KEY IDENTITY(1,1),
             TenNguoiDung NVARCHAR(50),
-            TenDayDu NVARCHAR (100) null,
-            Email NVARCHAR(50),
-            MatKhau NVARCHAR(100),
-            TrangThai BIT ,
+            MatKhau nvarchar(100),
             GhiChu NVARCHAR(100),
+            CanBoID INT NOT NULL,
+            CONSTRAINT UQ_NguoiDung_CanBoID UNIQUE (CanBoID),
+            CONSTRAINT FK_NguoiDung_CanBo FOREIGN KEY (CanBoID)
+            REFERENCES DM_CanBo (CanBoID)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
         );
-        GO
+
+        SET IDENTITY_INSERT HT_NguoiDung ON;
+        INSERT INTO HT_NguoiDung (NguoiDungID, TenNguoiDung, MatKhau, GhiChu, CanBoID) 
+        VALUES 
+        (1, 'admin', 'admin', N'Tài khoản quản trị hệ thống', 1),
+        (2, 'phamminhhuy', 'passHuy@85', N'Tài khoản của Phạm Minh Huy', 2),
+        (3, 'lethithoa', 'passHoa@90', N'Tài khoản của Lê Thị Hoa', 3),
+        (4, 'nguyenquangduong', 'passDung@88', N'Tài khoản của Nguyễn Quang Dũng', 4),
+        (5, 'tranthimai', 'passMai@92', N'Tài khoản của Trần Thị Mai', 5),
+        (6, 'dovantuan', 'passTuan@87', N'Tài khoản của Đỗ Văn Tuấn', 6),
+        (7, 'vuthilan', 'passLan@93', N'Tài khoản của Vũ Thị Lan', 7),
+        (8, 'buihongnhung', 'passNhung@91', N'Tài khoản của Bùi Hồng Nhung', 8),
+        (9, 'hoquangminh', 'passMinh@89', N'Tài khoản của Hồ Quang Minh', 9),
+        (10, 'phamthingoc', 'passNgoc@94', N'Tài khoản của Phạm Thị Ngọc', 10);
+        SET IDENTITY_INSERT HT_NguoiDung OFF;
 
         --Get All Users
+            GO
             CREATE PROCEDURE NguoiDung_GetListPaging
                 @TenNguoiDung NVARCHAR(50) = NULL, -- Updated to match the column size
                 @PageNumber INT = 1,
@@ -1307,19 +1636,7 @@
             BEGIN
                 SELECT * FROM HT_NguoiDung WHERE NguoiDungID = @NguoiDungID;
             END
-            GO
-        --Get by Email
-            CREATE PROCEDURE NguoiDung_GetByEmail
-                @Email NVARCHAR(255)
-            AS
-            BEGIN
-                SET NOCOUNT ON;
-                
-                SELECT * FROM HT_NguoiDung
-                WHERE Email = @Email;
-                SET NOCOUNT OFF;
-            END;
-            GO
+            GO          
         --Create User
             CREATE PROCEDURE NguoiDung_Create
                 @TenNguoiDung NVARCHAR(50),
@@ -1388,7 +1705,20 @@
             TenNhomPhanQuyen NVARCHAR(50),
             MoTa NVARCHAR(100)
         );
-        GO
+            GO
+            ALTER PROC [dbo].[NhomPhanQuyen_GetAllUsersInAuthorizationGroup]
+                @NhomPhanQuyenID INT
+            AS
+            BEGIN
+                SELECT b.TenNguoiDung, a.TenCanBo, a.CoQuanID FROM HT_CanBo a 
+                LEFT JOIN HT_NguoiDung b on a.CanBoID = b.CanBoID 
+                LEFT JOIN HT_NhomNguoiDung c ON b.NguoiDungID = c.NguoiDungID 
+                LEFT JOIN HT_NhomPhanQuyen d ON c.NhomPhanQuyenID = d.NhomPhanQuyenID 
+                WHERE d.NhomPhanQuyenID = @NhomPhanQuyenID
+            END
+            GO
+
+
         --Get All Group
             ALTER  PROCEDURE NhomPhanQuyen_GetListPaging
                 @TenNhomPhanQuyen NVARCHAR(50) = NULL, -- Lọc theo tên nhóm phân quyền (tùy chọn)
@@ -1644,7 +1974,7 @@
             WHERE u.TenNguoiDung = @TenNguoiDung
         END
         GO	
-
+        
         /*Procedure for checking input data*/
         CREATE PROC NhomChucNang_GetFunctionInGroupByFunctionID
             @ChucNangID int
@@ -3236,13 +3566,6 @@
 
 
     --region Insert records into  Authorization Management
-    -- Thêm người dùng
-    INSERT INTO HT_NguoiDung (TenNguoiDung, Email, MatKhau  , TrangThai, GhiChu)
-    VALUES
-    ('admin', 'admin@example.com', 'admin', 1, 'Admin user'),
-    ('user1', 'user1@example.com', 'user1', 1, 'Regular user');
-    GO	
-
     --Thêm chức năng
     INSERT INTO HT_ChucNang (MoTa,TenChucNang )
         VALUES ('ManageUsers', N'Quản lý người dùng'),
@@ -3267,7 +3590,15 @@
     INSERT INTO HT_NhomNguoiDung (NguoiDungID, NhomPhanQuyenID)
     VALUES
     (1, 1),  -- admin vào AdminGroup
-    (2, 2);  -- user1 vào UserGroup
+    (2, 2),
+    (3, 2),
+    (4, 2),
+    (5, 2),
+    (6, 2),
+    (7, 2),
+    (8, 2),
+    (9, 2),  -- user1 vào UserGroup
+    (10, 2)
     GO	
 
 

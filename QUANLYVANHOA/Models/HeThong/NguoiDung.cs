@@ -10,20 +10,14 @@ namespace QUANLYVANHOA.Models.HeThong
         [JsonPropertyName("TenNguoiDung")]
         public string TenNguoiDung { get; set; }
 
-        [JsonPropertyName("TenDayDu")]
-        public string? TenDayDu { get; set; }// alow null
-
-        [JsonPropertyName("Email")]
-        public string Email { get; set; }
-
         [JsonPropertyName("MatKhau")]
         public string MatKhau { get; set; }
 
-        [JsonPropertyName("TrangThai")]
-        public bool TrangThai { get; set; }
-
         [JsonPropertyName("GhiChu")]
         public string? GhiChu { get; set; }
+
+        [JsonPropertyName("CanBoID")]
+        public  int  CanBoID { get; set; }
 
     }
 

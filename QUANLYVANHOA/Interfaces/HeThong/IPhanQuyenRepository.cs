@@ -2,7 +2,7 @@
 using QUANLYVANHOA.Core.DTO;
 using QUANLYVANHOA.Models.HeThong;
 
-namespace QUANLYVANHOA.Interfaces
+namespace QUANLYVANHOA.Interfaces.HeThong
 {
     public interface IPhanQuyenRepository
     {

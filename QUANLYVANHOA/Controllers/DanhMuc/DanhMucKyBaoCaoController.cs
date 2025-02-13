@@ -18,7 +18,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _kyBaoCaoRepository = kyBaoCaoRepository;
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý kỳ báo cáo")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyKyBaoCao)]
         [HttpGet("DanhSachKyBaoCao")]
         public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
         {
@@ -59,7 +59,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý kỳ báo cáo")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyKyBaoCao)]
         [HttpGet("TimKiemThongTinKyBaoCao")]
         public async Task<IActionResult> GetByID(int id)
         {
@@ -78,7 +78,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("ThemMoiKyBaoCao")]
-        [CustomAuthorize(Quyen.Them, "Quản lý kỳ báo cáo")]
+        [CustomAuthorize(QuyenEnums.Them, ChucNangEnums.QuanLyKyBaoCao)]
         public async Task<IActionResult> Insert([FromBody] DanhMucKyBaoCaoModelInsert model)
         {
             var existingKyBaoCaoName = await _kyBaoCaoRepository.GetAll(model.TenKyBaoCao, 1, 20);
@@ -112,7 +112,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("CapNhatKyBaoCao")]
-        [CustomAuthorize(Quyen.Sua, "Quản lý kỳ báo cáo")]
+        [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyKyBaoCao)]
         public async Task<IActionResult> Update(DanhMucKyBaoCaoModelUpdate kyBaoCao)
         {
             var existingKyBaoCaoName = await _kyBaoCaoRepository.GetAll(kyBaoCao.TenKyBaoCao, 1, 20);
@@ -142,7 +142,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("XoaKyBaoCao")]
-        [CustomAuthorize(Quyen.Xoa, "Quản lý kỳ báo cáo")]
+        [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyKyBaoCao)]
         public async Task<IActionResult> Delete(int id)
         {
             if (id <= 0)

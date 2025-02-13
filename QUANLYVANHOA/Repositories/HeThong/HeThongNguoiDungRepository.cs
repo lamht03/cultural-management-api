@@ -40,10 +40,10 @@ namespace QUANLYVANHOA.Repositories.HeThong
                             {
                                 NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
                                 TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
-                                TenDayDu = !reader.IsDBNull(reader.GetOrdinal("TenDayDu")) ? reader.GetString(reader.GetOrdinal("TenDayDu")) : null,
-                                Email = reader.GetString(reader.GetOrdinal("Email")),
-                                MatKhau = reader.GetString(reader.GetOrdinal("MatKhau")),
-                                TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
+                                //TenDayDu = !reader.IsDBNull(reader.GetOrdinal("TenDayDu")) ? reader.GetString(reader.GetOrdinal("TenDayDu")) : null,
+                                //Email = reader.GetString(reader.GetOrdinal("Email")),
+                                //MatKhau = reader.GetString(reader.GetOrdinal("MatKhau")),
+                                //TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
                                 GhiChu = !reader.IsDBNull(reader.GetOrdinal("GhiChu")) ? reader.GetString(reader.GetOrdinal("GhiChu")) : null,
                             });
                         }
@@ -80,42 +80,10 @@ namespace QUANLYVANHOA.Repositories.HeThong
                             {
                                 NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
                                 TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
-                                TenDayDu = !reader.IsDBNull(reader.GetOrdinal("TenDayDu")) ? reader.GetString(reader.GetOrdinal("TenDayDu")) : null,
-                                Email = reader.GetString(reader.GetOrdinal("Email")),
-                                MatKhau = reader.GetString(reader.GetOrdinal("MatKhau")),
-                                TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
-                                GhiChu = !reader.IsDBNull(reader.GetOrdinal("GhiChu")) ? reader.GetString(reader.GetOrdinal("GhiChu")) : null
-                            };
-                        }
-                    }
-                }
-            }
-
-            return user;
-        }
-
-        public async Task<NguoiDung> LayTheoEmail(string email)
-        {
-            NguoiDung user = null;
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                using (var cmd = new SqlCommand("NguoiDung_GetByEmail", connection))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@Email", email);
-                    await connection.OpenAsync();
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        if (await reader.ReadAsync())
-                        {
-                            user = new NguoiDung
-                            {
-                                NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
-                                TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
-                                TenDayDu = !reader.IsDBNull(reader.GetOrdinal("TenDayDu")) ? reader.GetString(reader.GetOrdinal("TenDayDu")) : null,
-                                Email = reader.GetString(reader.GetOrdinal("Email")),
-                                MatKhau = reader.GetString(reader.GetOrdinal("MatKhau")),
-                                TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
+                                //TenDayDu = !reader.IsDBNull(reader.GetOrdinal("TenDayDu")) ? reader.GetString(reader.GetOrdinal("TenDayDu")) : null,
+                                //Email = reader.GetString(reader.GetOrdinal("Email")),
+                                //MatKhau = reader.GetString(reader.GetOrdinal("MatKhau")),
+                                //TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
                                 GhiChu = !reader.IsDBNull(reader.GetOrdinal("GhiChu")) ? reader.GetString(reader.GetOrdinal("GhiChu")) : null
                             };
                         }
@@ -127,64 +95,65 @@ namespace QUANLYVANHOA.Repositories.HeThong
         }
 
 
-        public async Task<int> TaoNguoiDungMoi(NguoiDungInsertModel user)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                using (var cmd = new SqlCommand("NguoiDung_Create", connection))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@TenNguoiDung", user.TenNguoiDung);
-                    cmd.Parameters.AddWithValue("@TenDayDu", user.TenDayDu);
-                    cmd.Parameters.AddWithValue("@Email", user.Email);
-                    cmd.Parameters.AddWithValue("@MatKhau", user.MatKhau);
-                    cmd.Parameters.AddWithValue("@TrangThai", user.TrangThai);
-                    cmd.Parameters.AddWithValue("@GhiChu", user.GhiChu);
-                    await connection.OpenAsync();
-                    return await cmd.ExecuteNonQueryAsync();
-                }
-            }
-        }
 
-        public async Task<int> DangKyTaiKhoan(RegisterModel user)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                using (var cmd = new SqlCommand("NguoiDung_Create", connection))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@TenNguoiDung", user.TenNguoiDung);
-                    cmd.Parameters.AddWithValue("@TenDayDu", user.TenDayDu);
-                    cmd.Parameters.AddWithValue("@Email", user.Email);
-                    cmd.Parameters.AddWithValue("@MatKhau", user.MatKhau);
-                    cmd.Parameters.AddWithValue("@TrangThai", user.TrangThai);
-                    cmd.Parameters.AddWithValue("@GhiChu", user.GhiChu);
-                    await connection.OpenAsync();
-                    return await cmd.ExecuteNonQueryAsync();
+        //public async Task<int> TaoNguoiDungMoi(NguoiDungInsertModel user)
+        //{
+        //    using (var connection = new SqlConnection(_connectionString))
+        //    {
+        //        using (var cmd = new SqlCommand("NguoiDung_Create", connection))
+        //        {
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            cmd.Parameters.AddWithValue("@TenNguoiDung", user.TenNguoiDung);
+        //            cmd.Parameters.AddWithValue("@TenDayDu", user.TenDayDu);
+        //            cmd.Parameters.AddWithValue("@Email", user.Email);
+        //            cmd.Parameters.AddWithValue("@MatKhau", user.MatKhau);
+        //            cmd.Parameters.AddWithValue("@TrangThai", user.TrangThai);
+        //            cmd.Parameters.AddWithValue("@GhiChu", user.GhiChu);
+        //            await connection.OpenAsync();
+        //            return await cmd.ExecuteNonQueryAsync();
+        //        }
+        //    }
+        //}
 
-                }
-            }
-        }
+        //public async Task<int> DangKyTaiKhoan(RegisterModel user)
+        //{
+        //    using (var connection = new SqlConnection(_connectionString))
+        //    {
+        //        using (var cmd = new SqlCommand("NguoiDung_Create", connection))
+        //        {
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            cmd.Parameters.AddWithValue("@TenNguoiDung", user.TenNguoiDung);
+        //            cmd.Parameters.AddWithValue("@TenDayDu", user.TenDayDu);
+        //            cmd.Parameters.AddWithValue("@Email", user.Email);
+        //            cmd.Parameters.AddWithValue("@MatKhau", user.MatKhau);
+        //            cmd.Parameters.AddWithValue("@TrangThai", user.TrangThai);
+        //            cmd.Parameters.AddWithValue("@GhiChu", user.GhiChu);
+        //            await connection.OpenAsync();
+        //            return await cmd.ExecuteNonQueryAsync();
 
-        public async Task<int> SuaThongTinNguoiDung(NguoiDungUpdateModel user)
-        {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                using (var cmd = new SqlCommand("NguoiDung_Update", connection))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    cmd.Parameters.AddWithValue("@NguoiDungID", user.NguoiDungID);
-                    cmd.Parameters.AddWithValue("@TenNguoiDung", user.TenNguoiDung);
-                    cmd.Parameters.AddWithValue("@TenDayDu", user.TenDayDu);
-                    cmd.Parameters.AddWithValue("@Email", user.Email);
-                    cmd.Parameters.AddWithValue("@MatKhau", user.MatKhau);
-                    cmd.Parameters.AddWithValue("@TrangThai", user.TrangThai);
-                    cmd.Parameters.AddWithValue("@GhiChu", user.GhiChu);
-                    await connection.OpenAsync();
-                    return await cmd.ExecuteNonQueryAsync();
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
+
+        //public async Task<int> SuaThongTinNguoiDung(NguoiDungUpdateModel user)
+        //{
+        //    using (var connection = new SqlConnection(_connectionString))
+        //    {
+        //        using (var cmd = new SqlCommand("NguoiDung_Update", connection))
+        //        {
+        //            cmd.CommandType = CommandType.StoredProcedure;
+        //            cmd.Parameters.AddWithValue("@NguoiDungID", user.NguoiDungID);
+        //            cmd.Parameters.AddWithValue("@TenNguoiDung", user.TenNguoiDung);
+        //            cmd.Parameters.AddWithValue("@TenDayDu", user.TenDayDu);
+        //            cmd.Parameters.AddWithValue("@Email", user.Email);
+        //            cmd.Parameters.AddWithValue("@MatKhau", user.MatKhau);
+        //            cmd.Parameters.AddWithValue("@TrangThai", user.TrangThai);
+        //            cmd.Parameters.AddWithValue("@GhiChu", user.GhiChu);
+        //            await connection.OpenAsync();
+        //            return await cmd.ExecuteNonQueryAsync();
+        //        }
+        //    }
+        //}
 
 
         public async Task<int> XoaThongTinNguoiDung(int NguoiDungID)
@@ -222,11 +191,6 @@ namespace QUANLYVANHOA.Repositories.HeThong
                             {
                                 NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
                                 TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
-                                TenDayDu = !reader.IsDBNull(reader.GetOrdinal("TenDayDu")) ? reader.GetString(reader.GetOrdinal("TenDayDu")) : null,
-                                Email = reader.GetString(reader.GetOrdinal("Email")),
-                                MatKhau = reader.GetString(reader.GetOrdinal("MatKhau")),
-                                TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
-                                GhiChu = !reader.IsDBNull(reader.GetOrdinal("GhiChu")) ? reader.GetString(reader.GetOrdinal("GhiChu")) : null
                             };
                         }
                     }

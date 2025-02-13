@@ -21,7 +21,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _loaiMauPhieuRepository = loaiMauPhieuRepository;
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý loại mẫu phiếu")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyLoaiMauPhieu)]
         [HttpGet("DanhSachLoaiMauPhieu")]
         public async Task<IActionResult> GetAll(string? name,string? note ,int pageNumber = 1, int pageSize = 20)
         {
@@ -77,7 +77,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpGet("TimKiemLoaiMauPhieuTheoID")]
-        [CustomAuthorize(Quyen.Xem, "Quản lý loại mẫu phiếu")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyLoaiMauPhieu)]
         public async Task<IActionResult> GetByID(int id)
         {
             if (id <= 0)
@@ -93,7 +93,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("ThemMoiLoaiMauPhieu")]
-        [CustomAuthorize(Quyen.Them, "Quản lý loại mẫu phiếu")]
+        [CustomAuthorize(QuyenEnums.Them, ChucNangEnums.QuanLyLoaiMauPhieu)]
         public async Task<IActionResult> Insert([FromBody] DanhMucLoaiMauPhieuModelInsert model)
         {
 
@@ -143,7 +143,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("CapNhapThongTinLoaiMauPhieu")]
-        [CustomAuthorize(Quyen.Sua, "Quản lý loại mẫu phiếu")]
+        [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyLoaiMauPhieu)]
         public async Task<IActionResult> Update([FromBody] DanhMucLoaiMauPhieuModelUpdate model)
         {
             var existingLoaiMauPhieuName = await _loaiMauPhieuRepository.GetAll(model.TenLoaiMauPhieu,null, 1, 20);
@@ -184,7 +184,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         }
 
         [HttpPost("XoaThongTinLoaiMauPhieu")]
-        [CustomAuthorize(Quyen.Xoa, "Quản lý loại mẫu phiếu")]
+        [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyLoaiMauPhieu)]
         public async Task<IActionResult> Delete(int id)
         {
             var existingLoaiMauPhieu = await _loaiMauPhieuRepository.GetByID(id);

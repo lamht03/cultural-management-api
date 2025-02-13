@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QUANLYVANHOA.Core.Enums;
-using QUANLYVANHOA.Interfaces;
+using QUANLYVANHOA.Interfaces.HeThong;
 using QUANLYVANHOA.Models.HeThong;
 using System.Diagnostics.Metrics;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QUANLYVANHOA.Controllers.HeThong
 {
-    [Route("api/v1/PhanQuyen/")]
+    [Route("api/v1/HeThongPhanQuyen/")]
     [ApiController]
 
     public class PhanQuyenController : ControllerBase
@@ -21,7 +21,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
         #region Controller of Function
         [HttpGet("DanhSachChucNang")]
-        [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> GetAllFunction(string? functionName, int pageNumber = 1, int pageSize = 20)
         {
             if (!string.IsNullOrWhiteSpace(functionName))
@@ -74,7 +74,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
 
         [HttpGet("LayChucNangTheoID")]
-        [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> GetFunctionByID(int functionId)
         {
             var function = await _permissionManagement.GetFunctionByID(functionId);
@@ -96,7 +96,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             });
         }
 
-        [CustomAuthorize(Quyen.Them, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Them, ChucNangEnums.QuanLyUyQuyen)]
         [HttpPost("ThemMoiChucNang")]
         public async Task<IActionResult> CreateFunction([FromBody] ChucNangInsertModel function)
         {
@@ -153,7 +153,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
         [HttpPost("CapNhatThongTinChucNang")]
-        [CustomAuthorize(Quyen.Sua, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> UpdateFunction([FromBody] ChucNangUpdateModel function)
         {
             if (!string.IsNullOrWhiteSpace(function.TenChucNang))
@@ -220,7 +220,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
         [HttpPost("XoaChucNang")]
-        [CustomAuthorize(Quyen.Xoa, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> DeleteFunction(int functionId)
         {
             var existingFunction = await _permissionManagement.GetFunctionByID(functionId);
@@ -254,7 +254,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
         #region Controller of Group
         [HttpGet("DanhSachNhomPhanQuyen")]
-        [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> GetAll(string? tenNhomPhanQuyen,int? canBoID, int pageNumber = 1, int pageSize = 20)
         {
             if (!string.IsNullOrWhiteSpace(tenNhomPhanQuyen))
@@ -306,7 +306,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
         [HttpGet("LayNhomPhanQuyenTheoID")]
-        [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> GetGroupByID(int NhomPhanQuyenID)
         {
             var group = await _permissionManagement.GetGroupByID(NhomPhanQuyenID);
@@ -328,7 +328,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             });
         }
 
-        [CustomAuthorize(Quyen.Them, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Them, ChucNangEnums.QuanLyUyQuyen)]
         [HttpPost("ThemMoiNhomPhanQuyen")]
         public async Task<IActionResult> CreateGroup([FromBody] NhomPhanQuyenInsertModel group)
         {
@@ -385,7 +385,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
         [HttpPost("CapNhatNhomPhanQuyen")]
-        [CustomAuthorize(Quyen.Sua, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> UpdateGroup([FromBody] NhomPhanQuyenUpdateModel group)
         {
             var existingGroup = await _permissionManagement.GetGroupByID(group.NhomPhanQuyenID);
@@ -439,7 +439,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
         [HttpPost("XoaNhomPhanQuyen")]
-        [CustomAuthorize(Quyen.Xoa, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> DeleteGroup(int NhomPhanQuyenID)
         {
             var existingGroup = await _permissionManagement.GetGroupByID(NhomPhanQuyenID);
@@ -472,7 +472,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         #endregion
 
         #region Controller of FunctionInGroup
-        [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyUyQuyen)]
         [HttpGet("LayDanhSachChucNangTrongNhomPhanQuyenTheoNhomPhanQuyenID")]
         public async Task<IActionResult> GetAllFunctionInGroup(int nhomPhanQuyenID)
         {
@@ -512,7 +512,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
 
         [HttpPost("ThemChucNangVaoNhomPhanQuyen")]
-        [CustomAuthorize(Quyen.Them, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Them, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> InsertFunctionInGroup([FromBody] NhomChucNangInsertModel model)
         {
             var existingFunction = await _permissionManagement.GetFunctionByID(model.ChucNangID);
@@ -556,7 +556,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
         //[HttpPost("CapNhatQuyenTruyCapChucNangTrongNhomPhanQuyen")]
-        //[CustomAuthorize(4, "Quản lý ủy quyền")]
+        //[CustomAuthorize(4, ChucNangEnums.QuanLyUyQuyen)]
         //public async Task<IActionResult> UpdateFunctionInGroup([FromBody] SysFunctionInGroupUpdateModel model)
         //{
         //    var existingFunctionInGroup = await _permissionManagement.GetFunctionInGroupByID(model.FunctionInNhomPhanQuyenID);
@@ -570,7 +570,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         //}
 
         [HttpPost("XoaChucNangKhoiNhomPhanQuyen")]
-        [CustomAuthorize(Quyen.Xoa, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> DeleteFunctionInGroup(NhomChucNangDeleteModel model)
         {
             var existingFunctionInGroup = await _permissionManagement.GetFunctionInGroupByFunctionID(model.ChucNangID);
@@ -593,7 +593,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
         #region Controller of UserInGroup
         [HttpGet("LayDanhSachNguoiDungTrongNhomPhanQuyenTheoNhomPhanQuyenID")]
-        [CustomAuthorize(Quyen.Xem, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> GetAllUserInGroup(int nhomPhanQuyenID)
         {
             var existingGroup = await _permissionManagement.GetGroupByID(nhomPhanQuyenID);
@@ -616,7 +616,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
         //[HttpGet("GetUserInGroupByID")]
-        //[CustomAuthorize(1, "Quản lý ủy quyền")]
+        //[CustomAuthorize(1, ChucNangEnums.QuanLyUyQuyen)]
         //public async Task<IActionResult> GetUserInGroupByID(int id)
         //{
         //    var userInGroup = await _permissionManagement.GetUserInGroupByID(id);
@@ -642,7 +642,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         //}
 
         [HttpPost("ThemNguoiDungVaoNhomPhanQuyen")]
-        [CustomAuthorize(Quyen.Them, "Quản lý ủy quyền")]
+        [CustomAuthorize(QuyenEnums.Them, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> InsertUserInGroup([FromBody] ThemNguoiDungVaoNhomPhanQuyenModel model)
         {
             var existingUser = await _permissionManagement.GetFunctionByID(model.NguoiDungID);
@@ -666,9 +666,13 @@ namespace QUANLYVANHOA.Controllers.HeThong
             }
 
             var exitingUserInGroup = await _permissionManagement.GetUserInGroupByUserID(model.NguoiDungID);
-            if (exitingUserInGroup != null)
+
+            foreach (var item in exitingUserInGroup)
             {
-                return Ok(new { Status = 0, Message = "Đã có người dùng trong nhóm phân quyền" });
+                if (item.NhomPhanQuyenID == model.NhomPhanQuyenID)
+                {
+                    return Ok(new { Status = 0, Message = "Người dùng đã được thêm vào nhóm phân quyền này rồi !" });
+                }
             }
 
             if (model.NguoiDungID <= 0 || model.NhomPhanQuyenID <= 0)
@@ -695,7 +699,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         //}
 
         [HttpPost("XoaNguoiDungKhoiNhomPhanQuyen")]
-        [CustomAuthorize(Quyen.Xoa, "ManageAuthorization")]
+        [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> DeleteUserInGroup(XoaNguoiDungKhoiNhomPhanQuyenModel model)
         {
             var existingUserInGroup = await _permissionManagement.GetUserInGroupByUserID(model.NguoiDungID);

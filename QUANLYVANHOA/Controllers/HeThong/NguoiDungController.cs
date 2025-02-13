@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace QUANLYVANHOA.Controllers.HeThong
 {
-    [Route("api/v1/NguoiDung/")]
+    [Route("api/v1/HeThongNguoiDung/")]
     [ApiController]
     public class NguoiDungController : ControllerBase
     {
@@ -28,7 +28,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             _permissionManagementRepository = userInGroupRepository;
         }
 
-        [CustomAuthorize(Quyen.Xem /*| Quyen.Them |Quyen.Sua | Quyen.Xoa*/, "Quản lý người dùng")]
+        [CustomAuthorize(QuyenEnums.Xem /*| Quyen.Them |Quyen.Sua | Quyen.Xoa*/, ChucNangEnums.QuanLyNguoiDung)]
         [HttpGet("DanhSachNguoiDung")]
         public async Task<IActionResult> GetAll(string? userName, int pageNumber = 1, int pageSize = 20)
         {
@@ -81,7 +81,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý người dùng")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyNguoiDung)]
         [HttpGet("TimKiemNguoiDungTheoID")]
         public async Task<IActionResult> GetByID(int userId)
         {
@@ -105,215 +105,197 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [CustomAuthorize(Quyen.Them, "Quản lý người dùng")]
-        [HttpPost("ThemTaiKhoanNguoiDung")]
-        public async Task<IActionResult> Create([FromBody] NguoiDungInsertModel user)
-        {
-            if (string.IsNullOrWhiteSpace(user.TenNguoiDung))
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Invalid username. The username username is required."
-                });
-            }
+        //[CustomAuthorize(Quyen.Them, "Quản lý người dùng")]
+        //[HttpPost("ThemTaiKhoanNguoiDung")]
+        //public async Task<IActionResult> Create([FromBody] NguoiDungInsertModel user)
+        //{
+        //    if (string.IsNullOrWhiteSpace(user.TenNguoiDung))
+        //    {
+        //        return BadRequest(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "Invalid username. The username username is required."
+        //        });
+        //    }
 
-            var existingUserName = await _userRepository.LayDanhSachPhanTrang(user.TenNguoiDung, 1, 20);
-            if (existingUserName.Item1.Any())
-            {
-                return BadRequest(new Response { Status = 0, Message = "Username already exists. Please choose a different username." });
-            }
+        //    var existingUserName = await _userRepository.LayDanhSachPhanTrang(user.TenNguoiDung, 1, 20);
+        //    if (existingUserName.Item1.Any())
+        //    {
+        //        return BadRequest(new Response { Status = 0, Message = "Username already exists. Please choose a different username." });
+        //    }
 
-            if (string.IsNullOrWhiteSpace(user.MatKhau) || user.MatKhau.Contains(" "))
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Invalid password. The password must not contain spaces and password is required."
-                });
-            }
+        //    if (string.IsNullOrWhiteSpace(user.MatKhau) || user.MatKhau.Contains(" "))
+        //    {
+        //        return BadRequest(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "Invalid password. The password must not contain spaces and password is required."
+        //        });
+        //    }
 
-            if (user.TenNguoiDung.Length > 50)
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Username cannot exceed 20 characters."
-                });
-            }
+        //    if (user.TenNguoiDung.Length > 50)
+        //    {
+        //        return BadRequest(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "Username cannot exceed 20 characters."
+        //        });
+        //    }
 
-            if (user.MatKhau.Length > 100)
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Password cannot exceed 64 characters."
-                });
-            }
+        //    if (user.MatKhau.Length > 100)
+        //    {
+        //        return BadRequest(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "Password cannot exceed 64 characters."
+        //        });
+        //    }
 
-            if (string.IsNullOrWhiteSpace(user.Email))
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Email is required."
-                });
-            }
+        //    if (string.IsNullOrWhiteSpace(user.Email))
+        //    {
+        //        return BadRequest(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "Email is required."
+        //        });
+        //    }
 
-            // Validate email format
-            if (!IsValidEmail(user.Email))
-            {
-                return BadRequest(new Response { Status = 0, Message = "Invalid email format." });
-            }
+        //    if (user.GhiChu.Length > 100)
+        //    {
+        //        return BadRequest(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "Note cannot exceed 100 characters."
+        //        });
+        //    }
 
-            // Kiểm tra email đã tồn tại trong hệ thống bằng GetByEmailAsync
-            var existingUser = await _userRepository.LayTheoEmail(user.Email);
-            if (existingUser != null)
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Email already exists. Please choose a different email."
-                });
-            }
+        //    int rowsAffected = await _userRepository.TaoNguoiDungMoi(user);
+        //    if (rowsAffected == 0)
+        //    {
+        //        return StatusCode(500, new Response
+        //        {
+        //            Status = 0,
+        //            Message = "An error occurred while creating the user."
+        //        });
+        //    }
 
-
-            if (user.GhiChu.Length > 100)
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Note cannot exceed 100 characters."
-                });
-            }
-
-            int rowsAffected = await _userRepository.TaoNguoiDungMoi(user);
-            if (rowsAffected == 0)
-            {
-                return StatusCode(500, new Response
-                {
-                    Status = 0,
-                    Message = "An error occurred while creating the user."
-                });
-            }
-
-            return Ok(new Response
-            {
-                Status = 1,
-                Message = "User added successfully."
-            });
-        }
+        //    return Ok(new Response
+        //    {
+        //        Status = 1,
+        //        Message = "User added successfully."
+        //    });
+        //}
 
 
-        [CustomAuthorize(Quyen.Sua, "Quản lý người dùng")]
-        [HttpPost("CapNhatThongTinTaiKhoanNguoiDung")]
-        public async Task<IActionResult> Update([FromBody] NguoiDungUpdateModel user)
-        {
+        //[CustomAuthorize(Quyen.Sua, "Quản lý người dùng")]
+        //[HttpPost("CapNhatThongTinTaiKhoanNguoiDung")]
+        //public async Task<IActionResult> Update([FromBody] NguoiDungUpdateModel user)
+        //{
 
-            var existingUser = await _userRepository.LayTheoID(user.NguoiDungID);
-            if (existingUser == null)
-            {
-                return Ok(new Response
-                {
-                    Status = 0,
-                    Message = "User not found."
-                });
-            }
+        //    var existingUser = await _userRepository.LayTheoID(user.NguoiDungID);
+        //    if (existingUser == null)
+        //    {
+        //        return Ok(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "User not found."
+        //        });
+        //    }
 
-            if (existingUser.TenNguoiDung != user.TenNguoiDung)
-            {
-                var existingUserName = await _userRepository.LayDanhSachPhanTrang(user.TenNguoiDung, 1, 20);
-                if (existingUserName.Item1.Any())
-                {
-                    return BadRequest(new Response { Status = 0, Message = "Username already exists. Please choose a different username." });
-                }
-            }
-
-
-            if (user.TenNguoiDung.Contains(" ") || user.TenNguoiDung.Length > 50)
-            {
-                return BadRequest(new Response { Status = 0, Message = "Invalid password. Password must not contain spaces and must be less than 100 characters." });
-            }
-
-            if (user.MatKhau.Contains(" ") || user.MatKhau.Length > 100)
-            {
-                return BadRequest(new Response { Status = 0, Message = "Invalid password. Password must not contain spaces and must be less than 100 characters." });
-            }
-
-            if (string.IsNullOrWhiteSpace(user.TenNguoiDung) || user.TenNguoiDung.Contains(" "))
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Invalid username. The username must not contain spaces and username is required."
-                });
-            }
-
-            if (string.IsNullOrWhiteSpace(user.MatKhau) || user.MatKhau.Contains(" "))
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Invalid password. The password must not contain spaces and password is required."
-                });
-            }
-
-            if (user.TenNguoiDung.Length > 50)
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Username cannot exceed 20 characters."
-                });
-            }
-
-            if (user.MatKhau.Length > 100)
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Password cannot exceed 64 characters."
-                });
-            }
-
-            // Validation for other fields
-            if (string.IsNullOrWhiteSpace(user.Email))
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Email is required."
-                });
-            }
-
-            if (user.GhiChu.Length > 100)
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Note cannot exceed 100 characters."
-                });
-            }
-
-            int rowsAffected = await _userRepository.SuaThongTinNguoiDung(user);
-            if (rowsAffected == 0)
-            {
-                return StatusCode(500, new Response
-                {
-                    Status = 0,
-                    Message = "An error occurred while creating the user."
-                });
-            }
-
-            return Ok(new Response
-            {
-                Status = 1,
-                Message = "User updated successfully."
-            });
-        }
+        //    if (existingUser.TenNguoiDung != user.TenNguoiDung)
+        //    {
+        //        var existingUserName = await _userRepository.LayDanhSachPhanTrang(user.TenNguoiDung, 1, 20);
+        //        if (existingUserName.Item1.Any())
+        //        {
+        //            return BadRequest(new Response { Status = 0, Message = "Username already exists. Please choose a different username." });
+        //        }
+        //    }
 
 
-        [CustomAuthorize(Quyen.Xoa, "Quản lý người dùng")]
+        //    if (user.TenNguoiDung.Contains(" ") || user.TenNguoiDung.Length > 50)
+        //    {
+        //        return BadRequest(new Response { Status = 0, Message = "Invalid password. Password must not contain spaces and must be less than 100 characters." });
+        //    }
+
+        //    if (user.MatKhau.Contains(" ") || user.MatKhau.Length > 100)
+        //    {
+        //        return BadRequest(new Response { Status = 0, Message = "Invalid password. Password must not contain spaces and must be less than 100 characters." });
+        //    }
+
+        //    if (string.IsNullOrWhiteSpace(user.TenNguoiDung) || user.TenNguoiDung.Contains(" "))
+        //    {
+        //        return BadRequest(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "Invalid username. The username must not contain spaces and username is required."
+        //        });
+        //    }
+
+        //    if (string.IsNullOrWhiteSpace(user.MatKhau) || user.MatKhau.Contains(" "))
+        //    {
+        //        return BadRequest(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "Invalid password. The password must not contain spaces and password is required."
+        //        });
+        //    }
+
+        //    if (user.TenNguoiDung.Length > 50)
+        //    {
+        //        return BadRequest(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "Username cannot exceed 20 characters."
+        //        });
+        //    }
+
+        //    if (user.MatKhau.Length > 100)
+        //    {
+        //        return BadRequest(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "Password cannot exceed 64 characters."
+        //        });
+        //    }
+
+        //    // Validation for other fields
+        //    if (string.IsNullOrWhiteSpace(user.Email))
+        //    {
+        //        return BadRequest(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "Email is required."
+        //        });
+        //    }
+
+        //    if (user.GhiChu.Length > 100)
+        //    {
+        //        return BadRequest(new Response
+        //        {
+        //            Status = 0,
+        //            Message = "Note cannot exceed 100 characters."
+        //        });
+        //    }
+
+        //    int rowsAffected = await _userRepository.SuaThongTinNguoiDung(user);
+        //    if (rowsAffected == 0)
+        //    {
+        //        return StatusCode(500, new Response
+        //        {
+        //            Status = 0,
+        //            Message = "An error occurred while creating the user."
+        //        });
+        //    }
+
+        //    return Ok(new Response
+        //    {
+        //        Status = 1,
+        //        Message = "User updated successfully."
+        //    });
+        //}
+
+
+        [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyNguoiDung)]
         [HttpPost("XoaTaiKhoanNguoiDung")]
         public async Task<IActionResult> Delete(int userId)
         {
@@ -389,103 +371,6 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 RefreshToken = refreshToken
             });
         }
-
-
-
-        [HttpPost("DangKi")]
-        public async Task<IActionResult> Register([FromBody] RegisterModel model)
-        {
-
-            // Validate the incoming model
-            if (model == null || string.IsNullOrWhiteSpace(model.TenNguoiDung) || string.IsNullOrWhiteSpace(model.MatKhau) || string.IsNullOrWhiteSpace(model.XacNhanMatKhau))
-            {
-                return BadRequest(new Response { Status = 0, Message = "Username, password, and confirm password are required." });
-            }
-
-            if (model.MatKhau != model.XacNhanMatKhau)
-            {
-                return BadRequest(new Response { Status = 0, Message = "Password and confirm password do not match." });
-            }
-
-            if (model.MatKhau.Contains(" ") || model.MatKhau.Length > 100)
-            {
-                return BadRequest(new Response { Status = 0, Message = "Invalid password. Password must not contain spaces and must be less than 100 characters." });
-            }
-
-            if (model.TenNguoiDung.Contains(" ") || model.TenNguoiDung.Length > 50)
-            {
-                return BadRequest(new Response { Status = 0, Message = "Invalid password. Password must not contain spaces and must be less than 100 characters." });
-            }
-
-            if (string.IsNullOrWhiteSpace(model.Email))
-            {
-                return BadRequest(new Response { Status = 0, Message = "Email is required." });
-            }
-
-            // Validate email format
-            if (!IsValidEmail(model.Email))
-            {
-                return BadRequest(new Response { Status = 0, Message = "Invalid email format." });
-            }
-
-            // Kiểm tra email đã tồn tại trong hệ thống bằng GetByEmailAsync
-            var existingEmail = await _userRepository.LayTheoEmail(model.Email);
-            if (existingEmail != null)
-            {
-                return BadRequest(new Response
-                {
-                    Status = 0,
-                    Message = "Email already exists. Please choose a different email."
-                });
-            }
-
-
-            // Check if the username already exists
-            var existingUser = await _userRepository.LayDanhSachPhanTrang(model.TenNguoiDung, 1, 20);
-            if (existingUser.Item1.Any())
-            {
-                return BadRequest(new Response { Status = 0, Message = "Username already exists. Please choose a different username." });
-            }
-
-            // Call stored procedure to register the user
-            int rowsAffected = await _userRepository.DangKyTaiKhoan(model);
-            if (rowsAffected == 0)
-            {
-                return StatusCode(500, new Response { Status = 0, Message = "An error occurred while registering the user." });
-            }
-
-            // Retrieve the newly created user by username
-            var newUser = await _userRepository.LayDanhSachPhanTrang(model.TenNguoiDung, 1, 20);
-            if (newUser.Item1.Any())
-            {
-                var userInGroupModel = new ThemNguoiDungVaoNhomPhanQuyenModel
-                {
-                    NguoiDungID = newUser.Item1.First().NguoiDungID,  // Use the ID of the newly created user
-                    NhomPhanQuyenID = 2               // Default group ID
-                };
-                int groupRowsAffected = await _permissionManagementRepository.InsertUserInGroup(userInGroupModel);
-                if (groupRowsAffected == 0)
-                {
-                    return StatusCode(500, new Response { Status = 0, Message = "User registered but could not be added to the default group." });
-                }
-            }
-
-            // Success response
-            return Ok(new Response { Status = 1, Message = "User registered successfully." });
-        }
-
-
-
-        // Helper method to validate email format using regex
-        private bool IsValidEmail(string email)
-        {
-            // Biểu thức chính quy phức tạp
-            var emailRegex = @"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$";
-
-            // Kiểm tra xem email có khớp với biểu thức chính quy hay không
-            return Regex.IsMatch(email, emailRegex);
-        }
-
 
 
 

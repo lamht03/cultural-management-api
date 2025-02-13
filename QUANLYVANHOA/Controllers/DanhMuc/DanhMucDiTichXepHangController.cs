@@ -22,7 +22,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _ditichxephangrepository = ditichxephangrepository;
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý di tích xếp hạng")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyDiTichXepHang)]
         [HttpGet("DanhSachDiTichXepHang")]
         public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
         {
@@ -77,7 +77,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý di tích xếp hạng")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyDiTichXepHang)]
         [HttpGet("TimKiemDiTichXepHangTheoID")]
         public async Task<IActionResult> GetByID(int id)
         {
@@ -89,7 +89,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Get information successfully", Data = ditichxephang });
         }
 
-        [CustomAuthorize(Quyen.Them, "Quản lý di tích xếp hạng")]
+        [CustomAuthorize(QuyenEnums.Them, ChucNangEnums.QuanLyDiTichXepHang)]
         [HttpPost("ThemDiTichXepHang")]
         public async Task<IActionResult> Insert([FromBody] DanhMucDiTichXepHangModelInsert model)
         {
@@ -127,7 +127,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Insertion failed" });
         }
 
-        [CustomAuthorize(Quyen.Sua, "Quản lý di tích xếp hạng")]
+        [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyDiTichXepHang)]
         [HttpPost("CapNhatDiTichXepHang")]
         public async Task<IActionResult> Update([FromBody] DanhMucDiTichXepHangModelUpdate diTichXepHang)
         {
@@ -163,7 +163,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Update failed" });
         }
 
-        [CustomAuthorize(Quyen.Xoa, "Quản lý di tích xếp hạng")]
+        [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyDiTichXepHang)]
         [HttpPost("XoaDiTichXepHang")]
         public async Task<IActionResult> Delete(int id)
         {

@@ -21,7 +21,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             _donViTinhRepository = donViTinhRepository;
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý đơn vị tính")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyDonViTinh)]
         [HttpGet("DanhSachDonViTinh")]
         public async Task<IActionResult> GetAll(string? name, int pageNumber = 1, int pageSize = 20)
         {
@@ -75,7 +75,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             });
         }
 
-        [CustomAuthorize(Quyen.Xem, "Quản lý đơn vị tính")]
+        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyDonViTinh)]
         [HttpGet("TimKiemDonViTinhTheoID")]
         public async Task<IActionResult> GetByID(int id)
         {
@@ -87,7 +87,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return Ok(new { Status = 1, Message = "Get information successfully", Data = donViTinh });
         }
 
-        [CustomAuthorize(Quyen.Them, "Quản lý đơn vị tính")]
+        [CustomAuthorize(QuyenEnums.Them, ChucNangEnums.QuanLyDonViTinh)]
         [HttpPost("ThemMoiDonViTinh")]
         public async Task<IActionResult> Insert([FromBody] DanhMucDonViTinhModelInsert model)
         {
@@ -135,7 +135,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Insertion failed" });
         }
 
-        [CustomAuthorize(Quyen.Sua, "Quản lý đơn vị tính")] 
+        [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyDonViTinh)] 
         [HttpPost("CapNhatDonViTinh")] 
         public async Task<IActionResult> Update([FromBody] DanhMucDonViTinhModelUpdate model)
         {
@@ -177,7 +177,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
             return StatusCode(500, new { Status = 0, Message = "Update failed" });
         }
 
-        [CustomAuthorize(Quyen.Xoa, "Quản lý đơn vị tính")]
+        [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyDonViTinh)]
         [HttpPost("XoaDonViTinh")]
         public async Task<IActionResult> Delete(int id)
         {

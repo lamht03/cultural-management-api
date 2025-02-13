@@ -1,4 +1,4 @@
-namespace QUANLYVANHOA
+namespace QUANLYVANHOA.Models
 {
     public class WeatherForecast
     {
