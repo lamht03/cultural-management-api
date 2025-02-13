@@ -223,6 +223,12 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
                 chiTieu.TenChiTieu = chiTieu.TenChiTieu.Trim();
             }
 
+            var existingTenChiTieu = await _chiTieuRepository.GetAll(chiTieu.TenChiTieu);
+            if (existingTenChiTieu.Item1.Any() && existingTenChiTieu.Item1.First().ChiTieuID != chiTieu.ChiTieuID)
+            {
+                return BadRequest(new { Status = 0, Message = "Tên chỉ tiêu đã tồn tại" });
+            }
+
             if (chiTieu.ChiTieuID <= 0)
             {
                 return BadRequest(new { Status = 0, Message = "ID phải lớn hơn 0" });
