@@ -3,6 +3,7 @@ using System.Data;
 using QUANLYVANHOA.Utilities;
 using QUANLYVANHOA.Models.HeThong;
 using QUANLYVANHOA.Interfaces.HeThong;
+using Dapper;
 
 namespace QUANLYVANHOA.Repositories.HeThong
 {
@@ -82,9 +83,9 @@ namespace QUANLYVANHOA.Repositories.HeThong
                                 TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
                                 //TenDayDu = !reader.IsDBNull(reader.GetOrdinal("TenDayDu")) ? reader.GetString(reader.GetOrdinal("TenDayDu")) : null,
                                 //Email = reader.GetString(reader.GetOrdinal("Email")),
-                                //MatKhau = reader.GetString(reader.GetOrdinal("MatKhau")),
+                                MatKhau = reader.GetString(reader.GetOrdinal("MatKhau")),
                                 //TrangThai = reader.GetBoolean(reader.GetOrdinal("TrangThai")),
-                                GhiChu = !reader.IsDBNull(reader.GetOrdinal("GhiChu")) ? reader.GetString(reader.GetOrdinal("GhiChu")) : null
+                                //GhiChu = !reader.IsDBNull(reader.GetOrdinal("GhiChu")) ? reader.GetString(reader.GetOrdinal("GhiChu")) : null
                             };
                         }
                     }
@@ -169,6 +170,65 @@ namespace QUANLYVANHOA.Repositories.HeThong
                 }
             }
         }
+
+        public async Task<int> ResetPassword(int NguoiDungID)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand("ResetPassword", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@NguoiDungID", NguoiDungID);
+
+                    return await command.ExecuteNonQueryAsync(); 
+                }
+            }
+        }
+
+        public async Task<string> ResetPasswordByEmail(string email)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand("ResetPasswordByEmail", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@Email", email);
+
+                    // Thêm tham số OUTPUT để lấy mật khẩu mới từ SQL Server
+                    var outputParam = new SqlParameter("@NewPassword", SqlDbType.NVarChar, 50)
+                    {
+                        Direction = ParameterDirection.Output
+                    };
+                    command.Parameters.Add(outputParam);
+
+                    await command.ExecuteNonQueryAsync();
+
+                    return outputParam.Value.ToString();
+                }
+            }
+        }
+
+
+
+        public async Task<int> ChangePassword(int userId, string oldPassword, string newPassword)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var command = new SqlCommand("ChangePassword", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@NguoiDungID", userId);
+                    command.Parameters.AddWithValue("@OldPassword", oldPassword);
+                    command.Parameters.AddWithValue("@NewPassword", newPassword);
+
+                    return await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
 
         public async Task<NguoiDung> DangNhap(string TenNguoiDung, string MatKhau)
         {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace QUANLYVANHOA.Interfaces
+namespace QUANLYVANHOA.Interfaces.DichVu
 {
     public interface IUserService
     {

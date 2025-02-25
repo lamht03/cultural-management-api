@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QUANLYVANHOA.Core.Enums;
-using QUANLYVANHOA.Interfaces;
+using QUANLYVANHOA.Interfaces.DichVu;
 using QUANLYVANHOA.Interfaces.HeThong;
 using QUANLYVANHOA.Models;
 using QUANLYVANHOA.Models.HeThong;
 using QUANLYVANHOA.Repositories;
+using QUANLYVANHOA.Services;
 using System.Linq;
 using System.Security;
+using System.Security.Claims;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
@@ -20,12 +22,16 @@ namespace QUANLYVANHOA.Controllers.HeThong
         private readonly INguoiDungRepository _userRepository;
         private readonly IPhanQuyenRepository _permissionManagementRepository;
         private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
+        private readonly ICanBoRepository _canBoRepository;
 
-        public NguoiDungController(INguoiDungRepository userRepository, IPhanQuyenRepository userInGroupRepository, IUserService userService)
+        public NguoiDungController(INguoiDungRepository userRepository, IPhanQuyenRepository userInGroupRepository, IUserService userService, IEmailService emailService, ICanBoRepository canBoRepository)
         {
             _userRepository = userRepository;
             _userService = userService;
             _permissionManagementRepository = userInGroupRepository;
+            _emailService = emailService;
+            _canBoRepository = canBoRepository;
         }
 
         [CustomAuthorize(QuyenEnums.Xem /*| Quyen.Them |Quyen.Sua | Quyen.Xoa*/, ChucNangEnums.QuanLyNguoiDung)]
@@ -325,6 +331,115 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 Message = "User deleted successfully."
             });
         }
+
+        [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyNguoiDung)]
+        [HttpPost("DatLaiMatKhau")]
+        public async Task<IActionResult> ResetPassword(int userId)
+        {
+            var existingUser = await _userRepository.LayTheoID(userId);
+            if (existingUser == null)
+            {
+                return Ok(new Response
+                {
+                    Status = 0,
+                    Message = "User not found."
+                });
+            }
+
+            var rowsAffected = await _userRepository.ResetPassword(userId);
+            if (rowsAffected == 0)
+            {
+                return StatusCode(500, new Response
+                {
+                    Status = 0,
+                    Message = "An error occurred while deleting the user."
+                });
+            }
+
+            return Ok(new Response
+            {
+                Status = 1,
+                Message = "User has successfully reset password! !."
+            });
+        }
+
+        [HttpPost("DoiMatKhau")]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel model)
+        {
+            var existingUser = await _userRepository.LayTheoID(model.NguoiDungID);
+            if (existingUser == null)
+            {
+                return Ok(new Response
+                {
+                    Status = 0,
+                    Message = "User not found."
+                });
+            }
+
+            if (string.IsNullOrWhiteSpace(model.MatKhauCu) || string.IsNullOrWhiteSpace(model.MatKhauMoi) || string.IsNullOrWhiteSpace(model.XacNhanMatKhauMoi))
+            {
+                return BadRequest(new { Status = 0, Message = "Mật khẩu cũ, mật khẩu mới, xác nhận mật khẩu mới là bắt buộc !." });
+            }
+
+            if (model.MatKhauMoi.Length < 6)
+            {
+                return BadRequest(new { Status = 0, Message = "Mật khẩu mới phải có ít nhất 6 kí tự !." });
+            }
+            if (model.MatKhauMoi.Length > 100)
+            {
+                return BadRequest(new { Status = 0, Message = "Mật khẩu mới không được vượt quá 100 kí tự !." });
+            }
+
+            if (model.MatKhauCu == model.MatKhauMoi)
+            {
+                return BadRequest(new { Status = 0, Message = "Mật khẩu mới phải khác mật khẩu cũ !." });
+            }
+
+            if (model.MatKhauMoi.Contains(" "))
+            {
+                return BadRequest(new { Status = 0, Message = "Mật khẩu mới không được chứa khoảng trắng." });
+            }
+
+            if(existingUser.MatKhau != model.MatKhauCu)
+            {
+                return BadRequest(new { Status = 0, Message = "Bạn đã nhập sai mật khẩu cũ!." });
+            }
+
+            if (model.MatKhauMoi != model.XacNhanMatKhauMoi)
+            {
+                return BadRequest("Mật khẩu mới và xác nhận mật khẩu mới không khớp với nhau !.");
+            }
+
+            int result = await _userRepository.ChangePassword(model.NguoiDungID, model.MatKhauCu, model.MatKhauMoi);
+            return Ok(new { Status = 1, Message = "Mật khẩu thay đổi thành công !." });
+        }
+
+
+        [HttpPost("QuenMatKhau")]
+        public async Task<IActionResult> ForgotPassword([FromBody] string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                return BadRequest(new { Status = 0, Message = "Email không được để trống!" });
+            }
+
+            var existingUser = await _canBoRepository.CanBoGetByEmail(email);
+            if (existingUser == null)
+            {
+                return Ok(new Response
+                {
+                    Status = 0,
+                    Message = "Không tìm thấy tài khoản với email này!"
+                });
+            }
+            string newPassword = await _userRepository.ResetPasswordByEmail(email);
+            // Gửi email
+            await _emailService.SendEmailAsync(email, "Reset Password", $"Mật khẩu mới của bạn là: {newPassword}");
+
+            return Ok(new { Status = 1, Message = "Mật khẩu mới đã được gửi đến email của bạn!" });
+        }
+
+
 
 
         [HttpPost("DangNhap")]

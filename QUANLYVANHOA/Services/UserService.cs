@@ -1,11 +1,11 @@
 ﻿using Microsoft.IdentityModel.Tokens;
-using QUANLYVANHOA.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
 using QUANLYVANHOA.Interfaces.HeThong;
+using QUANLYVANHOA.Interfaces.DichVu;
 
 public class UserService : IUserService
 {
@@ -63,6 +63,7 @@ public class UserService : IUserService
 
 
                 new Claim("CanBoID", JsonConvert.SerializeObject(user.CanBoID)),
+                new Claim("CanBoID", JsonConvert.SerializeObject(user.NguoiDungID)),
                 new Claim("MatKhau", JsonConvert.SerializeObject("IfYouWantToConnectYouNeedToBecomeAProfessionalProgrammer")),
                 new Claim("FunctionsAndPermissions", JsonConvert.SerializeObject(permissions)) // Lưu các quyền của từng chức năng vào JWT
             }),

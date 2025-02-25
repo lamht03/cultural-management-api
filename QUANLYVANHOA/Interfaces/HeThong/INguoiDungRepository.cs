@@ -14,6 +14,9 @@ namespace QUANLYVANHOA.Interfaces.HeThong
         Task<int> XoaThongTinNguoiDung(int userId);
         Task<NguoiDung> DangNhap(string userName, string password);
         //Task<int> DangKyTaiKhoan(RegisterModel model);
+        Task<int> ResetPassword (int nguoiDungId);
+        Task<string> ResetPasswordByEmail(string email);
+        Task<int> ChangePassword(int nguoiDungId, string olderPassword, string newPassword);
 
         Task TaoPhienDangNhap(int userId, string refreshToken, DateTime expiryDate);
         Task<PhienDangNhap> LayPhienDangNhapTheoRefreshToken(string refreshToken);

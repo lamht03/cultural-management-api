@@ -101,4 +101,16 @@ namespace QUANLYVANHOA.Models.HeThong
         public string? GhiChu { get; set; }
     }
 
+
+    public class ChangePasswordModel
+    {
+        [JsonPropertyName("NguoiDungID")]
+        public int NguoiDungID { get; set; }
+        [JsonPropertyName("MatKhauCu")]
+        public string MatKhauCu { get; set; }
+        [JsonPropertyName("MatKhauMoi")]
+        public string MatKhauMoi { get; set; }
+        [JsonPropertyName("XacNhanMatKhauMoi")]
+        public string XacNhanMatKhauMoi { get; set; }
+    }
 }

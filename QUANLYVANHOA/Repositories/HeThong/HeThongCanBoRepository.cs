@@ -239,9 +239,6 @@ public class HeThongCanBoRepository : ICanBoRepository
                             DienThoai = reader.IsDBNull(reader.GetOrdinal("DienThoai")) ? null : reader.GetString(reader.GetOrdinal("DienThoai")),
                             TrangThai = reader.GetInt32(reader.GetOrdinal("TrangThai")),
                             CoQuanID = reader.GetInt32(reader.GetOrdinal("CoQuanID")),
-                            TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
-                            NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
-                            DanhSachNhomPhanQuyenID = ParseDanhSach(reader.IsDBNull(reader.GetOrdinal("DanhSachNhomPhanQuyenID")) ? "" : reader.GetString(reader.GetOrdinal("DanhSachNhomPhanQuyenID")))
                         };
                     }
                 }
@@ -277,9 +274,9 @@ public class HeThongCanBoRepository : ICanBoRepository
                             DienThoai = reader.IsDBNull(reader.GetOrdinal("DienThoai")) ? null : reader.GetString(reader.GetOrdinal("DienThoai")),
                             TrangThai = reader.GetInt32(reader.GetOrdinal("TrangThai")),
                             CoQuanID = reader.GetInt32(reader.GetOrdinal("CoQuanID")),
-                            TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
-                            NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
-                            DanhSachNhomPhanQuyenID = ParseDanhSach(reader.IsDBNull(reader.GetOrdinal("DanhSachNhomPhanQuyenID")) ? "" : reader.GetString(reader.GetOrdinal("DanhSachNhomPhanQuyenID")))
+                            //TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
+                            //NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
+                            //DanhSachNhomPhanQuyenID = ParseDanhSach(reader.IsDBNull(reader.GetOrdinal("DanhSachNhomPhanQuyenID")) ? "" : reader.GetString(reader.GetOrdinal("DanhSachNhomPhanQuyenID")))
                         };
                     }
                 }

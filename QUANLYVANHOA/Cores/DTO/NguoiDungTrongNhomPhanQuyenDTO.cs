@@ -7,11 +7,14 @@ namespace QUANLYVANHOA.Core.DTO
         [JsonPropertyName("NguoiDungID")]
         public int NguoiDungID { get; set; }
 
+        [JsonPropertyName("CanBoID")]
+        public int CanBoID { get; set; }
+
+        [JsonPropertyName("CoQuanID")]
+        public int CoQuanID { get; set; }
+
         [JsonPropertyName("TenNguoiDung")]
         public string TenNguoiDung { get; set; }
-
-        [JsonPropertyName("TenDayDu")]
-        public string TenDayDu { get; set; }
 
         [JsonPropertyName("NhomPhanQuyenID")]
         public int NhomPhanQuyenID { get; set; }

@@ -295,7 +295,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
             // Kiểm tra email đã tồn tại trong hệ thống bằng GetByEmailAsync
             var existingStaff = await _canBoRepository.CanBoGetByEmail(model.Email);
-            if (existingStaff != null)
+            if (existingStaff.CanBoID != model.CanBoID)
             {
                 return BadRequest(new Response
                 {
@@ -364,7 +364,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             return Ok(new Response
             {
                 Status = 1,
-                Message = "Thêm cán bộ thành công !."
+                Message = "Sửa thông tin cán bộ thành công !."
             });
         }
 

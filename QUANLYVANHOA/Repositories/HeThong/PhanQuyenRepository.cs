@@ -157,6 +157,8 @@ namespace QUANLYVANHOA.Repositories.HeThong
                             userInGroupList.Add(new NguoiDungTrongNhomPhanQuyenDTO
                             {
                                 NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
+                                CanBoID = reader.GetInt32(reader.GetOrdinal("CanBoID")),
+                                CoQuanID = reader.GetInt32(reader.GetOrdinal("CoQuanID")),
                                 TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
                                 NhomPhanQuyenID = reader.GetInt32(reader.GetOrdinal("NhomPhanQuyenID")),
                                 TenNhomPhanQuyen = reader.GetString(reader.GetOrdinal("TenNhomPhanQuyen"))

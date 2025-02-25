@@ -1272,7 +1272,7 @@
             CONSTRAINT FK_CanBo_CoQuan FOREIGN KEY (CoQuanID) REFERENCES DM_CoQuan (CoQuanID)
         )
 
-        -- Add records to CanBo Table
+        --Add records to CanBo Table
             SET IDENTITY_INSERT DM_CanBo ON;
             INSERT INTO DM_CanBo (CanBoID, TenCanBo, NgaySinh, GioiTinh, DiaChi, Email, DienThoai, TrangThai, CoQuanID) 
             VALUES 
@@ -1471,6 +1471,7 @@
             END;
 
         --Update Officer in HT_CanBo table
+            GO
             ALTER PROCEDURE v1_HeThong_CanBo_Update
                 @CanBoID INT,
                 @TenCanBo NVARCHAR(255),
@@ -1482,7 +1483,6 @@
                 @TrangThai INT,
                 @CoQuanID INT, -- BẮT BUỘC
                 @TenNguoiDung NVARCHAR(255) = NULL,
-                @MatKhau NVARCHAR(255) = NULL, -- Optional
                 @DanhSachNhomPhanQuyenID NVARCHAR(MAX) = NULL -- Optional list of permission groups
             AS
             BEGIN
@@ -1521,8 +1521,7 @@
                 -- Cập nhật thông tin bảng HT_NguoiDung
                 UPDATE HT_NguoiDung
                 SET 
-                    TenNguoiDung = ISNULL(@TenNguoiDung, TenNguoiDung),
-                    MatKhau = ISNULL(@MatKhau, MatKhau)
+                    TenNguoiDung = ISNULL(@TenNguoiDung, TenNguoiDung)
                 WHERE NguoiDungID = @NguoiDungID;
 
                 -- Xử lý cập nhật nhóm phân quyền
@@ -1543,8 +1542,8 @@
                 END
             END;
 
-
         --region Delete procedure of HT_CanBo table
+            GO
             CREATE PROCEDURE v1_HeThong_CanBo_Delete
                 @CanBoID INT
             AS
@@ -1571,7 +1570,6 @@
                 -- Cuối cùng, xóa cán bộ trong HT_CanBo
                 DELETE FROM HT_CanBo WHERE CanBoID = @CanBoID;
             END;
-
 
     --region Stored procedures of Users
         CREATE TABLE HT_NguoiDung (	
@@ -1699,22 +1697,151 @@
                 WHERE TenNguoiDung = @TenNguoiDung AND MatKhau = @MatKhau;
             END
             GO
+
+        --ResetPassword
+            GO
+            ALTER PROCEDURE ResetPassword
+                @NguoiDungID INT
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                -- Kiểm tra xem người dùng có tồn tại không
+                IF EXISTS (SELECT 1 FROM HT_NguoiDung WHERE NguoiDungID = @NguoiDungID)
+                BEGIN
+                    -- Cập nhật mật khẩu thành "123456" (đã băm)
+                    UPDATE HT_NguoiDung 
+                    SET MatKhau = '123456'
+                    WHERE NguoiDungID = @NguoiDungID;
+                END
+            END
+            GO
+
+        --ChangePassword
+            GO
+            CREATE PROCEDURE ChangePassword
+                @NguoiDungID INT,
+                @OldPassword NVARCHAR(256),
+                @NewPassword NVARCHAR(256)
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                -- Kiểm tra xem mật khẩu cũ có đúng không
+                IF EXISTS (SELECT 1 FROM HT_NguoiDung 
+                        WHERE NguoiDungID = @NguoiDungID 
+                        AND MatKhau =  @OldPassword)
+                BEGIN
+                    -- Cập nhật mật khẩu mới
+                    UPDATE HT_NguoiDung 
+                    SET MatKhau =  @NewPassword
+                    WHERE NguoiDungID = @NguoiDungID;
+                END
+            END
+            GO
+
+        --FogotPassword
+            GO
+            CREATE PROCEDURE ForgotPassword
+            @Email NVARCHAR(256),
+            @NewPassword NVARCHAR(12) OUTPUT
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                -- Kiểm tra email có tồn tại không
+                IF NOT EXISTS (SELECT 1 FROM HT_NguoiDung WHERE Email = @Email)
+                BEGIN
+                    RETURN;
+                END
+
+                -- Tạo mật khẩu ngẫu nhiên (12 ký tự chữ + số)
+                SET @NewPassword = 
+                    LEFT(CONVERT(NVARCHAR(50), NEWID()), 8) + 
+                    CAST(ABS(CHECKSUM(NEWID())) % 9000 + 1000 AS NVARCHAR(4));
+
+                -- Cập nhật mật khẩu mới vào DB
+                UPDATE HT_NguoiDung
+                SET MatKhau = @NewPassword
+                WHERE Email = @Email;
+
+                -- Trả về mật khẩu mới để gửi email
+                SELECT @NewPassword AS NewPassword;
+            END
+            GO
+
+        --ResetPasswordByEmail
+            alter PROCEDURE ResetPasswordByEmail
+                @Email NVARCHAR(100),
+                @NewPassword NVARCHAR(50) OUTPUT
+            AS
+            BEGIN
+                SET NOCOUNT ON;
+
+                DECLARE @CanBoID INT, @NguoiDungID INT;
+
+                -- 1. Tìm CanBoID từ Email
+                SELECT @CanBoID = CanBoID 
+                FROM HT_CanBo 
+                WHERE Email = @Email;
+
+                -- Nếu không tìm thấy, thoát
+                IF @CanBoID IS NULL
+                BEGIN
+                    RAISERROR ('Email không tồn tại', 16, 1);
+                    RETURN;
+                END
+
+                -- 2. Tìm NguoiDungID từ CanBoID
+                SELECT @NguoiDungID = NguoiDungID 
+                FROM HT_NguoiDung 
+                WHERE CanBoID = @CanBoID;
+
+                -- Nếu không có tài khoản người dùng, thoát
+                IF @NguoiDungID IS NULL
+                BEGIN
+                    RAISERROR ('Không tìm thấy tài khoản người dùng', 16, 1);
+                    RETURN;
+                END
+
+                -- 3. Tạo mật khẩu ngẫu nhiên (6 ký tự số)
+                SET @NewPassword = CAST(ABS(CHECKSUM(NEWID())) % 1000000 AS NVARCHAR(6));
+
+                -- 4. Cập nhật mật khẩu mới vào HT_NguoiDung
+                UPDATE HT_NguoiDung
+                SET MatKhau = @NewPassword
+                WHERE NguoiDungID = @NguoiDungID;
+            END;
+
+
     --region Stored procedures of UserGroups
         CREATE TABLE HT_NhomPhanQuyen (
             NhomPhanQuyenID INT PRIMARY KEY IDENTITY(1,1),
             TenNhomPhanQuyen NVARCHAR(50),
             MoTa NVARCHAR(100)
         );
-            GO
+
+        -- GetAllUsersInAuthorizationGroup
             ALTER PROC [dbo].[NhomPhanQuyen_GetAllUsersInAuthorizationGroup]
                 @NhomPhanQuyenID INT
             AS
             BEGIN
-                SELECT b.TenNguoiDung, a.TenCanBo, a.CoQuanID FROM HT_CanBo a 
-                LEFT JOIN HT_NguoiDung b on a.CanBoID = b.CanBoID 
-                LEFT JOIN HT_NhomNguoiDung c ON b.NguoiDungID = c.NguoiDungID 
-                LEFT JOIN HT_NhomPhanQuyen d ON c.NhomPhanQuyenID = d.NhomPhanQuyenID 
-                WHERE d.NhomPhanQuyenID = @NhomPhanQuyenID
+                SELECT 
+                    a.NguoiDungID,
+                    cb.CanBoID, 
+                    CONCAT(a.TenNguoiDung, 
+                        CASE WHEN cb.TenCanBo IS NOT NULL THEN ' (' + cb.TenCanBo ELSE '' END,
+                        CASE WHEN cq.TenCoQuan IS NOT NULL THEN ' - ' + cq.TenCoQuan ELSE '' END,
+                        CASE WHEN cb.TenCanBo IS NOT NULL THEN ')' ELSE '' END
+                    ) AS TenNguoiDung,
+                    c.TenNhomPhanQuyen,
+                    cq.CoQuanID,c.NhomPhanQuyenID
+                FROM HT_NguoiDung a
+                JOIN HT_NhomNguoiDung b ON a.NguoiDungID = b.NguoiDungID
+                JOIN HT_NhomPhanQuyen c ON b.NhomPhanQuyenID = c.NhomPhanQuyenID
+                LEFT JOIN HT_CanBo cb ON a.CanBoID = cb.CanBoID
+                LEFT JOIN DM_CoQuan cq ON cb.CoQuanID = cq.CoQuanID
+                WHERE c.NhomPhanQuyenID = @NhomPhanQuyenID
             END
             GO
 
