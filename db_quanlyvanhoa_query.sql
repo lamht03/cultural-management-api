@@ -1,13 +1,18 @@
-EXEC v1_HeThong_CanBo_GetListPaging @TenCanBoOrTenNguoiDung = 'hatunglam', @CoQuanID =null, @PageNumber = 1, @PageSize =20;
+EXEC v1_HeThong_CanBo_GetListPaging @TenCanBoOrTenNguoiDung = '', @CoQuanID =null, @PageNumber = 1, @PageSize =20;
 EXEC v1_HeThong_CanBo_GetByID @CanBoID = 14
 EXEC v1_HeThong_CanBo_Add 
     @TenCanBo = N'Hà Tùng Lâm', 
     @CoQuanID = 1, 
     @TenNguoiDung = N'hatunglam',
     @DanhSachNhomPhanQuyenID = '1' -- Assign to groups 2, 3, and 5
-
+update HT_CanBo set TrangThai = 1 where CanBoID = 24
 
 select * FROM HT_NguoiDung
+set IDENTITY_INSERT HT_NguoiDung ON
+INSERT HT_NguoiDung (NguoiDungID,TenNguoiDung,MatKhau,GhiChu,CanBoID) VALUES (1,'admin','admin',N'Tài khoản của Administrator', 1)
+set IDENTITY_INSERT HT_NguoiDung OFF
+
+
 select * FROM HT_NhomNguoiDung
 SELECT * FROM HT_NhomChucNang
 
@@ -46,3 +51,4 @@ SELECT * FROM HT_NhomChucNang
 
 update HT_CanBo set Email = 'txtlamhi@gmail.com' where CanBoID = 24
 
+select * FROM HT_NguoiDung

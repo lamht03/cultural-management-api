@@ -87,7 +87,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
 
-        [CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyNguoiDung)]
+        //[CustomAuthorize(QuyenEnums.Xem, ChucNangEnums.QuanLyNguoiDung)]
         [HttpGet("TimKiemNguoiDungTheoID")]
         public async Task<IActionResult> GetByID(int userId)
         {
@@ -416,14 +416,14 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
 
         [HttpPost("QuenMatKhau")]
-        public async Task<IActionResult> ForgotPassword([FromBody] string email)
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordModel model)
         {
-            if (string.IsNullOrWhiteSpace(email))
+            if (string.IsNullOrWhiteSpace(model.Email))
             {
                 return BadRequest(new { Status = 0, Message = "Email không được để trống!" });
             }
 
-            var existingUser = await _canBoRepository.CanBoGetByEmail(email);
+            var existingUser = await _canBoRepository.CanBoGetByEmail(model.Email);
             if (existingUser == null)
             {
                 return Ok(new Response
@@ -432,9 +432,9 @@ namespace QUANLYVANHOA.Controllers.HeThong
                     Message = "Không tìm thấy tài khoản với email này!"
                 });
             }
-            string newPassword = await _userRepository.ResetPasswordByEmail(email);
+            string newPassword = await _userRepository.ResetPasswordByEmail(model.Email);
             // Gửi email
-            await _emailService.SendEmailAsync(email, "Reset Password", $"Mật khẩu mới của bạn là: {newPassword}");
+            await _emailService.SendEmailAsync(model.Email, "Reset Password", $"Mật khẩu mới của bạn là: {newPassword}");
 
             return Ok(new { Status = 1, Message = "Mật khẩu mới đã được gửi đến email của bạn!" });
         }

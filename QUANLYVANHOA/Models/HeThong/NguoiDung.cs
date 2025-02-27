@@ -113,4 +113,10 @@ namespace QUANLYVANHOA.Models.HeThong
         [JsonPropertyName("XacNhanMatKhauMoi")]
         public string XacNhanMatKhauMoi { get; set; }
     }
+
+    public class ForgotPasswordModel
+    {
+        [JsonPropertyName("Email")]
+        public string Email { get; set; }
+    }
 }
