@@ -13,10 +13,12 @@ namespace QUANLYVANHOA.Controllers.HeThong
     public class PhanQuyenController : ControllerBase
     {
         private readonly IPhanQuyenRepository _permissionManagement;
+        private readonly INguoiDungRepository _userRepository;
 
-        public PhanQuyenController(IPhanQuyenRepository permissionManagement)
+        public PhanQuyenController(IPhanQuyenRepository permissionManagement, INguoiDungRepository userRepository)
         {
             _permissionManagement = permissionManagement;
+            _userRepository = userRepository;
         }
 
         #region Controller of Function
@@ -645,7 +647,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         [CustomAuthorize(QuyenEnums.Them, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> InsertUserInGroup([FromBody] ThemNguoiDungVaoNhomPhanQuyenModel model)
         {
-            var existingUser = await _permissionManagement.GetFunctionByID(model.NguoiDungID);
+            var existingUser = await _userRepository.LayTheoID(model.NguoiDungID);
             if (existingUser == null)
             {
                 return Ok(new Response

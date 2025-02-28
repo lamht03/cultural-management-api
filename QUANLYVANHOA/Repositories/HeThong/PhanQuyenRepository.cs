@@ -550,7 +550,6 @@ namespace QUANLYVANHOA.Repositories.HeThong
                 using (var command = new SqlCommand("NhomNguoiDung_DeleteUserInAuthorizationGroup", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@UserInNhomPhanQuyenID", userInGroup.NhomPhanQuyenID);
                     command.Parameters.AddWithValue("@NguoiDungID", userInGroup.NguoiDungID);
                     command.Parameters.AddWithValue("@NhomPhanQuyenID", userInGroup.NhomPhanQuyenID);
 

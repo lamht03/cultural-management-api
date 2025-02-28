@@ -29,7 +29,7 @@ namespace QUANLYVANHOA.Models.HeThong
         [JsonPropertyName("NguoiDungID")]
         public int NguoiDungID { get; set; }
 
-        [JsonPropertyName("NhomNguoiDungID")]
+        [JsonPropertyName("NhomPhanQuyenID")]
         public int NhomPhanQuyenID { get; set; }
     }
 }
