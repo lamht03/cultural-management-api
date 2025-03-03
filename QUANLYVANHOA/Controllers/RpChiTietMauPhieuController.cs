@@ -11,7 +11,7 @@
 //    [Route("api/[controller]")]
 //    [ApiController]
 //    public class RpChiTietMauPhieuController : ControllerBase
-//    {
+//    { mn  
 //        private readonly IRpChiTietMauPhieu _chiTietMauPhieuRepository; 
 
 //        public RpChiTietMauPhieuController(IRpChiTietMauPhieu chiTietMauPhieuRepository)

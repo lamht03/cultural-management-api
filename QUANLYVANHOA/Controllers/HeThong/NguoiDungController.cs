@@ -333,7 +333,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
         }
 
         [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyNguoiDung)]
-        [HttpPost("ResetMatKhauQuaEMAIL")]
+        [HttpPost("DatLaiMatKhau")]
         public async Task<IActionResult> ResetPassword(int userId)
         {
             var existingUser = await _userRepository.LayTheoID(userId);
