@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 using QUANLYVANHOA.Core.Enums;
 using QUANLYVANHOA.Interfaces.DichVu;
 using QUANLYVANHOA.Interfaces.HeThong;
@@ -366,7 +367,23 @@ namespace QUANLYVANHOA.Controllers.HeThong
         [HttpPost("DoiMatKhau")]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordModel model)
         {
-            var existingUser = await _userRepository.LayTheoID(model.NguoiDungID);
+            // Extract the token from the Authorization header
+            var authorizationHeader = Request.Headers["Authorization"].FirstOrDefault();
+            if (authorizationHeader == null || !authorizationHeader.StartsWith("Bearer "))
+            {
+                return Unauthorized(new { Status = 0, Message = "Token is required" });
+            }
+
+            var token = authorizationHeader.Substring("Bearer ".Length).Trim();
+
+            // Get the user ID from the token
+            var userId = _userService.GetUserIdFromToken(token);
+            if (userId == null)
+            {
+                return Unauthorized(new { Status = 0, Message = "Invalid token" });
+            }
+
+            var existingUser = await _userRepository.LayTheoID(userId.Value);
             if (existingUser == null)
             {
                 return Ok(new Response
@@ -400,7 +417,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 return BadRequest(new { Status = 0, Message = "Mật khẩu mới không được chứa khoảng trắng." });
             }
 
-            if(existingUser.MatKhau != model.MatKhauCu)
+            if (existingUser.MatKhau != model.MatKhauCu)
             {
                 return BadRequest(new { Status = 0, Message = "Bạn đã nhập sai mật khẩu cũ!." });
             }
@@ -410,7 +427,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                 return BadRequest("Mật khẩu mới và xác nhận mật khẩu mới không khớp với nhau !.");
             }
 
-            int result = await _userRepository.ChangePassword(model.NguoiDungID, model.MatKhauCu, model.MatKhauMoi);
+            int result = await _userRepository.ChangePassword(userId.Value, model.MatKhauCu, model.MatKhauMoi);
             return Ok(new { Status = 1, Message = "Mật khẩu thay đổi thành công !." });
         }
 

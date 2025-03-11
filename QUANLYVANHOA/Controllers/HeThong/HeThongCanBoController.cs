@@ -264,7 +264,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
             model.TenCanBo = model.TenCanBo.Trim();
             var existingCanBoName = await _canBoRepository.CanBoGetByName(model.TenCanBo);
-            if (existingCanBoName != null)
+            if (existingCanBoName.CanBoID != model.CanBoID)
             {
                 return BadRequest(new Response { Status = 0, Message = "Tên cán bộ đã tồn tại vui lòng chọn tên cán bộ khác !" });
             }

@@ -62,8 +62,7 @@ public class UserService : IUserService
                 //"|_____________/     /_/        \\_\\     |__|     \\\\//      |__|           ♥\n"),
 
 
-                new Claim("CanBoID", JsonConvert.SerializeObject(user.CanBoID)),
-                new Claim("CanBoID", JsonConvert.SerializeObject(user.NguoiDungID)),
+                new Claim("NguoiDungID", JsonConvert.SerializeObject(user.NguoiDungID)),
                 new Claim("MatKhau", JsonConvert.SerializeObject("IfYouWantToConnectYouNeedToBecomeAProfessionalProgrammer")),
                 new Claim("FunctionsAndPermissions", JsonConvert.SerializeObject(permissions)) // Lưu các quyền của từng chức năng vào JWT
             }),
@@ -144,5 +143,40 @@ public class UserService : IUserService
             rng.GetBytes(randomNumber);
             return Convert.ToBase64String(randomNumber);
         }
+    }
+
+
+    public int? GetUserIdFromToken(string token)
+    {
+        var jwtSettings = _configuration.GetSection("Jwt");
+        var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
+
+        var tokenHandler = new JwtSecurityTokenHandler();
+        try
+        {
+            var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = jwtSettings["Issuer"],
+                ValidAudience = jwtSettings["Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(key)
+            }, out SecurityToken validatedToken);
+
+            var userIdClaim = principal.FindFirst("NguoiDungID");
+            if (userIdClaim != null)
+            {
+                return int.Parse(userIdClaim.Value);
+            }
+        }
+        catch
+        {
+            // Token validation failed
+            return null;
+        }
+
+        return null;
     }
 }

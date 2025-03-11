@@ -7,7 +7,7 @@ public class Connection
     private const string DatabaseName = "DB_QuanLyVanHoa_DEV";
     private const string UserId = "The Debuggers";
     private const string Password = "ifyouwanttoconnectyouneedtobecomeaprofessionalprogrammer";
-    private const string ServerName = "DESKTOP-8I9KRD3";
+    private const string ServerName = "lamht03-nopro-laptop";
 
     public string GetConnectionString()
     {
