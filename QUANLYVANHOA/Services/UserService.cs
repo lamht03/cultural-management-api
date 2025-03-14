@@ -66,7 +66,7 @@ public class UserService : IUserService
                 new Claim("MatKhau", JsonConvert.SerializeObject("IfYouWantToConnectYouNeedToBecomeAProfessionalProgrammer")),
                 new Claim("FunctionsAndPermissions", JsonConvert.SerializeObject(permissions)) // Lưu các quyền của từng chức năng vào JWT
             }),
-            Expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpiryMinutes"])),
+            Expires = DateTime.UtcNow.AddSeconds(double.Parse(jwtSettings["ExpirySeconds"])),
             Issuer = jwtSettings["Issuer"],
             Audience = jwtSettings["Audience"],
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -77,8 +77,8 @@ public class UserService : IUserService
 
         // Tạo Refresh Token
         var refreshToken = GenerateRefreshToken();
+        //var refreshTokenExpiry = DateTime.UtcNow.AddSeconds(5); // Refresh token có thời hạn giây
         var refreshTokenExpiry = DateTime.UtcNow.AddDays(7); // Refresh token có thời hạn 7 ngày
-
         // Gọi stored procedure để lưu session mới
         await _userRepository.TaoPhienDangNhap(user.NguoiDungID, refreshToken, refreshTokenExpiry);
         return (true, token, refreshToken, "Login successful.");
@@ -143,7 +143,7 @@ public class UserService : IUserService
                 new Claim("MatKhau", JsonConvert.SerializeObject("IfYouWantToConnectYouNeedToBecomeAProfessionalProgrammer")),
                 new Claim("FunctionsAndPermissions", JsonConvert.SerializeObject(permissions)) // Lưu các quyền của từng chức năng vào JWT
             }),
-            Expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["ExpiryMinutes"])),
+            Expires = DateTime.UtcNow.AddSeconds(double.Parse(jwtSettings["ExpirySeconds"])),
             Issuer = jwtSettings["Issuer"],
             Audience = jwtSettings["Audience"],
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

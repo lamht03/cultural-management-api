@@ -40,6 +40,9 @@ namespace QUANLYVANHOA.Models.HeThong
 
         [JsonPropertyName("NguoiDungID")]
         public int NguoiDungID { get; set; }
+
+        [JsonPropertyName("TenCoQuan")]
+        public string TenCoQuan { get; set; }
     }
 
 

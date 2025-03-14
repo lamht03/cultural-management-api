@@ -51,7 +51,8 @@ public class HeThongCanBoRepository : ICanBoRepository
                             CoQuanID = reader.GetInt32(reader.GetOrdinal("CoQuanID")),
                             TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
                             NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
-                            DanhSachNhomPhanQuyenID = ParseDanhSach(reader.IsDBNull(reader.GetOrdinal("DanhSachNhomPhanQuyenID")) ? "" : reader.GetString(reader.GetOrdinal("DanhSachNhomPhanQuyenID")))
+                            DanhSachNhomPhanQuyenID = ParseDanhSach(reader.IsDBNull(reader.GetOrdinal("DanhSachNhomPhanQuyenID")) ? "" : reader.GetString(reader.GetOrdinal("DanhSachNhomPhanQuyenID"))),
+                            TenCoQuan = reader.GetString(reader.GetOrdinal("TenCoQuan")),
                         };
                         canBoList.Add(canBo);
                     }
@@ -96,7 +97,8 @@ public class HeThongCanBoRepository : ICanBoRepository
                             CoQuanID = reader.GetInt32(reader.GetOrdinal("CoQuanID")),
                             TenNguoiDung = reader.GetString(reader.GetOrdinal("TenNguoiDung")),
                             NguoiDungID = reader.GetInt32(reader.GetOrdinal("NguoiDungID")),
-                            DanhSachNhomPhanQuyenID = ParseDanhSach(reader.IsDBNull(reader.GetOrdinal("DanhSachNhomPhanQuyenID")) ? "" : reader.GetString(reader.GetOrdinal("DanhSachNhomPhanQuyenID")))
+                            DanhSachNhomPhanQuyenID = ParseDanhSach(reader.IsDBNull(reader.GetOrdinal("DanhSachNhomPhanQuyenID")) ? "" : reader.GetString(reader.GetOrdinal("DanhSachNhomPhanQuyenID"))),
+                            TenCoQuan = reader.GetString(reader.GetOrdinal("TenCoQuan")),
                         };
                     }
                 }
