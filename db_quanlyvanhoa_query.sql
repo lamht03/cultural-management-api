@@ -14,6 +14,8 @@ set IDENTITY_INSERT HT_NguoiDung OFF
 
 
 
+
+
 set IDENTITY_INSERT HT_NhomNguoiDung ON
 INSERT HT_NhomNguoiDung (NhomNguoiDungID,NguoiDungID,NhomPhanQuyenID) VALUES (1,1,1)
 set IDENTITY_INSERT HT_NhomNguoiDung OFF

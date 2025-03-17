@@ -1349,10 +1349,12 @@
                         c.CoQuanID,
                         d.NguoiDungID,
                         d.TenNguoiDung,
+                        cq.TenCoQuan,
                         COUNT(*) OVER() AS TotalRecords,
                         ROW_NUMBER() OVER (ORDER BY c.CanBoID) AS RowNum
                     FROM HT_CanBo c
                     LEFT JOIN HT_NguoiDung d ON c.CanBoID = d.CanBoID
+                    LEFT JOIN DM_CoQuan cq on cq.CoQuanID = c.CoQuanID
                     WHERE 
                         (@CoQuanID IS NULL OR c.CoQuanID = @CoQuanID)
                         AND 
@@ -2018,13 +2020,13 @@
             END
             GO
 
-        CREATE PROCEDURE NhomNguoiDung_DeleteUserInAuthorizationGroup
+        ALTER PROCEDURE NhomNguoiDung_DeleteUserInAuthorizationGroup
             @NguoiDungID INT,
-            @NhomNguoiDungID INT
+            @NhomPhanQuyenID INT
         AS
         BEGIN
             DELETE FROM HT_NhomNguoiDung
-            WHERE NguoiDungID = @NguoiDungID AND NhomNguoiDungID = @NhomNguoiDungID
+            WHERE NguoiDungID = @NguoiDungID AND NhomPhanQuyenID = @NhomPhanQuyenID
         END;
         GO	
 
