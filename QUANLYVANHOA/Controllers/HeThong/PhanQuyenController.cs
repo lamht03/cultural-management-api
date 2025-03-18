@@ -543,7 +543,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             }
 
             var existingFunctionInGroup = await _permissionManagement.GetFunctionInGroupByFunctionID(model.ChucNangID);
-            if (existingFunctionInGroup == null)
+            if (existingFunctionInGroup != null)
             {
                 return Ok(new Response
                 {
