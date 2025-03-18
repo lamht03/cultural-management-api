@@ -447,7 +447,7 @@ namespace QUANLYVANHOA.Repositories.HeThong
         {
             using (var connection = new SqlConnection(_connectionString))
             {
-                using (var command = new SqlCommand("NhomChucNang_Delete", connection))
+                using (var command = new SqlCommand("NhomChucNang_DeleteFunctionInAuthorizationGroup", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@ChucNangID", model.ChucNangID);

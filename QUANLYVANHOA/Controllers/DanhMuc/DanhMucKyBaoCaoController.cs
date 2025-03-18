@@ -116,9 +116,9 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         public async Task<IActionResult> Update(DanhMucKyBaoCaoModelUpdate kyBaoCao)
         {
             var existingKyBaoCaoName = await _kyBaoCaoRepository.GetAll(kyBaoCao.TenKyBaoCao, 1, 20);
-            if (existingKyBaoCaoName.Item1.Any())
+            if (existingKyBaoCaoName.Item1.Any() && existingKyBaoCaoName.Item1.First().KyBaoCaoID != kyBaoCao.KyBaoCaoID)
             {
-                return BadRequest(new { Status = 0, Message = "Report period name already exists" });
+                return BadRequest(new { Status = 0, Message = "Tên kì báo cáo đã tồn tại" });
             }
 
             if (kyBaoCao.KyBaoCaoID <= 0)
