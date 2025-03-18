@@ -528,7 +528,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             }
 
             var existingAuthorizationGroup = await _permissionManagement.GetGroupByID(model.NhomPhanQuyenID);
-            if (existingFunction == null)
+            if (existingAuthorizationGroup == null)
             {
                 return Ok(new Response
                 {
@@ -551,9 +551,15 @@ namespace QUANLYVANHOA.Controllers.HeThong
                     Message = "Chức năng đã có trong nhóm"
                 });
             }
+            // Chuyển đổi quyền từ boolean sang bitmask
+            int quyen = 0;
+            if (model.Xem) quyen |= (int)QuyenEnums.Xem;
+            if (model.Them) quyen |= (int)QuyenEnums.Them;
+            if (model.Sua) quyen |= (int)QuyenEnums.Sua;
+            if (model.Xoa) quyen |= (int)QuyenEnums.Xoa;
 
 
-            var newFunctionInNhomPhanQuyenID = await _permissionManagement.AddFunctionToGroup(model);
+            var newFunctionInNhomPhanQuyenID = await _permissionManagement.AddFunctionToGroup(model.NhomPhanQuyenID, model.ChucNangID,quyen);
             return Ok(new { Status = 1, Message = "Thêm chức năng vào nhóm phân quyền thành công !" });
         }
 

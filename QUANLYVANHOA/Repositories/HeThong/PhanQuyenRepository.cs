@@ -381,10 +381,10 @@ namespace QUANLYVANHOA.Repositories.HeThong
                         {
                             functionInGroupList.Add(new NhomChucNang
                             {
-                                NhomChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionInNhomPhanQuyenID")),
-                                ChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
+                                NhomChucNangID = reader.GetInt32(reader.GetOrdinal("NhomChucNangID")),
+                                ChucNangID = reader.GetInt32(reader.GetOrdinal("ChucNangID")),
                                 NhomPhanQuyenID = reader.GetInt32(reader.GetOrdinal("NhomPhanQuyenID")),
-                                Quyen = reader.GetInt32(reader.GetOrdinal("Permission"))
+                                Quyen = reader.GetInt32(reader.GetOrdinal("Quyen"))
                             });
                         }
                     }
@@ -425,16 +425,16 @@ namespace QUANLYVANHOA.Repositories.HeThong
         //    return functionInGroup;
         //}
 
-        public async Task<int> AddFunctionToGroup(NhomChucNangInsertModel functionInGroup)
+        public async Task<int> AddFunctionToGroup(int nhomPhanQuyenID, int chucNangID, int quyen)
         {
             using (var connection = new SqlConnection(_connectionString))
             {
                 using (var command = new SqlCommand("NhomChucNang_AddFunctionToAuthorizationGroup", connection))
                 {
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.AddWithValue("@ChucNangID", functionInGroup.ChucNangID);
-                    command.Parameters.AddWithValue("@NhomPhanQuyenID", functionInGroup.NhomPhanQuyenID);
-                    command.Parameters.AddWithValue("@QuyenID", functionInGroup.Quyen);
+                    command.Parameters.AddWithValue("@ChucNangID", chucNangID);
+                    command.Parameters.AddWithValue("@NhomPhanQuyenID", nhomPhanQuyenID);
+                    command.Parameters.AddWithValue("@Quyen", quyen);
 
                     await connection.OpenAsync();
                     return await command.ExecuteNonQueryAsync();

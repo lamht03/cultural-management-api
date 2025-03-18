@@ -25,7 +25,7 @@ namespace QUANLYVANHOA.Interfaces.HeThong
 
 
         //Function In Group Interface Repository
-        Task<int> AddFunctionToGroup(NhomChucNangInsertModel functionInGroup);
+        Task<int> AddFunctionToGroup(int nhomPhanQuyenID, int chucNangID, int quyen);
         Task<int> DeleteFunctionFromGroup(NhomChucNangDeleteModel model);
         Task<IEnumerable<NhomChucNang>> GetFunctionInGroupByFunctionID(int chucNangID);
 
