@@ -393,37 +393,37 @@ namespace QUANLYVANHOA.Repositories.HeThong
             return functionInGroupList;
         }
 
-        //public async Task<NhomChucNang> GetFunctionInGroupByID(int functionInNhomPhanQuyenID)
-        //{
-        //    NhomChucNang functionInGroup = null;
+        public async Task<NhomChucNang> GetFunctionInGroupByID(int functionInNhomPhanQuyenID)
+        {
+            NhomChucNang functionInGroup = null;
 
-        //    using (var connection = new SqlConnection(_connectionString))
-        //    {
-        //        await connection.OpenAsync();
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
 
-        //        using (var command = new SqlCommand("NhomChucNang_GetByID", connection))
-        //        {
-        //            command.CommandType = CommandType.StoredProcedure;
-        //            command.Parameters.AddWithValue("@FunctionInNhomPhanQuyenID", functionInNhomPhanQuyenID);
+                using (var command = new SqlCommand("NhomChucNang_GetByID", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@NhomChucNangID", functionInNhomPhanQuyenID);
 
-        //            using (var reader = await command.ExecuteReaderAsync())
-        //            {
-        //                if (await reader.ReadAsync())
-        //                {
-        //                    functionInGroup = new NhomChucNang
-        //                    {
-        //                        NhomChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionInNhomPhanQuyenID")),
-        //                        ChucNangID = reader.GetInt32(reader.GetOrdinal("FunctionID")),
-        //                        NhomPhanQuyenID = reader.GetInt32(reader.GetOrdinal("NhomPhanQuyenID")),
-        //                        Quyen = reader.GetInt32(reader.GetOrdinal("Permission"))
-        //                    };
-        //                }
-        //            }
-        //        }
-        //    }
+                    using (var reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            functionInGroup = new NhomChucNang
+                            {
+                                NhomChucNangID = reader.GetInt32(reader.GetOrdinal("NhomChucNangID")),
+                                ChucNangID = reader.GetInt32(reader.GetOrdinal("ChucNangID")),
+                                NhomPhanQuyenID = reader.GetInt32(reader.GetOrdinal("NhomPhanQuyenID")),
+                                Quyen = reader.GetInt32(reader.GetOrdinal("Quyen"))
+                            };
+                        }
+                    }
+                }
+            }
 
-        //    return functionInGroup;
-        //}
+            return functionInGroup;
+        }
 
         public async Task<int> AddFunctionToGroup(int nhomPhanQuyenID, int chucNangID, int quyen)
         {
@@ -441,6 +441,24 @@ namespace QUANLYVANHOA.Repositories.HeThong
                 }
             }
         }
+
+        public async Task<int> UpdateFunctionPermissionsInGroup(int nhomChucNangID, int quyen)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                using (var command = new SqlCommand("NhomChucNang_UpdateFunctionalAccessPermissions", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@NhomChucNangID", nhomChucNangID);
+                    command.Parameters.AddWithValue("@Quyen", quyen);
+
+                    await connection.OpenAsync();
+                    return await command.ExecuteNonQueryAsync();
+                }
+            }
+        }
+
+
 
 
         public async Task<int> DeleteFunctionFromGroup(NhomChucNangDeleteModel model)

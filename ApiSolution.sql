@@ -1375,7 +1375,7 @@
         
         --GetByID of CanBo
             GO
-            create PROC v1_HeThong_CanBo_GetByID
+            ALTER PROC v1_HeThong_CanBo_GetByID
                 @CanBoID INT
             AS
             BEGIN
@@ -1403,8 +1403,10 @@
                     c.CoQuanID,
                     d.NguoiDungID,
                     d.TenNguoiDung,
-                    np.DanhSachNhomPhanQuyenID
+                    np.DanhSachNhomPhanQuyenID,
+                    cq.TenCoQuan
                 FROM HT_CanBo c
+                LEFT JOIN DM_CoQuan cq ON c.CoQuanID = cq.CoQuanID
                 LEFT JOIN HT_NguoiDung d ON c.CanBoID = d.CanBoID
                 LEFT JOIN NhomPhanQuyen_CTE np ON d.NguoiDungID = np.NguoiDungID
                 WHERE c.CanBoID = @CanBoID;
@@ -2069,15 +2071,14 @@
         END;
         GO
 
-        CREATE PROCEDURE NhomChucNang_UpdateFunctionalAccessPermissions
-            @ChucNangID INT,
-            @NhomPhanQuyenID INT,
+        ALTER PROCEDURE NhomChucNang_UpdateFunctionalAccessPermissions
+            @NhomChucNangID int ,
             @Quyen INT
         AS
         BEGIN
-            UPDATE HT_NhomChucNang
+            UPDATE HT_NhomChucNang 
             SET Quyen = @Quyen
-            WHERE ChucNangID = @ChucNangID AND NhomPhanQuyenID = @NhomPhanQuyenID;
+            WHERE NhomChucNangID = @NhomChucNangID
         END;
         GO	
 

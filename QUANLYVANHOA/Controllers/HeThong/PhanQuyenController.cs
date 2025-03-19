@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Core.Types;
+using QUANLYVANHOA.Core.DTO;
 using QUANLYVANHOA.Core.Enums;
 using QUANLYVANHOA.Interfaces.HeThong;
 using QUANLYVANHOA.Models.HeThong;
@@ -590,6 +592,43 @@ namespace QUANLYVANHOA.Controllers.HeThong
         //    return Ok(new { Status = 1, Message = "Updated data successfully" });
         //}
 
+        [HttpPost("CapNhatQuyenNhomChucNang")]
+        [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyUyQuyen)]
+        public async Task<IActionResult> UpdateFunctionPermissions([FromBody] NhomChucNangUpdateDTO model)
+        {
+            var existingGroup = await _permissionManagement.GetFunctionInGroupByID(model.NhomChucNangID);
+            if (existingGroup == null)
+            {
+                return Ok(new Response
+                {
+                    Status = 0,
+                    Message = "Không tìm thấy ID của Nhóm chức năng muốn cập nhật !"
+                });
+            }
+
+            if (model.NhomChucNangID <= 0)
+            {
+                return BadRequest(new { Status = 0, Message = "Nhóm chức năng ID phải lớn hơn 0 !" });
+            }
+
+            // Xử lý quyền thành bitmask
+            int quyen = 0;
+            if (model.Xem) quyen |= (int)QuyenEnums.Xem;
+            if (model.Them) quyen |= (int)QuyenEnums.Them;
+            if (model.Sua) quyen |= (int)QuyenEnums.Sua;
+            if (model.Xoa) quyen |= (int)QuyenEnums.Xoa;
+
+            var result = await _permissionManagement.UpdateFunctionPermissionsInGroup(model.NhomChucNangID, quyen);
+            if (result > 0)
+            {
+                return Ok(new { Status = 1, Message = "Cập nhật quyền nhóm chức năng thành công !" });
+            }
+            else
+            {
+                return Ok(new { Status = 0, Message = "Cập nhật quyền thất bại !" });
+            }
+        }
+
         [HttpPost("XoaChucNangKhoiNhomPhanQuyen")]
         [CustomAuthorize(QuyenEnums.Xoa, ChucNangEnums.QuanLyUyQuyen)]
         public async Task<IActionResult> DeleteFunctionInGroup(NhomChucNangDeleteModel model)
@@ -609,6 +648,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             await _permissionManagement.DeleteFunctionFromGroup(model);
             return Ok(new { Status = 1, Message = "Xóa chức năng trong nhóm phân quyền thành công" });
         }
+
 
         #endregion
 
