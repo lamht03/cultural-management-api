@@ -128,7 +128,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         {
 
             var existingTieuChi = await _tieuchirepository.GetAll(tieuchi.TenTieuChi);
-            if (existingTieuChi.Item1.Any())
+            if (existingTieuChi.Item1.Any() && existingTieuChi.Item1.First().TieuChiID != tieuchi.TieuChiID)
             {
                 return BadRequest(new { Status = 0, Message = "TenTieuChi already exists" });
             }

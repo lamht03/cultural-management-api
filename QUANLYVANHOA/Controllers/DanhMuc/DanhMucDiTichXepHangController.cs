@@ -132,7 +132,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         public async Task<IActionResult> Update([FromBody] DanhMucDiTichXepHangModelUpdate diTichXepHang)
         {
             var existingTenDiTich = await _ditichxephangrepository.GetAll(diTichXepHang.TenDiTich, 1, 20);
-            if (existingTenDiTich.Item1.Any())
+            if (existingTenDiTich.Item1.Any() && existingTenDiTich.Item1.First().DiTichXepHangID != diTichXepHang.DiTichXepHangID)
             {
                 return Ok(new { Status = 0, Message = "TenDiTich already exists" });
             }

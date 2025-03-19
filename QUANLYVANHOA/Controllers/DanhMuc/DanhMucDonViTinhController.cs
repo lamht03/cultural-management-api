@@ -140,7 +140,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         public async Task<IActionResult> Update([FromBody] DanhMucDonViTinhModelUpdate model)
         {
             var existingTenDonViTinh = await _donViTinhRepository.GetAll(model.TenDonViTinh, 1, 20);
-            if (existingTenDonViTinh.Item1.Any())
+            if (existingTenDonViTinh.Item1.Any() && existingTenDonViTinh.Item1.First().DonViTinhID != model.DonViTinhID)
             {
                 return BadRequest(new { Status = 0, Message = "TenDonViTinh already exists" });
             }

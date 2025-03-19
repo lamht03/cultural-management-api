@@ -147,7 +147,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         public async Task<IActionResult> Update([FromBody] DanhMucLoaiMauPhieuModelUpdate model)
         {
             var existingLoaiMauPhieuName = await _loaiMauPhieuRepository.GetAll(model.TenLoaiMauPhieu,null, 1, 20);
-            if (existingLoaiMauPhieuName.Item1.Any())
+            if (existingLoaiMauPhieuName.Item1.Any() && existingLoaiMauPhieuName.Item1.First().LoaiMauPhieuID != model.LoaiMauPhieuID)
             {
                 return BadRequest(new { Status = 0, Message = "TenLoaiMauPhieu already exists" });
             }

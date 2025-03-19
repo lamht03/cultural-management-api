@@ -135,7 +135,7 @@ namespace QUANLYVANHOA.Controllers.DanhMuc
         public async Task<IActionResult> Update([FromBody] DanhMucLoaiDiTichModelUpdate model)
         {
             var existingLoaiDiTichName = await _loaiDiTichRepository.GetAll(model.TenLoaiDiTich, 1, 20);
-            if (existingLoaiDiTichName.Item1.Any())
+            if (existingLoaiDiTichName.Item1.Any() && existingLoaiDiTichName.Item1.First().LoaiDiTichID != model.LoaiDiTichID)
             {
                 return Ok(new { Status = 0, Message = "Data already exists" });
             }

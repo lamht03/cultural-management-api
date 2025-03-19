@@ -176,7 +176,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
 
             var existingFunctionName = await _permissionManagement.GetAllFunction(function.TenChucNang, 1, 20);
             {
-                if (existingFunctionName.Item1.Any())
+                if (existingFunctionName.Item1.Any() && existingFunctionName.Item1.First().ChucNangID != function.ChucNangID)
                 {
                     return BadRequest(new Response
                     {
@@ -194,6 +194,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
                     Message = "Tên chức năng không được để trống !"
                 });
             }
+
 
             if (function.TenChucNang.Length > 50)
             {
@@ -412,6 +413,18 @@ namespace QUANLYVANHOA.Controllers.HeThong
                     Status = 0,
                     Message = "Tên nhóm phân quyền không được để trống !"
                 });
+            }
+
+            var existingGroupName = await _permissionManagement.GetAllGroup(group.TenNhomPhanQuyen,null, 1, 20);
+            {
+                if (existingGroupName.Item1.Any() && existingGroupName.Item1.First().NhomPhanQuyenID != group.NhomPhanQuyenID)
+                {
+                    return BadRequest(new Response
+                    {
+                        Status = 0,
+                        Message = "Tên nhóm phân quyền đã tồn tại !"
+                    });
+                }
             }
 
             if (group.TenNhomPhanQuyen.Length > 50)
