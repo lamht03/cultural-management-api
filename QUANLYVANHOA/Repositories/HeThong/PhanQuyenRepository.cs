@@ -194,6 +194,7 @@ namespace QUANLYVANHOA.Repositories.HeThong
                                 TenChucNang = reader.GetString(reader.GetOrdinal("TenChucNang")),
                                 NhomPhanQuyenID = reader.GetInt32(reader.GetOrdinal("NhomPhanQuyenID")),
                                 TenNhomPhanQuyen = reader.GetString(reader.GetOrdinal("TenNhomPhanQuyen")),
+                                NhomChucNangID = reader.GetInt32(reader.GetOrdinal("NhomChucNangID")),
                                 Quyen = reader.GetInt32(reader.GetOrdinal("Quyen")),
                                 Xem = (reader.GetInt32(reader.GetOrdinal("Quyen")) & (int)QuyenEnums.Xem) == (int)QuyenEnums.Xem,
                                 Them = (reader.GetInt32(reader.GetOrdinal("Quyen")) & (int)QuyenEnums.Them) == (int)QuyenEnums.Them,

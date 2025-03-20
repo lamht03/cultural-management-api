@@ -2050,6 +2050,27 @@
         );
         GO
 
+        GO
+
+            ALTER PROC [dbo].[NhomChucNang_GetAllFunctionsAndPermissionsInAuthorizationGroup]
+                @NhomPhanQuyenID int
+            AS
+            BEGIN
+                SELECT a.ChucNangID, a.TenChucNang,b.NhomPhanQuyenID, c.TenNhomPhanQuyen,b.Quyen, b.NhomChucNangID FROM HT_ChucNang a 
+                JOIN HT_NhomChucNang b on a.ChucNangID = b.ChucNangID 
+                JOIN HT_NhomPhanQuyen c on b.NhomPhanQuyenID = c.NhomPhanQuyenID where c.NhomPhanQuyenID = @NhomPhanQuyenID
+            END
+        GO
+
+        
+        CREATE PROC NhomChucNang_GetByID
+        @NhomChucNangID INT
+        AS
+        BEGIN
+            select  * FROM HT_NhomChucNang ncn where ncn.NhomChucNangID = @NhomChucNangID
+        END
+        GO
+
         CREATE PROC NhomChucNang_GetUserFunctionAccess
         @NhomPhanQuyenID INT
         AS
@@ -3758,6 +3779,7 @@
     (11,1,15),
     (11,2,0)
     GO  
+
 
 --region Query
 	DELETE FROM Sys_User;

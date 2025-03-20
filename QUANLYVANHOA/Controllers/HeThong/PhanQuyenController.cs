@@ -629,7 +629,7 @@ namespace QUANLYVANHOA.Controllers.HeThong
             // Xử lý quyền thành bitmask
             foreach (var model in listNhomChucNang)
             {
-                var existingGroup = await _permissionManagement.GetGroupByID(model.NhomChucNangID);
+                var existingGroup = await _permissionManagement.GetFunctionInGroupByID(model.NhomChucNangID);
                 if (existingGroup == null)
                 {
                     continue; // Bỏ qua nếu không tìm thấy nhóm quyền
