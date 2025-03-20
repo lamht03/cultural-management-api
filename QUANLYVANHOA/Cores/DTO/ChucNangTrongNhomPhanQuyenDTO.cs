@@ -35,10 +35,19 @@ namespace QUANLYVANHOA.Core.DTO
 
     public class NhomChucNangUpdateDTO
     {
+        [JsonPropertyName("NhomChucNangID")]
         public int NhomChucNangID { get; set; }
+
+        [JsonPropertyName("Xem")]
         public bool Xem { get; set; }
+
+        [JsonPropertyName("Them")]
         public bool Them { get; set; }
+
+        [JsonPropertyName("Sua")]
         public bool Sua { get; set; }
+
+        [JsonPropertyName("Xoa")]
         public bool Xoa { get; set; }
     }
 }

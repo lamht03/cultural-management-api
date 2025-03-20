@@ -592,40 +592,69 @@ namespace QUANLYVANHOA.Controllers.HeThong
         //    return Ok(new { Status = 1, Message = "Updated data successfully" });
         //}
 
-        [HttpPost("CapNhatQuyenNhomChucNang")]
+        [HttpPost("CapNhatQuyenNhomChucNang")]     
         [CustomAuthorize(QuyenEnums.Sua, ChucNangEnums.QuanLyUyQuyen)]
-        public async Task<IActionResult> UpdateFunctionPermissions([FromBody] NhomChucNangUpdateDTO model)
+        public async Task<IActionResult> UpdateFunctionPermissions([FromBody] List<NhomChucNangUpdateDTO> listNhomChucNang)
         {
-            var existingGroup = await _permissionManagement.GetFunctionInGroupByID(model.NhomChucNangID);
-            if (existingGroup == null)
+
+            if (listNhomChucNang == null || listNhomChucNang.Count == 0)
             {
-                return Ok(new Response
+                return BadRequest(new { Status = 0, Message = "Dữ liệu cập nhật không hợp lệ !" });
+            }
+
+            foreach (var nhomChucNang in listNhomChucNang)
+            {
+                var existingGroup = await _permissionManagement.GetFunctionInGroupByID(nhomChucNang.NhomChucNangID);
+                if (existingGroup == null)
                 {
-                    Status = 0,
-                    Message = "Không tìm thấy ID của Nhóm chức năng muốn cập nhật !"
-                });
+                    return Ok(new Response
+                    {
+                        Status = 0,
+                        Message = "Không tìm thấy một số ID của Nhóm chức năng muốn cập nhật !"
+                    });
+                }
             }
 
-            if (model.NhomChucNangID <= 0)
+
+            foreach (var nhomChucNang in listNhomChucNang)
             {
-                return BadRequest(new { Status = 0, Message = "Nhóm chức năng ID phải lớn hơn 0 !" });
+                if (nhomChucNang.NhomChucNangID <= 0)
+                {
+                    return BadRequest(new { Status = 0, Message = "Nhóm chức năng ID phải lớn hơn 0 !" });
+                }
             }
 
+
+            int updatedCount = 0;
             // Xử lý quyền thành bitmask
-            int quyen = 0;
-            if (model.Xem) quyen |= (int)QuyenEnums.Xem;
-            if (model.Them) quyen |= (int)QuyenEnums.Them;
-            if (model.Sua) quyen |= (int)QuyenEnums.Sua;
-            if (model.Xoa) quyen |= (int)QuyenEnums.Xoa;
-
-            var result = await _permissionManagement.UpdateFunctionPermissionsInGroup(model.NhomChucNangID, quyen);
-            if (result > 0)
+            foreach (var model in listNhomChucNang)
             {
-                return Ok(new { Status = 1, Message = "Cập nhật quyền nhóm chức năng thành công !" });
+                var existingGroup = await _permissionManagement.GetGroupByID(model.NhomChucNangID);
+                if (existingGroup == null)
+                {
+                    continue; // Bỏ qua nếu không tìm thấy nhóm quyền
+                }
+
+                // Xử lý quyền thành bitmask
+                int quyen = 0;
+                if (model.Xem) quyen |= (int)QuyenEnums.Xem;
+                if (model.Them) quyen |= (int)QuyenEnums.Them;
+                if (model.Sua) quyen |= (int)QuyenEnums.Sua;
+                if (model.Xoa) quyen |= (int)QuyenEnums.Xoa;
+
+                var result = await _permissionManagement.UpdateFunctionPermissionsInGroup(model.NhomChucNangID, quyen);
+                if (result > 0)
+                {
+                    updatedCount++;
+                }
+            }
+            if (updatedCount > 0)
+            {
+                return Ok(new { Status = 1, Message = $"Cập nhật thành công {updatedCount} nhóm chức năng !" });
             }
             else
             {
-                return Ok(new { Status = 0, Message = "Cập nhật quyền thất bại !" });
+                return Ok(new { Status = 0, Message = "Không có nhóm nào được cập nhật !" });
             }
         }
 
